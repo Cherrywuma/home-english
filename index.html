@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>家庭日常英语口语 · Home English</title>
+<meta name="theme-color" content="#2E8B6B">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Home English">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF8F2;
+    --card:#FFFFFF;
+    --ink:#221F1B;
+    --muted:#7C756B;
+    --line:#ECE4D6;
+    --accent:#2E8B6B;        /* 朗读绿 */
+    --accent-soft:#E5F1EB;
+    --shadow:0 1px 2px rgba(40,30,10,.04), 0 8px 24px rgba(60,45,20,.06);
+    --display:'Fraunces',Georgia,serif;
+    --body:'Inter','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.5;
+    padding-bottom:40px;
+  }
+  .wrap{max-width:740px;margin:0 auto;padding:0 16px;}
+
+  /* ---------- Hero ---------- */
+  header.hero{padding:30px 0 14px;}
+  .hero .kicker{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:600;}
+  .hero h1{font-family:var(--display);font-weight:500;font-size:2.1rem;line-height:1.1;margin:6px 0 6px;}
+  .hero h1 em{font-style:italic;color:var(--accent);}
+  .hero p{color:var(--muted);font-size:.95rem;max-width:46ch;}
+  .stat{margin-top:12px;font-size:.82rem;color:var(--muted);}
+  .stat b{color:var(--ink);}
+  .installbtn{display:none;margin-top:13px;align-items:center;gap:7px;font-family:var(--body);
+    font-size:.88rem;font-weight:600;color:#fff;background:var(--accent);border:none;border-radius:999px;
+    padding:10px 18px;cursor:pointer;box-shadow:var(--shadow);}
+  .iostip{display:none;margin-top:11px;font-size:.8rem;color:var(--ink);background:var(--accent-soft);
+    border-radius:10px;padding:9px 13px;line-height:1.5;}
+  .iostip b{color:var(--accent);}
+
+  /* ---------- Voice bar ---------- */
+  .voicebar{
+    display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:11px 14px;margin-top:16px;box-shadow:var(--shadow);
+  }
+  .voicebar label{font-size:.78rem;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:7px;}
+  .voicebar select{
+    font-family:var(--body);font-size:.82rem;color:var(--ink);
+    border:1px solid var(--line);background:#FCFAF6;border-radius:8px;padding:5px 8px;max-width:180px;
+  }
+  .voicebar input[type=range]{accent-color:var(--accent);width:104px;}
+  .rateval{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600;min-width:2.4em;}
+
+  /* ---------- Search ---------- */
+  .search{position:relative;margin:14px 0 8px;}
+  .search input{
+    width:100%;font-family:var(--body);font-size:1rem;color:var(--ink);
+    border:1px solid var(--line);background:var(--card);border-radius:12px;
+    padding:12px 14px 12px 40px;box-shadow:var(--shadow);
+  }
+  .search input::placeholder{color:#B4AB9D;}
+  .search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:17px;height:17px;stroke:#B4AB9D;}
+
+  /* ---------- Chips ---------- */
+  .chips{position:sticky;top:0;z-index:20;background:linear-gradient(var(--paper) 78%,rgba(251,248,242,0));
+    display:flex;gap:8px;overflow-x:auto;padding:10px 0 12px;margin:0 -16px;scrollbar-width:none;}
+  .chips::-webkit-scrollbar{display:none;}
+  .chips::before,.chips::after{content:"";flex:0 0 16px;}
+  .chip{
+    flex:0 0 auto;font-size:.84rem;font-weight:600;color:var(--ink);
+    background:var(--card);border:1px solid var(--line);border-radius:999px;
+    padding:7px 14px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:7px;
+    transition:transform .08s;
+  }
+  .chip:active{transform:scale(.96);}
+  .chip .dot{width:9px;height:9px;border-radius:50%;background:var(--c,#999);}
+  .chip.active{color:#fff;border-color:transparent;background:var(--c,#333);}
+  .chip.active .dot{background:rgba(255,255,255,.85);}
+
+  /* ---------- Category ---------- */
+  .cat{margin:26px 0 0;}
+  .cathead{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+  .cathead .bar{width:4px;height:24px;border-radius:3px;background:var(--c,#999);}
+  .cathead h2{font-family:var(--display);font-weight:500;font-size:1.45rem;}
+  .cathead .en{font-size:.78rem;color:var(--muted);font-weight:500;letter-spacing:.04em;margin-left:2px;}
+
+  /* ---------- Subsection ---------- */
+  .sub{margin-top:16px;}
+  .subhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 2px 8px;}
+  .subhead h3{font-size:.96rem;font-weight:700;color:var(--ink);}
+  .subhead h3 span{color:var(--muted);font-weight:500;font-size:.82rem;margin-left:6px;}
+  .playall{
+    flex:0 0 auto;font-size:.76rem;font-weight:600;color:var(--accent);
+    background:var(--accent-soft);border:none;border-radius:999px;padding:6px 12px;cursor:pointer;
+    display:flex;align-items:center;gap:5px;
+  }
+  .playall svg{width:12px;height:12px;fill:var(--accent);}
+  .playall.playing{background:var(--accent);color:#fff;}
+  .playall.playing svg{fill:#fff;}
+
+  .list{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
+  .row{
+    display:flex;align-items:flex-start;gap:12px;padding:13px 14px;cursor:pointer;
+    border-top:1px solid var(--line);transition:background .12s;
+  }
+  .row:first-child{border-top:none;}
+  .row:active{background:#FBF7EF;}
+  .row.speaking{background:var(--accent-soft);}
+  .row .spk{
+    flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);
+    display:flex;align-items:center;justify-content:center;margin-top:1px;
+  }
+  .row .spk svg{width:15px;height:15px;fill:var(--accent);}
+  .row.speaking .spk{background:var(--accent);}
+  .row.speaking .spk svg{fill:#fff;}
+  .row .txt{flex:1;min-width:0;}
+  .row .en{font-size:1.02rem;font-weight:600;color:var(--ink);letter-spacing:.01em;}
+  .row .zh{font-size:.86rem;color:var(--muted);margin-top:2px;}
+
+  .empty{text-align:center;color:var(--muted);padding:50px 0;font-size:.95rem;}
+
+  /* 查词 */
+  .lookupbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;}
+  #lookupBtn{flex:0 0 auto;font-family:var(--body);font-size:.84rem;font-weight:600;color:var(--accent);
+    background:var(--accent-soft);border:1px solid #CFE6DC;border-radius:999px;padding:8px 14px;cursor:pointer;}
+  #lookupBtn:active{transform:scale(.97);}
+  .lk-hint{font-size:.76rem;color:var(--muted);}
+  .lookup{display:none;margin-top:10px;}
+  .lk-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;box-shadow:var(--shadow);}
+  .lk-en{font-size:1.25rem;font-weight:700;color:var(--ink);line-height:1.3;}
+  .lk-zh{font-size:.92rem;color:var(--muted);margin-top:3px;}
+  .lk-act{display:flex;gap:10px;margin-top:12px;}
+  .lk-act button{font-family:var(--body);font-size:.82rem;font-weight:600;border:none;border-radius:999px;padding:8px 15px;cursor:pointer;}
+  .lk-spk{color:#fff;background:var(--accent);}
+  .lk-save{color:var(--accent);background:var(--accent-soft);}
+  .lk-save:disabled{color:var(--muted);background:var(--line);}
+  .lk-note{font-size:.72rem;color:#A89F90;margin-top:10px;}
+  .lk-load{color:var(--muted);font-size:.9rem;padding:6px 2px;}
+  .lk-err{color:#B0573A;font-size:.9rem;}
+  .row .del{flex:0 0 auto;align-self:center;border:none;background:none;color:#C4BBAE;font-size:1rem;cursor:pointer;padding:4px 6px;}
+  .row .del:active{color:#B0573A;}
+
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem;line-height:1.7;}
+  footer b{color:var(--ink);}
+
+  /* stop bar */
+  #stopbar{
+    position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(140%);
+    background:var(--ink);color:#fff;border:none;border-radius:999px;
+    padding:11px 20px;font-size:.88rem;font-weight:600;font-family:var(--body);
+    box-shadow:0 8px 26px rgba(0,0,0,.25);cursor:pointer;z-index:50;
+    display:flex;align-items:center;gap:8px;transition:transform .25s;
+  }
+  #stopbar.show{transform:translateX(-50%) translateY(0);}
+  #stopbar svg{width:13px;height:13px;fill:#fff;}
+
+  @media (max-width:480px){
+    .hero h1{font-size:1.8rem;}
+    .voicebar select{max-width:140px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Home English · 中英对照</div>
+    <h1>家里每天都在<em>说的话</em></h1>
+    <p>厨房、客厅、卧室、盥洗吃喝、和孩子说话——把家里一天用得到的英语整理在一起。点任意一句就能听发音（浏览器免费朗读，不联网 API）。</p>
+    <div class="stat">共 <b id="totalCount">0</b> 句 · 点句子听读 · 点「朗读本节」连续播放</div>
+    <button id="installBtn" class="installbtn">📲 安装到手机</button>
+    <div id="iosTip" class="iostip">想当 App 用：点 Safari 底部的「分享」<b>↑</b>，再选「<b>添加到主屏幕</b>」。</div>
+
+    <div class="voicebar">
+      <label>🔊 发音
+        <select id="voiceSel"><option>加载中…</option></select>
+      </label>
+      <label>语速
+        <input type="range" id="rate" min="0.6" max="1.1" step="0.05" value="0.85">
+        <span class="rateval" id="rateVal">0.85×</span>
+      </label>
+    </div>
+
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg>
+      <input id="q" type="search" placeholder="搜本地，或输入要查的词（中/英）…">
+    </div>
+    <div class="lookupbar">
+      <button id="lookupBtn">🔎 联网查词 / 翻译</button>
+      <span class="lk-hint">本地没有的词点这里查，中↔英都行（如「粽子」）</span>
+    </div>
+    <div id="lookup" class="lookup"></div>
+  </header>
+
+  <nav class="chips" id="chips"></nav>
+
+  <main id="content"></main>
+
+  <footer>
+    <b>怎么用：</b>每天挑一两个场景，点「朗读本节」边听边小声跟读，读熟了用搜索抽查自己。<br>
+    <b>关于发音：</b>用的是你设备/浏览器自带的语音（iPhone 上 Safari 效果最稳，第一次需先点一下页面任意处才会出声）。换 en-US / en-GB 口音、调语速都在上面那一栏。<br>
+    <b>想加内容：</b>所有句子都在本文件底部的 <b>DATA</b> 里，照着格式 <code>["English","中文"]</code> 往对应小节里加就行，加完重新 push 即可。
+  </footer>
+</div>
+
+<button id="stopbar"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg> 停止朗读</button>
+
+<script>
+/* ============================================================
+   内容数据：分类 → 小节 → ["英文","中文"]
+   想扩充：直接在对应小节的数组里加新句子即可。
+   ============================================================ */
+const DATA = [
+  {
+    name:"厨房", en:"Kitchen", color:"#2E8B6B",
+    subs:[
+      { name:"备菜与清洗", en:"Prep & Washing", items:[
+        ["Let me wash the vegetables first.","我先把菜洗一下。"],
+        ["Rinse the rice twice before you cook it.","煮饭前把米淘两遍。"],
+        ["Soak the beans overnight.","豆子提前泡一晚上。"],
+        ["Drain the water off the noodles.","把面条的水沥干。"],
+        ["Pat the chicken dry with a paper towel.","用厨房纸把鸡肉擦干。"],
+        ["Wash your hands before you start cooking.","开始做饭前先洗手。"],
+        ["Give the pot a quick rinse.","把锅冲一下。"],
+        ["Soak the mushrooms in warm water.","香菇用温水泡一下。"],
+        ["Clean the fish and remove the scales.","把鱼收拾干净，去鳞。"],
+        ["Wipe the counter before we start.","开始前把台面擦一下。"],
+        ["Defrost the meat first.","先把肉解冻。"],
+        ["Let the meat come to room temperature.","让肉回到常温。"],
+      ]},
+      { name:"切配处理", en:"Cutting & Prepping", items:[
+        ["Peel the potatoes and cut them into chunks.","把土豆削皮，切成块。"],
+        ["Cut the tofu into small cubes.","把豆腐切成小块。"],
+        ["Mince the garlic and the ginger.","把蒜和姜剁碎。"],
+        ["Slice the onion thinly.","把洋葱切成薄片。"],
+        ["Chop the green onions.","把葱切碎。"],
+        ["Cut it into strips.","切成丝/条。"],
+        ["Dice the carrots.","把胡萝卜切丁。"],
+        ["Trim the ends off the green beans.","把四季豆两头掐掉。"],
+        ["Crack two eggs into the bowl.","往碗里打两个鸡蛋。"],
+        ["Beat the eggs.","把蛋打散。"],
+        ["Cut the meat against the grain.","逆着纹理切肉。"],
+        ["Marinate the meat for ten minutes.","把肉腌十分钟。"],
+        ["Mix in a little cornstarch.","拌点淀粉。"],
+      ]},
+      { name:"火候与做法", en:"Heat & Methods", items:[
+        ["Heat the oil before you add anything.","先把油烧热再下东西。"],
+        ["Turn the heat down to low.","把火调小。"],
+        ["Turn the heat up; the pan isn't hot enough.","火开大点，锅不够热。"],
+        ["Bring the water to a boil.","把水烧开。"],
+        ["Let it simmer for twenty minutes.","小火炖二十分钟。"],
+        ["Cover the pot with the lid.","盖上锅盖。"],
+        ["Flip it so the other side cooks too.","翻个面，把另一面也煎熟。"],
+        ["Keep stirring so it doesn't stick.","不停翻，免得粘锅。"],
+        ["Steam it once the water boils.","水开了再上锅蒸。"],
+        ["Braise the pork in soy sauce.","用酱油红烧肉。"],
+        ["Deep-fry it until it's crispy.","炸到酥脆。"],
+        ["It's almost done; turn off the heat.","快好了，关火吧。"],
+        ["Let it rest for a couple of minutes.","让它静置一两分钟。"],
+        ["Don't let it burn.","别糊了。"],
+      ]},
+      { name:"蔬菜烹饪", en:"Cooking Vegetables", items:[
+        ["Stir-fry the bok choy with a little garlic.","用一点蒜炒小白菜。"],
+        ["The spinach only needs a quick blanch.","菠菜焯一下就行。"],
+        ["Steam the broccoli for about five minutes.","西兰花蒸五分钟左右。"],
+        ["Boil the corn until it's tender.","玉米煮到软。"],
+        ["Roast the eggplant in the oven.","把茄子放烤箱烤。"],
+        ["Add the tomatoes and cook until they're soft.","加西红柿，炒到软烂。"],
+        ["Don't overcook the greens.","青菜别炒太久。"],
+        ["Mash the potatoes with a little butter.","土豆加点黄油压成泥。"],
+        ["Fry the mushrooms until they're golden.","把蘑菇煎到金黄。"],
+        ["Blanch the cauliflower first, then stir-fry it.","花菜先焯水，再下锅炒。"],
+        ["Cook the pumpkin until a chopstick goes through.","南瓜煮到一筷子能戳透。"],
+        ["Toss the lettuce with some dressing.","生菜拌上酱汁。"],
+      ]},
+      { name:"肉蛋汤", en:"Meat, Eggs & Soup", items:[
+        ["Scramble the eggs.","炒个鸡蛋。"],
+        ["Fry an egg, sunny side up.","煎个荷包蛋（不翻面）。"],
+        ["Sear the steak on both sides.","牛排两面煎一下。"],
+        ["Steam the fish with ginger and scallions.","姜葱清蒸鱼。"],
+        ["Skim the foam off the soup.","把汤上的浮沫撇掉。"],
+        ["Add water if the soup gets too thick.","汤太稠就加点水。"],
+        ["The chicken needs to cook a bit longer.","鸡肉还得再煮一会儿。"],
+        ["Make sure the pork is cooked through.","确保猪肉熟透。"],
+        ["Let the broth simmer for an hour.","高汤小火炖一个小时。"],
+        ["Boil some water for the noodles.","烧点水下面。"],
+      ]},
+      { name:"调味与尝味", en:"Seasoning & Taste", items:[
+        ["Add a pinch of salt.","加一小撮盐。"],
+        ["It needs a bit more soy sauce.","还差点酱油。"],
+        ["This is a little too salty.","这个有点咸了。"],
+        ["It's bland; add some seasoning.","太淡了，加点调料。"],
+        ["Sprinkle some pepper on top.","上面撒点胡椒。"],
+        ["A few drops of sesame oil will help.","滴几滴香油会更香。"],
+        ["Don't put in too much sugar.","别放太多糖。"],
+        ["Add a spoonful of cooking wine.","加一勺料酒。"],
+        ["Let me give it a taste.","我来尝一口。"],
+        ["It smells really good.","闻起来真香。"],
+        ["Careful, it's spicy.","小心，有点辣。"],
+        ["This could use more flavor.","这个味儿还不够。"],
+      ]},
+      { name:"工具与状况", en:"Tools & Situations", items:[
+        ["Pass me the cutting board.","把砧板递给我。"],
+        ["Where's the kitchen knife?","菜刀在哪儿？"],
+        ["Use the wok for stir-frying.","炒菜用炒锅。"],
+        ["Grab a spatula to flip it.","拿个锅铲翻一下。"],
+        ["The chopsticks are in the drawer.","筷子在抽屉里。"],
+        ["Put it in the rice cooker.","放进电饭煲。"],
+        ["Turn on the range hood.","打开抽油烟机。"],
+        ["The pot is boiling over.","锅扑出来了。"],
+        ["The oil is splattering everywhere.","油溅得到处都是。"],
+        ["I burned my hand.","我烫到手了。"],
+        ["We're out of gas.","煤气没了。"],
+        ["Something's burning.","有东西糊了。"],
+      ]},
+      { name:"餐后清理", en:"Cleaning Up", items:[
+        ["Let's clear the table first.","先把桌子收拾了。"],
+        ["I'll do the dishes.","我来洗碗。"],
+        ["You dry and I'll wash.","你擦干，我来洗。"],
+        ["Scrub the pot; it's greasy.","锅有点油，使劲刷刷。"],
+        ["Wipe down the stove.","把灶台擦一下。"],
+        ["Throw the scraps in the trash.","把菜渣倒进垃圾桶。"],
+        ["Put the leftovers in the fridge.","把剩菜放进冰箱。"],
+        ["Take out the trash, please.","麻烦把垃圾拿出去。"],
+        ["Rinse the sink when you're done.","洗完把水槽冲一下。"],
+        ["Sweep the floor; there are crumbs.","扫下地，有渣。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"吃喝·点餐", en:"Eating & Ordering", color:"#C0552B",
+    subs:[
+      { name:"在家吃饭", en:"Meals at Home", items:[
+        ["Dinner's ready.","饭好了。"],
+        ["Come eat while it's hot.","趁热来吃。"],
+        ["Are you hungry?","饿了吗？"],
+        ["I'm starving.","我饿坏了。"],
+        ["I'm full, thanks.","我吃饱了，谢谢。"],
+        ["Help yourself to more.","不够再添。"],
+        ["What do you want for dinner?","晚饭想吃什么？"],
+        ["Let's just keep it simple tonight.","今晚简单吃点吧。"],
+        ["Save some for your dad.","给你爸留点。"],
+        ["Don't waste food.","别浪费粮食。"],
+        ["Slow down, don't choke.","慢点，别噎着。"],
+        ["I'll have seconds.","我再来一碗。"],
+      ]},
+      { name:"口味与感受", en:"Taste & Reactions", items:[
+        ["This is delicious.","这个真好吃。"],
+        ["It's a bit too oily for me.","对我来说有点油。"],
+        ["This is way too sweet.","这也太甜了。"],
+        ["It's a little bland.","有点没味儿。"],
+        ["This is really spicy.","这个好辣。"],
+        ["It tastes a bit off.","味道有点不对。"],
+        ["I think this has gone bad.","我觉得这个坏了。"],
+        ["My favorite is the fish.","我最喜欢那道鱼。"],
+        ["I'm not a fan of cilantro.","我不太爱吃香菜。"],
+        ["Can you make it less spicy?","能做得不那么辣吗？"],
+      ]},
+      { name:"喝水饮料", en:"Drinks", items:[
+        ["Pour me a glass of water.","给我倒杯水。"],
+        ["Drink more water.","多喝点水。"],
+        ["Do you want some tea?","要喝点茶吗？"],
+        ["The water's too hot; let it cool.","水太烫了，晾一下。"],
+        ["I'll have a coffee, no sugar.","我要杯咖啡，不加糖。"],
+        ["Can I get a refill?","能再续一杯吗？"],
+        ["Cheers!","干杯！"],
+        ["I've had too much to drink.","我喝多了。"],
+        ["Stay hydrated.","记得多喝水。"],
+        ["This juice is freshly squeezed.","这果汁是鲜榨的。"],
+      ]},
+      { name:"餐桌礼貌", en:"At the Table", items:[
+        ["Don't talk with your mouth full.","嘴里有东西别说话。"],
+        ["Chew with your mouth closed.","闭着嘴嚼。"],
+        ["Pass me the salt, please.","麻烦把盐递给我。"],
+        ["Could you pass the soy sauce?","能递下酱油吗？"],
+        ["Wipe your mouth.","擦擦嘴。"],
+        ["Use a napkin.","用张纸巾。"],
+        ["Sit up straight at the table.","在桌边坐直。"],
+        ["Wait until everyone's seated.","等大家都坐下再吃。"],
+        ["Thanks for the meal.","谢谢款待。"],
+        ["That was a great meal.","这顿饭很棒。"],
+      ]},
+      { name:"餐厅点餐", en:"At a Restaurant", items:[
+        ["Table for two, please.","两位，麻烦了。"],
+        ["Can we see the menu?","能给我们看下菜单吗？"],
+        ["What do you recommend?","你们有什么推荐的？"],
+        ["I'll have the same.","我也来一样的。"],
+        ["Can I get this without onions?","这个能不放洋葱吗？"],
+        ["Is this dish spicy?","这道菜辣吗？"],
+        ["Could we get some more napkins?","能再给点纸巾吗？"],
+        ["Excuse me, this isn't what I ordered.","不好意思，这不是我点的。"],
+        ["Can we get the check, please?","麻烦结账。"],
+        ["Can we split the bill?","能分开付吗？"],
+        ["Could you box this up?","能帮我打包吗？"],
+        ["Keep the change.","不用找了。"],
+      ]},
+      { name:"外卖与零食", en:"Takeout & Snacks", items:[
+        ["Let's order takeout tonight.","今晚点外卖吧。"],
+        ["What are you in the mood for?","你想吃点啥？"],
+        ["The delivery is on its way.","外卖在路上了。"],
+        ["The food is here.","外卖到了。"],
+        ["No snacks before dinner.","饭前不许吃零食。"],
+        ["I'm just grabbing a quick bite.","我随便吃点。"],
+        ["Want to split this?","要不要分着吃？"],
+        ["I've got a craving for something sweet.","我想吃点甜的。"],
+        ["Let's get some fruit for dessert.","拿点水果当甜点吧。"],
+        ["This is my treat.","这顿我请。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"客厅·居家", en:"Living Room", color:"#C98A2B",
+    subs:[
+      { name:"放松与看电视", en:"Relaxing & TV", items:[
+        ["Let's watch something together.","一起看点什么吧。"],
+        ["Pass me the remote.","把遥控器递给我。"],
+        ["Turn the volume down a bit.","声音调小一点。"],
+        ["Turn it up; I can't hear.","开大点，我听不见。"],
+        ["What's on tonight?","今晚有什么节目？"],
+        ["I'll put on a movie.","我放个电影。"],
+        ["Can you pause it for a second?","能暂停一下吗？"],
+        ["Skip the ads.","跳过广告。"],
+        ["Let's take a break and sit down.","歇会儿，坐下吧。"],
+        ["Could you dim the lights?","能把灯调暗点吗？"],
+        ["It's getting late; one more episode.","不早了，再看一集。"],
+        ["I'm just relaxing on the couch.","我就在沙发上放松一下。"],
+      ]},
+      { name:"打扫与整理", en:"Tidying Up", items:[
+        ["Let's tidy up the living room.","收拾一下客厅吧。"],
+        ["Put the cushions back on the sofa.","把抱枕放回沙发。"],
+        ["Fold the blanket, please.","把毯子叠一下。"],
+        ["Vacuum the carpet.","用吸尘器吸下地毯。"],
+        ["Wipe the dust off the table.","把桌上的灰擦一下。"],
+        ["Pick up the toys from the floor.","把地上的玩具捡起来。"],
+        ["Water the plants.","给植物浇水。"],
+        ["Open the window to let some air in.","开窗透透气。"],
+        ["This place is a mess.","这里乱成一团。"],
+        ["Let's get everything organized.","把东西都整理整理。"],
+        ["Put things back where they belong.","东西用完放回原处。"],
+        ["Don't leave your stuff lying around.","别把东西到处乱放。"],
+      ]},
+      { name:"待客", en:"Having Guests", items:[
+        ["Come in and have a seat.","进来坐。"],
+        ["Can I get you something to drink?","喝点什么吗？"],
+        ["Would you like tea or water?","要喝茶还是水？"],
+        ["Help yourself to the fruit.","水果随便吃。"],
+        ["Make yourself at home.","别客气，当自己家。"],
+        ["Let me take your coat.","我帮你拿外套。"],
+        ["Sorry about the mess.","不好意思，有点乱。"],
+        ["Thanks for coming over.","谢谢你过来。"],
+        ["It's getting late; drive safe.","不早了，路上小心。"],
+        ["Come again sometime.","有空再来。"],
+      ]},
+      { name:"家电与杂事", en:"Appliances & Odds", items:[
+        ["The light bulb burned out.","灯泡坏了。"],
+        ["The Wi-Fi is down again.","网又断了。"],
+        ["Turn off the lights when you leave.","走的时候把灯关了。"],
+        ["The air conditioner isn't cooling.","空调不制冷了。"],
+        ["Plug in the fan; it's hot.","把风扇插上，好热。"],
+        ["Did you lock the door?","门锁了吗？"],
+        ["My phone's about to die.","我手机快没电了。"],
+        ["Where's the charger?","充电器在哪儿？"],
+        ["I'll set the alarm for seven.","我把闹钟定七点。"],
+        ["Can you fix this for me?","你能帮我修下这个吗？"],
+      ]},
+    ]
+  },
+
+  {
+    name:"卧室·睡眠", en:"Bedroom & Sleep", color:"#5B6CB0",
+    subs:[
+      { name:"起床", en:"Waking Up", items:[
+        ["Time to get up.","该起床了。"],
+        ["Five more minutes, please.","再睡五分钟。"],
+        ["I'm still half asleep.","我还没睡醒。"],
+        ["Did you sleep well?","睡得好吗？"],
+        ["I slept like a log.","我睡得特别沉。"],
+        ["I barely slept last night.","我昨晚几乎没睡。"],
+        ["The alarm didn't go off.","闹钟没响。"],
+        ["Open the curtains and let the light in.","拉开窗帘让光进来。"],
+        ["I need a coffee to wake up.","我得来杯咖啡醒醒神。"],
+        ["I overslept this morning.","我今早睡过头了。"],
+        ["Make the bed before you go.","走之前把床铺好。"],
+        ["I'm so groggy this morning.","今早我脑子昏昏沉沉的。"],
+      ]},
+      { name:"睡前", en:"Before Sleep", items:[
+        ["I'm exhausted; I'm going to bed.","我累坏了，去睡了。"],
+        ["Set the alarm for tomorrow.","把明天的闹钟定上。"],
+        ["Turn off the light.","把灯关了。"],
+        ["Good night, sleep tight.","晚安，睡个好觉。"],
+        ["I can't fall asleep.","我睡不着。"],
+        ["Stop looking at your phone in bed.","别躺床上看手机了。"],
+        ["It's too hot to sleep.","太热了，睡不着。"],
+        ["Cover yourself up, don't catch a cold.","盖好被子，别着凉。"],
+        ["Let me charge my phone overnight.","我把手机插着充一晚上。"],
+        ["I keep tossing and turning.","我翻来覆去睡不着。"],
+        ["You were snoring all night.","你打了一晚上呼噜。"],
+        ["I had a weird dream.","我做了个奇怪的梦。"],
+      ]},
+      { name:"整理与衣物", en:"Clothes & Tidying", items:[
+        ["Where did I put my socks?","我袜子放哪儿了？"],
+        ["These clothes need to be washed.","这些衣服该洗了。"],
+        ["Fold the laundry and put it away.","把洗好的衣服叠好收起来。"],
+        ["Hang your coat in the closet.","把外套挂衣柜里。"],
+        ["I have nothing to wear.","我没合适的衣服穿。"],
+        ["Can you iron this shirt for me?","能帮我熨下这件衬衫吗？"],
+        ["Let's change the bed sheets.","把床单换一下吧。"],
+        ["Put the dirty clothes in the hamper.","把脏衣服放进脏衣篮。"],
+        ["Your room is a mess; clean it up.","你房间太乱了，收拾收拾。"],
+        ["This doesn't fit anymore.","这个穿不下了。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"盥洗·如厕·身体", en:"Bathroom & Body", color:"#2A9D9A",
+    subs:[
+      { name:"洗漱", en:"Washing Up", items:[
+        ["Go brush your teeth.","去刷牙。"],
+        ["Wash your face.","洗个脸。"],
+        ["Don't forget to floss.","别忘了用牙线。"],
+        ["The towel is on the rack.","毛巾在架子上。"],
+        ["We're out of toothpaste.","牙膏用完了。"],
+        ["Comb your hair.","梳下头发。"],
+        ["Wash your hands with soap.","用肥皂洗手。"],
+        ["Dry your hands.","把手擦干。"],
+        ["Trim your nails.","剪下指甲。"],
+        ["You've got something in your teeth.","你牙缝里有东西。"],
+      ]},
+      { name:"洗澡", en:"Shower & Bath", items:[
+        ["I'm going to take a shower.","我去洗个澡。"],
+        ["The water isn't hot yet.","水还没热。"],
+        ["Can you hand me a towel?","能递我一条毛巾吗？"],
+        ["We're running low on shampoo.","洗发水快用完了。"],
+        ["Don't use up all the hot water.","别把热水用完了。"],
+        ["Wipe the floor; it's wet.","地上湿了，擦一下。"],
+        ["Dry your hair before bed.","睡前把头发吹干。"],
+        ["The drain is clogged with hair.","下水道被头发堵了。"],
+        ["Time for your bath.","该洗澡了。"],
+        ["Scrub behind your ears.","耳朵后面也搓搓。"],
+      ]},
+      { name:"上厕所", en:"Using the Toilet", items:[
+        ["Do you need to use the bathroom?","你要上厕所吗？"],
+        ["I need to pee.","我要尿尿。"],
+        ["I really have to go.","我憋不住了。"],
+        ["I need to poop.","我要拉臭臭。"],
+        ["I'm going number two.","我去大号。"],
+        ["Flush the toilet.","冲一下马桶。"],
+        ["Did you wash your hands?","洗手了吗？"],
+        ["We're out of toilet paper.","卫生纸用完了。"],
+        ["The toilet is clogged.","马桶堵了。"],
+        ["Someone's in the bathroom.","有人在用卫生间。"],
+        ["Knock before you come in.","进来之前先敲门。"],
+        ["Put the toilet seat down.","把马桶圈放下来。"],
+        ["I'm a little constipated.","我有点便秘。"],
+        ["I've got an upset stomach.","我拉肚子/肠胃不舒服。"],
+      ]},
+      { name:"身体小动作", en:"Body Stuff", items:[
+        ["Cover your mouth when you cough.","咳嗽时捂住嘴。"],
+        ["Excuse me, I just burped.","不好意思，我打了个嗝。"],
+        ["I can't stop hiccuping.","我打嗝停不下来。"],
+        ["Did someone fart?","谁放屁了？"],
+        ["Sorry, that was me.","抱歉，是我。"],
+        ["Cover your nose when you sneeze.","打喷嚏捂住鼻子。"],
+        ["Bless you!","（打喷嚏后）保重！"],
+        ["Blow your nose.","擤一下鼻涕。"],
+        ["You've got a runny nose.","你流鼻涕了。"],
+        ["Wipe your nose.","擦擦鼻子。"],
+        ["My stomach is growling.","我肚子咕咕叫了。"],
+        ["I need to stretch; my legs are stiff.","我得伸展一下，腿僵了。"],
+        ["My foot fell asleep.","我脚麻了。"],
+        ["I'm yawning; I'm so sleepy.","我打哈欠了，好困。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"健康·看病", en:"Health & Doctor", color:"#B0524E",
+    subs:[
+      { name:"不舒服", en:"Feeling Unwell", items:[
+        ["I'm not feeling well.","我不太舒服。"],
+        ["I have a headache.","我头疼。"],
+        ["I think I'm coming down with a cold.","我好像要感冒了。"],
+        ["I have a sore throat.","我嗓子疼。"],
+        ["My nose is stuffy.","我鼻子堵了。"],
+        ["I have a fever.","我发烧了。"],
+        ["I feel dizzy.","我头晕。"],
+        ["My stomach hurts.","我肚子疼。"],
+        ["I feel like throwing up.","我想吐。"],
+        ["I'm so tired all the time.","我总是很累。"],
+        ["My back is killing me.","我腰疼死了。"],
+        ["I twisted my ankle.","我崴脚了。"],
+      ]},
+      { name:"照顾与提醒", en:"Care & Reminders", items:[
+        ["Get some rest.","好好休息。"],
+        ["You should see a doctor.","你该去看看医生。"],
+        ["Take your medicine.","把药吃了。"],
+        ["Drink plenty of water.","多喝水。"],
+        ["Take your temperature.","量一下体温。"],
+        ["Don't push yourself too hard.","别太逞强了。"],
+        ["Feel better soon.","早点好起来。"],
+        ["Stay home and rest today.","今天在家好好休息。"],
+        ["Have you eaten anything?","你吃东西了吗？"],
+        ["Let me get you some water.","我给你倒点水。"],
+      ]},
+      { name:"看医生·药店", en:"Doctor & Pharmacy", items:[
+        ["I'd like to make an appointment.","我想预约挂号。"],
+        ["What are your symptoms?","你有什么症状？"],
+        ["It started two days ago.","两天前开始的。"],
+        ["Does it hurt here?","这里疼吗？"],
+        ["I'm allergic to penicillin.","我对青霉素过敏。"],
+        ["How often should I take this?","这个一天吃几次？"],
+        ["Take it after meals.","饭后吃。"],
+        ["Is this available without a prescription?","这个不用处方能买吗？"],
+        ["Do you have something for a cough?","有止咳的药吗？"],
+        ["How long will it take to recover?","大概多久能好？"],
+      ]},
+    ]
+  },
+
+  {
+    name:"和孩子", en:"With the Kids", color:"#D46A6A",
+    subs:[
+      { name:"早晨与穿衣", en:"Morning & Dressing", items:[
+        ["Wake up, sweetie, it's morning.","起床啦，宝贝，天亮了。"],
+        ["Get dressed quickly, we're late.","快穿衣服，要迟到了。"],
+        ["Which shirt do you want to wear?","你想穿哪件上衣？"],
+        ["Put your shoes on.","把鞋穿上。"],
+        ["Let me help you with the buttons.","我帮你扣扣子。"],
+        ["Brush your teeth and wash your face.","刷牙洗脸。"],
+        ["Did you pack your school bag?","书包收拾好了吗？"],
+        ["Hurry up, the bus is coming.","快点，校车要来了。"],
+        ["Don't forget your water bottle.","别忘了水壶。"],
+        ["Wear a jacket; it's cold out.","穿件外套，外面冷。"],
+      ]},
+      { name:"吃饭", en:"Mealtime", items:[
+        ["Sit down and finish your breakfast.","坐下，把早饭吃完。"],
+        ["Eat your vegetables.","把菜吃了。"],
+        ["No snacks before dinner.","饭前不许吃零食。"],
+        ["Use your fork, not your hands.","用叉子，别用手。"],
+        ["Finish what's on your plate.","把碗里的吃完。"],
+        ["Slow down, don't choke.","慢点，别噎着。"],
+        ["Just one more bite.","再吃一口。"],
+        ["Stop playing with your food.","别玩食物了。"],
+        ["Are you full?","吃饱了吗？"],
+        ["Wipe your mouth.","擦擦嘴。"],
+      ]},
+      { name:"学习与作业", en:"Study & Homework", items:[
+        ["Have you finished your homework?","作业写完了吗？"],
+        ["Sit up straight when you write.","写字坐直。"],
+        ["Take your time and check it again.","别急，再检查一遍。"],
+        ["Read this part out loud.","把这一段读出来。"],
+        ["Good job; that's correct.","很好，这个对了。"],
+        ["Try again, you almost had it.","再试一次，就差一点。"],
+        ["Let's go over it one more time.","我们再过一遍。"],
+        ["Put your phone away and focus.","把手机收起来，专心点。"],
+        ["Don't give up so easily.","别这么容易放弃。"],
+        ["I'm proud of you.","我为你骄傲。"],
+      ]},
+      { name:"玩耍", en:"Playing", items:[
+        ["Do you want to play outside?","想出去玩吗？"],
+        ["Be careful, don't run too fast.","小心点，别跑太快。"],
+        ["Share your toys with your sister.","把玩具和妹妹分着玩。"],
+        ["It's your turn now.","现在轮到你了。"],
+        ["Let's clean up the toys together.","我们一起收玩具。"],
+        ["Five more minutes, then we go home.","再玩五分钟就回家。"],
+        ["Don't climb up there, it's dangerous.","别爬那上面，危险。"],
+        ["Hold my hand when we cross the street.","过马路拉着我的手。"],
+        ["Watch your step.","小心脚下。"],
+        ["Say sorry to your friend.","跟小朋友说对不起。"],
+      ]},
+      { name:"情绪与管教", en:"Feelings & Discipline", items:[
+        ["What's wrong? Tell me.","怎么了？跟我说说。"],
+        ["It's okay, don't cry.","没事，别哭。"],
+        ["Calm down and take a deep breath.","冷静，深呼吸。"],
+        ["Use your words, not your hands.","好好说，别动手。"],
+        ["That wasn't nice; say you're sorry.","这样不对，道个歉。"],
+        ["I know you're upset.","我知道你不开心。"],
+        ["Please listen to me.","听我说。"],
+        ["I'm not angry, but we need to talk.","我没生气，但我们得谈谈。"],
+        ["You need to behave.","你得乖一点。"],
+        ["Be patient.","耐心点。"],
+        ["No means no.","说不行就是不行。"],
+        ["I'm counting to three.","我数到三。"],
+      ]},
+      { name:"睡前", en:"Bedtime", items:[
+        ["It's bedtime.","该睡觉了。"],
+        ["Go put on your pajamas.","去换睡衣。"],
+        ["Pick a book and I'll read to you.","选本书，我读给你听。"],
+        ["Did you go to the bathroom?","上过厕所了吗？"],
+        ["One story, then lights out.","讲一个故事就关灯。"],
+        ["Close your eyes and go to sleep.","闭上眼睛睡觉。"],
+        ["No more talking; time to sleep.","不许说话了，睡觉。"],
+        ["Good night, I love you.","晚安，我爱你。"],
+        ["Sweet dreams.","做个好梦。"],
+        ["I'll leave the night light on.","我把小夜灯留着。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"情绪·感受", en:"Feelings", color:"#8E6BB0",
+    subs:[
+      { name:"开心满足", en:"Happy & Glad", items:[
+        ["I'm so happy right now.","我现在好开心。"],
+        ["This made my day.","今天因为这事开心了。"],
+        ["I'm really excited about it.","我对这事很兴奋。"],
+        ["That's such good news.","这真是好消息。"],
+        ["I can't stop smiling.","我笑得停不下来。"],
+        ["I'm proud of myself.","我为自己骄傲。"],
+        ["What a relief.","总算松了口气。"],
+        ["I feel great today.","我今天感觉很好。"],
+        ["I'm grateful for that.","我很感激。"],
+        ["This is exactly what I wanted.","这正是我想要的。"],
+      ]},
+      { name:"难过失落", en:"Sad & Down", items:[
+        ["I'm feeling a bit down.","我有点失落。"],
+        ["I'm so disappointed.","我太失望了。"],
+        ["I don't feel like doing anything.","我什么都不想干。"],
+        ["I just need some time alone.","我需要一个人待会儿。"],
+        ["It's been a rough day.","今天挺糟心的。"],
+        ["I miss them.","我想他们了。"],
+        ["I feel a little lonely.","我有点孤单。"],
+        ["I can't shake this off.","我一直放不下。"],
+        ["I'm trying to stay positive.","我尽量往好处想。"],
+        ["It'll get better.","会好起来的。"],
+      ]},
+      { name:"生气烦躁", en:"Angry & Annoyed", items:[
+        ["I'm really annoyed.","我很烦。"],
+        ["That's so frustrating.","太让人窝火了。"],
+        ["I've had enough.","我受够了。"],
+        ["You're getting on my nerves.","你快把我惹毛了。"],
+        ["Give me a break.","让我喘口气吧。"],
+        ["Stop it, please.","别闹了。"],
+        ["I need to cool down.","我得冷静一下。"],
+        ["Let's not argue.","咱别吵了。"],
+        ["I didn't mean to snap at you.","我不是有意冲你发火。"],
+        ["Let's talk it out.","咱们好好谈谈。"],
+      ]},
+      { name:"紧张担心", en:"Nervous & Worried", items:[
+        ["I'm a bit nervous.","我有点紧张。"],
+        ["I'm worried about it.","我有点担心。"],
+        ["I can't stop thinking about it.","我一直在想这件事。"],
+        ["I hope everything goes okay.","希望一切顺利。"],
+        ["Don't worry, I've got this.","别担心，我能搞定。"],
+        ["Take it easy.","放轻松。"],
+        ["There's nothing to be afraid of.","没什么好怕的。"],
+        ["I'm under a lot of pressure.","我压力很大。"],
+        ["I just need to calm down.","我得冷静下来。"],
+        ["It's going to be fine.","会没事的。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"寒暄·社交", en:"Greetings & Social", color:"#3E8E9C",
+    subs:[
+      { name:"打招呼", en:"Greetings", items:[
+        ["Hi, how's it going?","嗨，最近怎么样？"],
+        ["Long time no see.","好久不见。"],
+        ["How have you been?","你最近过得怎么样？"],
+        ["Good to see you.","见到你真好。"],
+        ["What's new with you?","你最近有什么新鲜事？"],
+        ["Not much, just busy.","没什么，就是挺忙的。"],
+        ["Have a good one.","祝你愉快。"],
+        ["Take care.","保重。"],
+        ["See you around.","回头见。"],
+        ["Catch you later.","回头聊。"],
+      ]},
+      { name:"客套与礼貌", en:"Polite Phrases", items:[
+        ["Thanks so much.","太谢谢你了。"],
+        ["No problem at all.","完全没问题。"],
+        ["You're welcome.","不客气。"],
+        ["I really appreciate it.","我很感激。"],
+        ["After you.","你先请。"],
+        ["Excuse me for a second.","失陪一下。"],
+        ["Sorry to bother you.","不好意思打扰了。"],
+        ["My pleasure.","乐意效劳。"],
+        ["Don't mention it.","别客气。"],
+        ["It's the least I can do.","这是我应该做的。"],
+      ]},
+      { name:"闲聊", en:"Small Talk", items:[
+        ["Did you have a good weekend?","周末过得好吗？"],
+        ["Any plans for the holiday?","假期有什么安排吗？"],
+        ["The weather's been crazy lately.","最近天气真奇怪。"],
+        ["How's the family?","家里人都好吗？"],
+        ["How's work treating you?","工作还顺利吗？"],
+        ["That sounds great.","听起来不错。"],
+        ["Tell me more about it.","再跟我说说。"],
+        ["I know what you mean.","我懂你的意思。"],
+        ["Same here.","我也是。"],
+        ["We should catch up sometime.","咱们有空聚聚。"],
+      ]},
+      { name:"介绍与认识", en:"Introductions", items:[
+        ["Nice to meet you.","很高兴认识你。"],
+        ["This is my friend.","这是我朋友。"],
+        ["What's your name again?","你叫什么来着？"],
+        ["Where are you from?","你是哪里人？"],
+        ["What do you do?","你是做什么的？"],
+        ["How do you two know each other?","你们俩怎么认识的？"],
+        ["I've heard a lot about you.","久仰大名。"],
+        ["Let's keep in touch.","保持联系。"],
+        ["Can I get your number?","能要个你的号码吗？"],
+        ["It was great talking to you.","跟你聊得很开心。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"出门·购物", en:"Out & Shopping", color:"#B07A2E",
+    subs:[
+      { name:"出门准备", en:"Heading Out", items:[
+        ["Are you ready to go?","准备好出门了吗？"],
+        ["Don't forget your keys.","别忘了带钥匙。"],
+        ["Do you have your wallet?","钱包带了吗？"],
+        ["Let's get going.","咱们走吧。"],
+        ["I'll be back in an hour.","我一个小时后回来。"],
+        ["Lock the door on your way out.","出门时把门锁好。"],
+        ["What time should we leave?","咱们几点出发？"],
+        ["Hold on, I forgot something.","等下，我忘拿东西了。"],
+        ["I'm running a little late.","我有点晚了。"],
+        ["Let me grab my coat.","我去拿件外套。"],
+      ]},
+      { name:"买菜", en:"Grocery Shopping", items:[
+        ["What do we need from the store?","咱家要买点啥？"],
+        ["Let's make a shopping list.","列个购物清单吧。"],
+        ["Are these tomatoes fresh?","这西红柿新鲜吗？"],
+        ["How much is this per pound?","这个多少钱一斤？"],
+        ["Can you give me a discount?","能便宜点吗？"],
+        ["I'll take two of these.","这个我要两个。"],
+        ["We're out of eggs at home.","家里鸡蛋没了。"],
+        ["This is past its expiration date.","这个过期了。"],
+        ["Where can I find the rice?","米在哪儿？"],
+        ["Do you have any change?","你有零钱吗？"],
+      ]},
+      { name:"逛街买东西", en:"Shopping for Things", items:[
+        ["I'm just looking, thanks.","我随便看看，谢谢。"],
+        ["Do you have this in a smaller size?","这个有小一号的吗？"],
+        ["Can I try this on?","我能试穿吗？"],
+        ["Where's the fitting room?","试衣间在哪儿？"],
+        ["It's a bit too tight.","有点紧。"],
+        ["This is too expensive for me.","对我来说太贵了。"],
+        ["Is this on sale?","这个在打折吗？"],
+        ["I'll think about it.","我再考虑一下。"],
+        ["Can I return this if it doesn't fit?","不合适能退吗？"],
+        ["Do you take cards?","你们收卡吗？"],
+      ]},
+      { name:"结账付款", en:"Checking Out", items:[
+        ["How much is it altogether?","一共多少钱？"],
+        ["Can I pay by phone?","能手机支付吗？"],
+        ["Do you need a bag?","需要袋子吗？"],
+        ["Could I have the receipt?","能给我小票吗？"],
+        ["I think you gave me the wrong change.","你好像找错钱了。"],
+        ["Is there a service charge?","有服务费吗？"],
+        ["Can I get a refund?","能退款吗？"],
+        ["The line is really long.","队排得好长。"],
+        ["Do you have a loyalty card?","有会员卡吗？"],
+        ["Keep the receipt just in case.","小票留着以防万一。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"交通·出行", en:"Getting Around", color:"#4E79A8",
+    subs:[
+      { name:"问路与方向", en:"Directions", items:[
+        ["Excuse me, how do I get to the station?","请问车站怎么走？"],
+        ["Is it far from here?","离这儿远吗？"],
+        ["Go straight and turn left.","直走然后左转。"],
+        ["It's just around the corner.","就在拐角处。"],
+        ["I think I'm lost.","我好像迷路了。"],
+        ["Can you show me on the map?","能在地图上指给我看吗？"],
+        ["How long does it take on foot?","走路要多久？"],
+        ["Is it within walking distance?","走路能到吗？"],
+        ["Which way is north?","哪边是北？"],
+        ["You're going the wrong way.","你走反了。"],
+      ]},
+      { name:"打车", en:"Taxi & Ride", items:[
+        ["Can you take me to the airport?","能送我去机场吗？"],
+        ["How much will it cost?","大概多少钱？"],
+        ["Please stop here.","在这儿停一下。"],
+        ["Can you wait a minute?","能等我一下吗？"],
+        ["I'm in a bit of a hurry.","我有点赶时间。"],
+        ["Could you slow down a little?","能开慢点吗？"],
+        ["Just drop me off at the corner.","在路口放我下来就行。"],
+        ["The traffic is terrible today.","今天堵得厉害。"],
+        ["Do you take mobile payment?","能手机付款吗？"],
+        ["Keep the change.","不用找了。"],
+      ]},
+      { name:"公交地铁", en:"Bus & Subway", items:[
+        ["Which bus goes downtown?","哪路车去市区？"],
+        ["Does this train stop at the museum?","这趟车在博物馆停吗？"],
+        ["How many stops is it?","还有几站？"],
+        ["Is this seat taken?","这个座位有人吗？"],
+        ["Excuse me, this is my stop.","不好意思，我到站了。"],
+        ["Where do I transfer?","在哪儿换乘？"],
+        ["The next train is in five minutes.","下一班车还有五分钟。"],
+        ["Tap your card here.","在这儿刷卡。"],
+        ["Mind the gap.","小心站台间隙。"],
+        ["Hold on to the handrail.","抓好扶手。"],
+      ]},
+      { name:"开车", en:"Driving", items:[
+        ["Buckle up.","系好安全带。"],
+        ["Where can I park?","哪儿能停车？"],
+        ["The light just turned red.","红灯刚亮。"],
+        ["Watch out for that car.","小心那辆车。"],
+        ["We're stuck in traffic.","我们堵车了。"],
+        ["Can you turn on the GPS?","能开下导航吗？"],
+        ["We need to fill up the tank.","得加油了。"],
+        ["Slow down, there's a speed camera.","慢点，有测速。"],
+        ["Take the next exit.","走下一个出口。"],
+        ["We're almost there.","快到了。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"手机·网络", en:"Phone & Internet", color:"#6B8E23",
+    subs:[
+      { name:"打电话发消息", en:"Calls & Texts", items:[
+        ["Can you hear me?","能听见我说话吗？"],
+        ["You're breaking up.","你那边断断续续的。"],
+        ["Let me call you back.","我等下回你电话。"],
+        ["Hang on, someone's at the door.","等一下，有人敲门。"],
+        ["I'll text you the address.","我把地址发给你。"],
+        ["Did you get my message?","你收到我消息了吗？"],
+        ["Sorry, I missed your call.","抱歉，我没接到你电话。"],
+        ["Let me put you on speaker.","我开下免提。"],
+        ["The line is busy.","占线。"],
+        ["I'll send it over right now.","我现在就发过去。"],
+      ]},
+      { name:"手机问题", en:"Phone Problems", items:[
+        ["My phone is dead.","我手机没电了。"],
+        ["My battery is almost out.","我快没电了。"],
+        ["The screen froze.","屏幕卡住了。"],
+        ["I need to restart it.","我得重启一下。"],
+        ["My phone keeps lagging.","我手机一直卡。"],
+        ["I'm running out of storage.","我内存快满了。"],
+        ["The app keeps crashing.","这个 App 老闪退。"],
+        ["I can't log in.","我登不上去。"],
+        ["I forgot my password.","我忘了密码。"],
+        ["Can you scan this code?","能扫一下这个码吗？"],
+      ]},
+      { name:"网络", en:"Internet & Wi-Fi", items:[
+        ["What's the Wi-Fi password?","Wi-Fi 密码是多少？"],
+        ["The connection is really slow.","网速好慢。"],
+        ["The Wi-Fi keeps dropping.","Wi-Fi 老掉线。"],
+        ["Try turning the router off and on.","试试把路由器重启。"],
+        ["I have no signal here.","我这儿没信号。"],
+        ["The page won't load.","页面打不开。"],
+        ["Are you connected?","你连上了吗？"],
+        ["I'm using mobile data.","我在用流量。"],
+        ["My data is almost used up.","我流量快用完了。"],
+        ["Let me look it up online.","我上网查一下。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"工作·上班", en:"Work", color:"#556B7A",
+    subs:[
+      { name:"日常工作", en:"On the Job", items:[
+        ["I have a meeting at ten.","我十点有个会。"],
+        ["Let's get started.","咱们开始吧。"],
+        ["I'm a bit swamped today.","我今天有点忙不过来。"],
+        ["Can you send me that file?","能把那个文件发我吗？"],
+        ["I'll get back to you on that.","这个我回头答复你。"],
+        ["Let's circle back later.","咱们晚点再聊这个。"],
+        ["I'm on a deadline.","我赶着交东西。"],
+        ["Let me double-check.","我再核对一下。"],
+        ["That works for me.","我没问题。"],
+        ["I'll take care of it.","我来处理。"],
+      ]},
+      { name:"沟通协作", en:"Communication", items:[
+        ["Could you clarify that?","你能说清楚点吗？"],
+        ["I'm not sure I follow.","我没太跟上。"],
+        ["Let's split the work.","咱们分一下工。"],
+        ["Can we push the meeting back?","会能往后挪挪吗？"],
+        ["I'll loop you in.","我会让你了解进展。"],
+        ["Good point.","说得有道理。"],
+        ["Let me know if you need anything.","有需要随时找我。"],
+        ["I'll keep you posted.","有进展我告诉你。"],
+        ["Let's touch base tomorrow.","明天再对一下。"],
+        ["Thanks for the heads-up.","谢谢提醒。"],
+      ]},
+      { name:"请假与时间", en:"Time Off", items:[
+        ["I'd like to take a day off.","我想请一天假。"],
+        ["I'm calling in sick today.","我今天请病假。"],
+        ["I'll be working from home.","我今天在家办公。"],
+        ["I'm running late for work.","我上班要迟到了。"],
+        ["Let's wrap up for today.","今天就到这儿吧。"],
+        ["I'm off the clock now.","我已经下班了。"],
+        ["See you on Monday.","周一见。"],
+        ["Have a good weekend.","周末愉快。"],
+        ["I'm finally off work.","我终于下班了。"],
+        ["I need a vacation.","我需要休个假。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"时间·天气", en:"Time & Weather", color:"#2F8FA8",
+    subs:[
+      { name:"时间安排", en:"Time & Plans", items:[
+        ["What time is it?","几点了？"],
+        ["We're running out of time.","时间不够了。"],
+        ["I'll be there in ten minutes.","我十分钟后到。"],
+        ["Can we reschedule?","能改时间吗？"],
+        ["Are you free tomorrow?","你明天有空吗？"],
+        ["Let's meet at noon.","咱们中午见。"],
+        ["I'm free after five.","我五点以后有空。"],
+        ["It's getting late.","不早了。"],
+        ["Take your time.","慢慢来，别急。"],
+        ["Let's not be late.","咱们别迟到。"],
+      ]},
+      { name:"天气", en:"Weather", items:[
+        ["It's beautiful out today.","今天天气真好。"],
+        ["It looks like it's going to rain.","看样子要下雨了。"],
+        ["Bring an umbrella just in case.","带把伞以防万一。"],
+        ["It's freezing today.","今天冻死了。"],
+        ["It's so hot and humid.","又热又闷。"],
+        ["The wind is really strong.","风好大。"],
+        ["It's pouring outside.","外面下大雨。"],
+        ["Dress warmly.","穿暖和点。"],
+        ["What's the forecast for tomorrow?","明天天气预报怎么说？"],
+        ["The sun is finally out.","太阳终于出来了。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"钱·付款", en:"Money", color:"#9A7B2E",
+    subs:[
+      { name:"花钱与价格", en:"Spending & Prices", items:[
+        ["That's a good deal.","挺划算的。"],
+        ["It's a rip-off.","太坑了。"],
+        ["I'm on a tight budget.","我手头比较紧。"],
+        ["Can we split it?","咱们分摊吧？"],
+        ["I'll pay you back later.","我回头还你。"],
+        ["It's my turn to pay.","这次该我付了。"],
+        ["I can't afford that right now.","我现在买不起。"],
+        ["Let's not overspend.","咱别花太多。"],
+        ["Is it worth the money?","值这个价吗？"],
+        ["I'm saving up for it.","我在攒钱买这个。"],
+      ]},
+      { name:"借钱与账单", en:"Bills & Lending", items:[
+        ["Can you lend me some cash?","能借我点现金吗？"],
+        ["How much do I owe you?","我欠你多少？"],
+        ["Let's settle up.","咱把账结了吧。"],
+        ["The bill is due next week.","账单下周到期。"],
+        ["Did you pay the electricity bill?","电费交了吗？"],
+        ["We need to cut back on spending.","咱得省着点花。"],
+        ["I'll transfer it to you.","我转给你。"],
+        ["Send me your account.","把你账号发我。"],
+        ["I'll cover it this time.","这次我来付。"],
+        ["Money is tight this month.","这个月手头紧。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"家务·维修", en:"Chores & Fixing", color:"#7A8B3C",
+    subs:[
+      { name:"洗衣晾晒", en:"Laundry", items:[
+        ["I need to do the laundry.","我得洗衣服了。"],
+        ["Don't mix whites with colors.","别把白的和彩色的混着洗。"],
+        ["Hang the clothes out to dry.","把衣服晾出去。"],
+        ["The clothes aren't dry yet.","衣服还没干。"],
+        ["Bring the laundry in before it rains.","下雨前把衣服收进来。"],
+        ["This shirt shrank in the wash.","这件衣服洗缩水了。"],
+        ["Add some detergent.","加点洗衣液。"],
+        ["Take it out of the dryer.","从烘干机里拿出来。"],
+        ["Sort the socks.","把袜子配对。"],
+        ["These need to be hand-washed.","这些得手洗。"],
+      ]},
+      { name:"打扫卫生", en:"Cleaning", items:[
+        ["Let's give the place a good clean.","咱把家好好打扫一遍。"],
+        ["Mop the floor.","拖一下地。"],
+        ["Dust the shelves.","擦下架子上的灰。"],
+        ["Take out the recycling.","把可回收垃圾拿出去。"],
+        ["Wipe down the windows.","把窗户擦一下。"],
+        ["The bin is full.","垃圾桶满了。"],
+        ["Clean up after yourself.","自己弄乱的自己收拾。"],
+        ["Put the broom back.","把扫把放回去。"],
+        ["The bathroom needs scrubbing.","厕所得刷一刷。"],
+        ["I'll handle the kitchen, you take the bedroom.","我弄厨房，你收拾卧室。"],
+      ]},
+      { name:"修理与故障", en:"Repairs", items:[
+        ["The faucet is leaking.","水龙头漏水。"],
+        ["The drain is clogged.","下水道堵了。"],
+        ["The toilet won't flush.","马桶冲不下去。"],
+        ["A light isn't working.","有个灯不亮了。"],
+        ["The door hinge is squeaky.","门轴吱呀响。"],
+        ["I'll call a repairman.","我叫个修理工。"],
+        ["Do we have a screwdriver?","咱有螺丝刀吗？"],
+        ["It's broken; we need a new one.","坏了，得换个新的。"],
+        ["Can you tighten this screw?","能把这颗螺丝拧紧吗？"],
+        ["The battery needs replacing.","电池该换了。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"夫妻·家人", en:"Couple & Family", color:"#B5638A",
+    subs:[
+      { name:"日常关心", en:"Everyday Care", items:[
+        ["How was your day?","今天过得怎么样？"],
+        ["You look tired; get some rest.","你看着挺累的，歇会儿吧。"],
+        ["Have you eaten yet?","吃饭了吗？"],
+        ["Text me when you get there.","到了给我发消息。"],
+        ["Drive safe.","开车小心。"],
+        ["I'll wait up for you.","我等你回来。"],
+        ["Don't work too hard.","别太累着自己。"],
+        ["Let me know if you need anything.","有事跟我说。"],
+        ["I made your favorite.","我做了你爱吃的。"],
+        ["Thanks for everything.","谢谢你做的一切。"],
+      ]},
+      { name:"商量与分工", en:"Sorting Things Out", items:[
+        ["Whose turn is it to cook?","今天轮到谁做饭？"],
+        ["Can you pick up the kids today?","今天你能去接孩子吗？"],
+        ["Let's split the chores.","咱把家务分一下。"],
+        ["We need to talk about this.","咱们得聊聊这个事。"],
+        ["What do you think we should do?","你觉得咱该怎么办？"],
+        ["Let's decide together.","咱们一起决定。"],
+        ["I'll take care of it this time.","这次我来弄。"],
+        ["Can you help me with this?","能帮我一下吗？"],
+        ["Let's not make a big deal out of it.","别小题大做了。"],
+        ["We'll figure it out.","咱们会想到办法的。"],
+      ]},
+      { name:"亲昵与道歉", en:"Affection & Apology", items:[
+        ["I love you.","我爱你。"],
+        ["I missed you today.","今天想你了。"],
+        ["I'm sorry, I was wrong.","对不起，是我不对。"],
+        ["Let's not go to bed angry.","别带着气睡觉。"],
+        ["I didn't mean it that way.","我不是那个意思。"],
+        ["I appreciate you.","我很珍惜你。"],
+        ["You mean a lot to me.","你对我很重要。"],
+        ["Let's start over.","咱们重新开始。"],
+        ["I'm here for you.","有我在。"],
+        ["Give me a hug.","抱一个。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"麻烦·应急", en:"Problems & Help", color:"#A8533A",
+    subs:[
+      { name:"求助与提醒", en:"Asking for Help", items:[
+        ["Can you give me a hand?","能搭把手吗？"],
+        ["I need some help here.","我这儿需要帮忙。"],
+        ["Watch out!","小心！"],
+        ["Be careful with that.","拿那个小心点。"],
+        ["Hold this for me.","帮我拿一下。"],
+        ["Could you do me a favor?","能帮我个忙吗？"],
+        ["I can't reach it.","我够不着。"],
+        ["It's too heavy for me.","对我来说太重了。"],
+        ["Let me help you with that.","我来帮你。"],
+        ["Don't worry, I've got it.","别担心，我来。"],
+      ]},
+      { name:"丢东西出状况", en:"Lost & Trouble", items:[
+        ["I can't find my keys.","我找不到钥匙了。"],
+        ["I think I left it at home.","我好像落家里了。"],
+        ["I lost my wallet.","我钱包丢了。"],
+        ["Have you seen my phone?","你看见我手机了吗？"],
+        ["We're locked out.","我们被锁门外了。"],
+        ["The power went out.","停电了。"],
+        ["There's a leak in the ceiling.","天花板漏水了。"],
+        ["I spilled water everywhere.","我把水洒得到处都是。"],
+        ["I dropped it and it broke.","我把它摔坏了。"],
+        ["Don't panic.","别慌。"],
+      ]},
+      { name:"紧急情况", en:"Emergencies", items:[
+        ["Call an ambulance!","快叫救护车！"],
+        ["This is an emergency.","这是紧急情况。"],
+        ["Someone got hurt.","有人受伤了。"],
+        ["Is everyone okay?","大家都没事吧？"],
+        ["Stay calm.","保持冷静。"],
+        ["Get out of the way!","让开！"],
+        ["I need a doctor.","我需要医生。"],
+        ["Where's the nearest hospital?","最近的医院在哪儿？"],
+        ["Call the police.","报警。"],
+        ["Help, please!","救命，帮帮我！"],
+      ]},
+    ]
+  },
+
+  {
+    name:"宠物", en:"Pets", color:"#6E8B5A",
+    subs:[
+      { name:"照顾宠物", en:"Caring for Pets", items:[
+        ["Did you feed the dog?","喂狗了吗？"],
+        ["The cat needs fresh water.","猫要换水了。"],
+        ["Time to walk the dog.","该遛狗了。"],
+        ["Clean out the litter box.","清一下猫砂盆。"],
+        ["Don't feed it from the table.","别在桌上喂它。"],
+        ["He's begging for food again.","它又在讨吃的了。"],
+        ["She needs to go to the vet.","它得去看兽医了。"],
+        ["Brush the cat's fur.","给猫梳梳毛。"],
+        ["Put the dog on a leash.","给狗拴上牵引绳。"],
+        ["Pick up after your dog.","收拾一下狗的便便。"],
+      ]},
+      { name:"和宠物互动", en:"Playing with Pets", items:[
+        ["Good boy!","乖！真棒！"],
+        ["Sit. Stay.","坐下。别动。"],
+        ["Drop it.","松口，放下。"],
+        ["No biting.","不许咬。"],
+        ["Come here, buddy.","过来，小家伙。"],
+        ["Stop barking.","别叫了。"],
+        ["He's so cuddly.","它好黏人。"],
+        ["She's scratching the couch again.","它又在抓沙发了。"],
+        ["He chewed up my shoe.","它把我鞋咬烂了。"],
+        ["Let's play fetch.","咱们玩捡球吧。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"带娃细节", en:"Baby Care", color:"#C77FA0",
+    subs:[
+      { name:"喂养", en:"Feeding", items:[
+        ["Are you hungry, baby?","宝宝饿了吗？"],
+        ["Time for your bottle.","该喝奶了。"],
+        ["Open wide.","张大嘴。"],
+        ["One more spoonful.","再来一勺。"],
+        ["Careful, it's a little hot.","小心，有点烫。"],
+        ["Don't spit it out.","别吐出来。"],
+        ["Let me wipe your face.","我给你擦擦脸。"],
+        ["You made a mess.","弄得到处都是。"],
+        ["Drink some water.","喝点水。"],
+        ["All done? Good job.","吃完啦？真棒。"],
+        ["Let's burp you.","拍嗝啦。"],
+        ["No more, you're full.","不吃了，你饱了。"],
+      ]},
+      { name:"换洗哄睡", en:"Diaper & Soothing", items:[
+        ["Let me change your diaper.","我给你换尿布。"],
+        ["You're all wet.","你尿湿了。"],
+        ["Let's get you cleaned up.","给你弄干净。"],
+        ["Time for a bath.","该洗澡啦。"],
+        ["Don't cry, I'm here.","别哭，妈妈/爸爸在。"],
+        ["Shh, it's okay.","嘘，没事的。"],
+        ["Let me rock you to sleep.","我哄你睡觉。"],
+        ["Close your little eyes.","闭上小眼睛。"],
+        ["Are you sleepy?","困了吗？"],
+        ["Here's your blanket.","给你小毯子。"],
+        ["I'll sing you a lullaby.","我给你唱摇篮曲。"],
+        ["Sweet dreams, little one.","做个好梦，小宝贝。"],
+      ]},
+      { name:"安全与陪伴", en:"Safety & Together", items:[
+        ["Don't put that in your mouth.","别往嘴里放。"],
+        ["That's not for playing.","那个不能玩。"],
+        ["Hold on tight.","抓紧了。"],
+        ["I've got you.","我抱着你呢。"],
+        ["Don't touch, it's hot.","别碰，烫。"],
+        ["Stay where I can see you.","待在我看得见的地方。"],
+        ["Let's hold hands.","拉着手。"],
+        ["Slow down, you'll fall.","慢点，会摔倒。"],
+        ["Look at the camera and smile.","看镜头笑一个。"],
+        ["Wave bye-bye.","挥手再见。"],
+        ["Give me a kiss.","亲一个。"],
+        ["I love you so much.","我好爱你。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"学校·家长", en:"School & Parents", color:"#4F86C6",
+    subs:[
+      { name:"上学放学", en:"To & From School", items:[
+        ["Time to leave for school.","该去上学了。"],
+        ["Did you bring your homework?","作业带了吗？"],
+        ["Don't forget your lunch.","别忘了带午饭。"],
+        ["Listen to your teacher.","听老师的话。"],
+        ["Be nice to your classmates.","跟同学好好相处。"],
+        ["How was school today?","今天在学校怎么样？"],
+        ["What did you learn today?","今天学了什么？"],
+        ["Did anything fun happen?","有什么好玩的事吗？"],
+        ["I'll pick you up at four.","我四点来接你。"],
+        ["Wait for me at the gate.","在校门口等我。"],
+        ["Did you make any friends?","交到朋友了吗？"],
+        ["Hang up your backpack.","把书包挂好。"],
+      ]},
+      { name:"和老师沟通", en:"Talking to Teachers", items:[
+        ["How is she doing in class?","她上课表现怎么样？"],
+        ["Is there anything we should work on?","有什么需要在家加强的吗？"],
+        ["He's been struggling with math.","他数学有点吃力。"],
+        ["Thank you for your patience.","谢谢您的耐心。"],
+        ["We'll practice more at home.","我们在家会多练。"],
+        ["Could you give us some advice?","能给点建议吗？"],
+        ["When is the next exam?","下次考试什么时候？"],
+        ["I'll make sure he finishes it.","我会督促他完成。"],
+        ["Please let me know if anything comes up.","有情况请随时告诉我。"],
+        ["How can I support her learning?","我怎么帮她学习？"],
+      ]},
+      { name:"在家辅导", en:"Help at Home", items:[
+        ["Let's review today's lesson.","咱们复习一下今天的内容。"],
+        ["Read it one more time.","再读一遍。"],
+        ["Sound it out.","拼出来读。"],
+        ["What does this word mean?","这个词什么意思？"],
+        ["Try to figure it out yourself.","自己先想想。"],
+        ["Don't rush; think it through.","别急，想清楚。"],
+        ["You got it right this time.","这次对了。"],
+        ["Let's take a short break.","休息一下。"],
+        ["Practice makes perfect.","熟能生巧。"],
+        ["A little every day adds up.","每天一点点就积累起来了。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"运动·锻炼", en:"Exercise", color:"#3FA796",
+    subs:[
+      { name:"锻炼", en:"Working Out", items:[
+        ["Let's go for a run.","咱去跑步吧。"],
+        ["I need to get some exercise.","我得运动运动。"],
+        ["Warm up first.","先热身。"],
+        ["Don't overdo it.","别太拼了。"],
+        ["My muscles are sore.","我肌肉酸。"],
+        ["I'm out of breath.","我喘不上气了。"],
+        ["Let's stretch before we stop.","结束前拉伸一下。"],
+        ["Keep up the good work.","继续保持。"],
+        ["I'm trying to stay in shape.","我想保持身材。"],
+        ["Ten more push-ups.","再做十个俯卧撑。"],
+        ["Stay hydrated during your workout.","锻炼时多喝水。"],
+        ["Take it slow at first.","刚开始悠着点。"],
+      ]},
+      { name:"户外活动", en:"Outdoors", items:[
+        ["Let's go for a walk.","出去散个步吧。"],
+        ["The fresh air feels nice.","新鲜空气真舒服。"],
+        ["Let's take a different route today.","今天走条别的路。"],
+        ["Watch your step on the trail.","小路上小心脚下。"],
+        ["Let's sit on that bench.","咱坐那个长椅吧。"],
+        ["The view is amazing.","风景太美了。"],
+        ["Let's not stay out too long.","别在外面待太久。"],
+        ["Put on some sunscreen.","抹点防晒。"],
+        ["Bring some water with you.","带点水。"],
+        ["Let's head back before dark.","天黑前回去吧。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"旅行·住宿", en:"Travel & Hotel", color:"#B5854B",
+    subs:[
+      { name:"机场车站", en:"Airport & Station", items:[
+        ["Where do I check in?","在哪儿办理登机？"],
+        ["How many bags can I bring?","能带几件行李？"],
+        ["My flight got delayed.","我的航班延误了。"],
+        ["Which gate is it?","在几号登机口？"],
+        ["Is this the line for security?","这是安检的队吗？"],
+        ["I need to print my ticket.","我得打印一下票。"],
+        ["What time does boarding start?","几点开始登机？"],
+        ["Where's the baggage claim?","取行李在哪儿？"],
+        ["I think I missed my train.","我好像错过火车了。"],
+        ["Can I change my ticket?","能改签吗？"],
+      ]},
+      { name:"酒店", en:"At the Hotel", items:[
+        ["I have a reservation.","我有预订。"],
+        ["What time is check-out?","几点退房？"],
+        ["Can I get a wake-up call?","能叫醒服务吗？"],
+        ["Is breakfast included?","含早餐吗？"],
+        ["The air conditioning isn't working.","空调坏了。"],
+        ["Could I get extra towels?","能多给点毛巾吗？"],
+        ["The room next door is very loud.","隔壁房间好吵。"],
+        ["Can I leave my luggage here?","能寄存行李吗？"],
+        ["What's the Wi-Fi password?","Wi-Fi 密码是多少？"],
+        ["Is there a place to eat nearby?","附近有吃饭的地方吗？"],
+      ]},
+      { name:"游玩", en:"Sightseeing", items:[
+        ["What's worth seeing around here?","这附近有什么值得看的？"],
+        ["How much is a ticket?","门票多少钱？"],
+        ["What time does it open?","几点开门？"],
+        ["Can you take a photo for us?","能帮我们拍张照吗？"],
+        ["Let's grab a map.","拿张地图吧。"],
+        ["My feet are killing me.","我脚疼死了。"],
+        ["Let's take a break here.","在这儿歇会儿。"],
+        ["Is there a restroom nearby?","附近有洗手间吗？"],
+        ["This place is packed.","这儿人好多。"],
+        ["Let's come back another time.","咱改天再来吧。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"办事·服务", en:"Errands & Services", color:"#7E7BB5",
+    subs:[
+      { name:"银行邮局", en:"Bank & Post", items:[
+        ["I'd like to open an account.","我想开个户。"],
+        ["Where do I sign?","在哪儿签字？"],
+        ["I want to withdraw some cash.","我想取点现金。"],
+        ["My card got declined.","我的卡刷不了。"],
+        ["I'd like to send this package.","我想寄这个包裹。"],
+        ["How long will it take to arrive?","大概多久能到？"],
+        ["Is there a fee for that?","这个要收费吗？"],
+        ["Can I get a receipt?","能给张回执吗？"],
+        ["I need to fill out a form.","我得填张表。"],
+        ["Take a number and wait.","取号等候。"],
+      ]},
+      { name:"理发美容", en:"Haircut & Salon", items:[
+        ["I'd like a haircut.","我想剪头发。"],
+        ["Just a trim, please.","稍微修一下就行。"],
+        ["Not too short.","别剪太短。"],
+        ["Can you take a bit off the sides?","两边能剪短点吗？"],
+        ["I want to keep the length.","长度我想保留。"],
+        ["Same as last time.","跟上次一样。"],
+        ["Could you style it a little?","能稍微弄个造型吗？"],
+        ["That looks great, thank you.","挺好的，谢谢。"],
+        ["How long will it take?","大概要多久？"],
+        ["Do I need an appointment?","需要预约吗？"],
+      ]},
+      { name:"预约与维修", en:"Appointments & Repairs", items:[
+        ["I'd like to book an appointment.","我想预约。"],
+        ["What times are available?","有哪些时间？"],
+        ["Can you come take a look?","能过来看看吗？"],
+        ["How much do you charge?","怎么收费？"],
+        ["When can you fix it?","什么时候能修好？"],
+        ["Is it under warranty?","在保修期内吗？"],
+        ["Can you give me an estimate?","能报个价吗？"],
+        ["I need to cancel my appointment.","我要取消预约。"],
+        ["Can we reschedule for tomorrow?","能改到明天吗？"],
+        ["Thanks for coming on short notice.","谢谢你这么快赶来。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"鼓励·安慰", en:"Encourage & Comfort", color:"#D08A4E",
+    subs:[
+      { name:"鼓励", en:"Encouraging", items:[
+        ["You can do it.","你能行的。"],
+        ["Don't give up.","别放弃。"],
+        ["I believe in you.","我相信你。"],
+        ["Keep trying.","继续努力。"],
+        ["You're almost there.","你快成功了。"],
+        ["One step at a time.","一步一步来。"],
+        ["You've got this.","你没问题的。"],
+        ["Just do your best.","尽力就好。"],
+        ["Mistakes are how we learn.","犯错才能进步。"],
+        ["I'm rooting for you.","我支持你。"],
+      ]},
+      { name:"安慰", en:"Comforting", items:[
+        ["It's not your fault.","这不怪你。"],
+        ["Everything will be okay.","一切都会好的。"],
+        ["I'm here for you.","有我在。"],
+        ["Take all the time you need.","你慢慢来。"],
+        ["It's okay to feel sad.","难过没关系。"],
+        ["You're not alone.","你不是一个人。"],
+        ["Let it out.","哭出来吧。"],
+        ["Tomorrow is a new day.","明天又是新的一天。"],
+        ["Don't be too hard on yourself.","别太苛责自己。"],
+        ["I understand how you feel.","我懂你的感受。"],
+      ]},
+      { name:"夸奖", en:"Praise", items:[
+        ["Well done!","干得好！"],
+        ["I'm so proud of you.","我真为你骄傲。"],
+        ["That was impressive.","太厉害了。"],
+        ["You did a great job.","你做得很棒。"],
+        ["You're a natural.","你真有天赋。"],
+        ["Nice work.","干得漂亮。"],
+        ["You've improved so much.","你进步好大。"],
+        ["Keep it up.","继续保持。"],
+        ["That's exactly right.","完全正确。"],
+        ["You make it look easy.","你做起来真轻松。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"抱怨·闲话", en:"Venting & Chat", color:"#8C8C8C",
+    subs:[
+      { name:"抱怨吐槽", en:"Venting", items:[
+        ["I'm so done with this.","我真是受够了。"],
+        ["What a waste of time.","太浪费时间了。"],
+        ["This is driving me crazy.","这快把我逼疯了。"],
+        ["I can't deal with this right now.","我现在没法处理这个。"],
+        ["Why does this always happen to me?","怎么老是我倒霉？"],
+        ["It's always something.","总有这事那事的。"],
+        ["I just want a break.","我就想歇一歇。"],
+        ["That's so unfair.","太不公平了。"],
+        ["I'm at my limit.","我到极限了。"],
+        ["Let me just vent for a sec.","让我吐槽一下。"],
+      ]},
+      { name:"闲聊家常", en:"Chit-chat", items:[
+        ["You won't believe what happened.","你绝对想不到发生了啥。"],
+        ["Did you hear about it?","你听说了吗？"],
+        ["By the way, guess what.","对了，你猜怎么着。"],
+        ["It's a long story.","说来话长。"],
+        ["Anyway, where were we?","对了，咱说到哪了？"],
+        ["That reminds me of something.","这让我想起件事。"],
+        ["To be honest, I'm not sure.","说实话我也不确定。"],
+        ["It is what it is.","就这样吧，没办法。"],
+        ["Let's change the subject.","换个话题吧。"],
+        ["We'll see how it goes.","走着瞧吧。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"兴趣·娱乐", en:"Hobbies & Fun", color:"#5E9E6E",
+    subs:[
+      { name:"爱好", en:"Hobbies", items:[
+        ["What do you do for fun?","你平时有什么爱好？"],
+        ["I'm really into photography.","我特别喜欢摄影。"],
+        ["I've taken up cooking lately.","我最近迷上做饭了。"],
+        ["I want to learn to play the guitar.","我想学吉他。"],
+        ["I read whenever I have time.","一有空我就看书。"],
+        ["Gardening is so relaxing.","养花种菜很解压。"],
+        ["Let's try something new.","咱试点新东西吧。"],
+        ["I could do this all day.","这个我能玩一整天。"],
+        ["You should give it a try.","你也该试试。"],
+        ["It's a great way to unwind.","这是放松的好办法。"],
+      ]},
+      { name:"看剧听歌", en:"Shows & Music", items:[
+        ["What are you watching?","你在看什么？"],
+        ["This show is so good.","这剧太好看了。"],
+        ["No spoilers, please.","别剧透。"],
+        ["Let's binge-watch it.","咱们一口气追完吧。"],
+        ["Turn up the music.","音乐开大声点。"],
+        ["This song is stuck in my head.","这歌我一直在脑子里循环。"],
+        ["I love this band.","我超喜欢这个乐队。"],
+        ["Can you recommend something?","能推荐点什么吗？"],
+        ["I'm not really into that genre.","我不太喜欢这类。"],
+        ["Let's watch it again sometime.","咱改天再看一遍。"],
+      ]},
+      { name:"周末安排", en:"Weekend Plans", items:[
+        ["What should we do this weekend?","这周末干点啥？"],
+        ["Let's just stay in and relax.","咱就在家好好歇着吧。"],
+        ["Want to go out for a bit?","想出去转转吗？"],
+        ["Let's invite some friends over.","叫几个朋友过来吧。"],
+        ["I just want to sleep in.","我就想睡个懒觉。"],
+        ["Let's plan something fun.","咱安排点好玩的。"],
+        ["The weekend went by so fast.","周末过得真快。"],
+        ["I need a relaxing weekend.","我需要个轻松的周末。"],
+        ["Let's not make any plans.","咱啥也不安排。"],
+        ["Let's make the most of it.","好好享受吧。"],
+      ]},
+    ]
+  },
+
+  {
+    name:"口头禅·应答", en:"Handy Phrases", color:"#777E8C",
+    subs:[
+      { name:"应答附和", en:"Reactions", items:[
+        ["Exactly.","正是。"],
+        ["Makes sense.","有道理。"],
+        ["No way!","不会吧！"],
+        ["You're kidding.","你逗我吧。"],
+        ["Fair enough.","行吧，说得过去。"],
+        ["I guess so.","大概是吧。"],
+        ["Sounds good to me.","我觉得可以。"],
+        ["Either way works.","哪样都行。"],
+        ["Up to you.","你定。"],
+        ["Whatever you say.","听你的。"],
+        ["Good for you.","真替你高兴。"],
+        ["That's a shame.","真可惜。"],
+      ]},
+      { name:"接话过渡", en:"Fillers & Transitions", items:[
+        ["Let me think.","让我想想。"],
+        ["Hold on a second.","稍等一下。"],
+        ["How do I put this?","怎么说呢。"],
+        ["The thing is...","问题是……"],
+        ["To be fair...","公平地说……"],
+        ["At the end of the day...","说到底……"],
+        ["Long story short...","长话短说……"],
+        ["Speaking of which...","说到这个……"],
+        ["Now that you mention it...","你这么一说……"],
+        ["Anyway, moving on.","好了，继续。"],
+        ["Where was I?","我说到哪了？"],
+        ["You know what I mean.","你懂我意思。"],
+      ]},
+      { name:"万能短句", en:"One-liners", items:[
+        ["No worries.","没事儿。"],
+        ["It's all good.","都挺好。"],
+        ["Just in case.","以防万一。"],
+        ["Better safe than sorry.","小心驶得万年船。"],
+        ["Easier said than done.","说起来容易做起来难。"],
+        ["Let's play it by ear.","到时候看吧。"],
+        ["It depends.","看情况。"],
+        ["Suit yourself.","随你便。"],
+        ["No big deal.","没什么大不了。"],
+        ["Take your time.","不着急，慢慢来。"],
+        ["Let's call it a day.","今天就到这儿。"],
+        ["So far so good.","目前还不错。"],
+      ]},
+    ]
+  },
+];
+
+/* ============================================================
+   渲染 + 朗读逻辑
+   ============================================================ */
+const SPK_SVG = '<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M16 9a4 4 0 0 1 0 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const content = document.getElementById('content');
+const chipsBox = document.getElementById('chips');
+let allRows = [];
+
+// 总句数
+let total = 0;
+DATA.forEach(c=>c.subs.forEach(s=>total+=s.items.length));
+document.getElementById('totalCount').textContent = total;
+
+// chips
+const allChip = chip('全部', '#221F1B', ()=>filterCat(null), true);
+chipsBox.appendChild(allChip);
+DATA.forEach((cat,i)=>{
+  chipsBox.appendChild(chip(cat.name, cat.color, ()=>filterCat(i)));
+});
+function chip(label,color,onclick,active){
+  const b=document.createElement('button');
+  b.className='chip'+(active?' active':'');
+  b.style.setProperty('--c',color);
+  b.innerHTML=`<span class="dot"></span>${label}`;
+  b.onclick=()=>{document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));b.classList.add('active');onclick();};
+  return b;
+}
+
+// build sections
+DATA.forEach((cat,ci)=>{
+  const sec=document.createElement('section');
+  sec.className='cat';sec.dataset.cat=ci;sec.style.setProperty('--c',cat.color);
+  sec.innerHTML=`<div class="cathead"><div class="bar"></div><h2>${cat.name}</h2><span class="en">${cat.en}</span></div>`;
+  cat.subs.forEach(sub=>{
+    const subEl=document.createElement('div');subEl.className='sub';
+    const head=document.createElement('div');head.className='subhead';
+    head.innerHTML=`<h3>${sub.name}<span>${sub.en}</span></h3>`;
+    const playBtn=document.createElement('button');
+    playBtn.className='playall';
+    playBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>朗读本节';
+    head.appendChild(playBtn);
+    subEl.appendChild(head);
+
+    const list=document.createElement('div');list.className='list';
+    const rowEls=[];
+    sub.items.forEach(([en,zh])=>{
+      const row=document.createElement('div');row.className='row';
+      row.innerHTML=`<div class="spk">${SPK_SVG}</div><div class="txt"><div class="en">${en}</div><div class="zh">${zh}</div></div>`;
+      row.onclick=()=>{stopAll();speakOne(en,row);};
+      list.appendChild(row);
+      rowEls.push(row);
+    });
+    subEl.appendChild(list);
+    playBtn.onclick=()=>{
+      if(playBtn.classList.contains('playing')){stopAll();return;}
+      stopAll();playSeq(sub.items,rowEls,playBtn);
+    };
+    sec.appendChild(subEl);
+  });
+  content.appendChild(sec);
+});
+
+/* ---------- 语音 ---------- */
+let voices=[],chosen=null;
+const voiceSel=document.getElementById('voiceSel');
+const rate=document.getElementById('rate'),rateVal=document.getElementById('rateVal');
+rate.oninput=()=>rateVal.textContent=(+rate.value).toFixed(2)+'×';
+
+function loadVoices(){
+  voices=speechSynthesis.getVoices().filter(v=>/^en(-|_)/i.test(v.lang));
+  if(!voices.length){voices=speechSynthesis.getVoices();}
+  voiceSel.innerHTML='';
+  voices.forEach((v,i)=>{
+    const o=document.createElement('option');o.value=i;
+    o.textContent=`${v.name} (${v.lang})`;voiceSel.appendChild(o);
+  });
+  // 默认优先 en-US
+  let def=voices.findIndex(v=>/en-?US/i.test(v.lang));
+  if(def<0)def=0;
+  voiceSel.value=def;chosen=voices[def];
+  // 还原上次选择（GitHub 上有效；预览环境忽略报错）
+  try{const sv=localStorage.getItem('he_voice');if(sv!==null&&voices[sv]){voiceSel.value=sv;chosen=voices[sv];}
+      const sr=localStorage.getItem('he_rate');if(sr){rate.value=sr;rateVal.textContent=(+sr).toFixed(2)+'×';}}catch(e){}
+}
+voiceSel.onchange=()=>{chosen=voices[voiceSel.value];try{localStorage.setItem('he_voice',voiceSel.value);}catch(e){}};
+rate.addEventListener('change',()=>{try{localStorage.setItem('he_rate',rate.value);}catch(e){}});
+if('speechSynthesis' in window){
+  loadVoices();
+  speechSynthesis.onvoiceschanged=loadVoices;
+}else{
+  voiceSel.innerHTML='<option>此浏览器不支持朗读</option>';
+}
+
+function makeUtter(text){
+  const u=new SpeechSynthesisUtterance(text);
+  if(chosen){u.voice=chosen;u.lang=chosen.lang;}else{u.lang='en-US';}
+  u.rate=+rate.value;u.pitch=1;
+  return u;
+}
+
+/* ---------- 单句 ---------- */
+function speakOne(text,row){
+  if(!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  row.classList.add('speaking');
+  const u=makeUtter(text);
+  u.onend=u.onerror=()=>row.classList.remove('speaking');
+  speechSynthesis.speak(u);
+}
+
+/* ---------- 连续朗读 ---------- */
+const stopbar=document.getElementById('stopbar');
+let seqActive=false,curBtn=null;
+function playSeq(items,rowEls,btn){
+  if(!('speechSynthesis' in window))return;
+  seqActive=true;curBtn=btn;btn.classList.add('playing');
+  btn.innerHTML='<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>停止';
+  stopbar.classList.add('show');
+  let i=0;
+  const next=()=>{
+    if(!seqActive||i>=items.length){finishSeq();return;}
+    rowEls.forEach(r=>r.classList.remove('speaking'));
+    const row=rowEls[i];row.classList.add('speaking');
+    row.scrollIntoView({behavior:'smooth',block:'center'});
+    const u=makeUtter(items[i][0]);
+    u.onend=()=>{row.classList.remove('speaking');i++;setTimeout(next,260);};
+    u.onerror=()=>{row.classList.remove('speaking');i++;setTimeout(next,120);};
+    speechSynthesis.speak(u);
+  };
+  next();
+}
+function finishSeq(){
+  seqActive=false;stopbar.classList.remove('show');
+  document.querySelectorAll('.row.speaking').forEach(r=>r.classList.remove('speaking'));
+  if(curBtn){curBtn.classList.remove('playing');curBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>朗读本节';curBtn=null;}
+}
+function stopAll(){speechSynthesis.cancel();finishSeq();}
+stopbar.onclick=stopAll;
+
+/* ---------- 收集所有行（含收藏区），供搜索/筛选用 ---------- */
+function collectRows(){
+  allRows=[...document.querySelectorAll('.row')].map(row=>({
+    row,
+    en:row.querySelector('.en').textContent.toLowerCase(),
+    zh:row.querySelector('.zh').textContent,
+    sub:row.closest('.sub'),
+    cat:row.closest('.cat')
+  }));
+}
+
+/* ---------- 我的收藏（存在本机，GitHub 上有效；预览忽略报错） ---------- */
+function getSaved(){try{return JSON.parse(localStorage.getItem('he_saved')||'[]');}catch(e){return [];}}
+function setSaved(a){try{localStorage.setItem('he_saved',JSON.stringify(a));}catch(e){}}
+function renderSaved(){
+  const old=document.getElementById('savedCat');if(old)old.remove();
+  const arr=getSaved();
+  if(arr.length){
+    const sec=document.createElement('section');
+    sec.className='cat';sec.id='savedCat';sec.dataset.cat='saved';sec.style.setProperty('--c','#B8860B');
+    sec.innerHTML=`<div class="cathead"><div class="bar"></div><h2>⭐ 我的收藏</h2><span class="en">My Words · ${arr.length}</span></div>`;
+    const subEl=document.createElement('div');subEl.className='sub';
+    const list=document.createElement('div');list.className='list';
+    arr.forEach((it)=>{
+      const en=it[0],zh=it[1];
+      const row=document.createElement('div');row.className='row';
+      row.innerHTML=`<div class="spk">${SPK_SVG}</div><div class="txt"><div class="en">${en}</div><div class="zh">${zh}</div></div><button class="del" title="删除">✕</button>`;
+      row.onclick=()=>{stopAll();speakOne(en,row);};
+      row.querySelector('.del').onclick=(e)=>{
+        e.stopPropagation();
+        setSaved(getSaved().filter(x=>x[0]!==en));
+        renderSaved();
+      };
+      list.appendChild(row);
+    });
+    subEl.appendChild(list);sec.appendChild(subEl);
+    content.insertBefore(sec,content.firstChild);
+  }
+  collectRows();
+}
+
+/* ---------- 联网查词 / 翻译（MyMemory，免费、无需 key） ---------- */
+const q=document.getElementById('q');
+const lookup=document.getElementById('lookup');
+const lookupBtn=document.getElementById('lookupBtn');
+async function translate(){
+  const text=q.value.trim();
+  if(!text)return;
+  const isZh=/[\u4e00-\u9fff]/.test(text);
+  const pair=isZh?'zh-CN|en':'en|zh-CN';
+  lookup.style.display='block';
+  lookup.innerHTML='<div class="lk-card"><div class="lk-load">查词中…</div></div>';
+  try{
+    const res=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${pair}`);
+    const d=await res.json();
+    const out=(d.responseData&&d.responseData.translatedText)||'';
+    if(!out||/MYMEMORY WARNING|INVALID|QUERY LENGTH LIMIT/i.test(out))throw new Error('limit');
+    const en=isZh?out:text;
+    const zh=isZh?text:out;
+    lookup.innerHTML=
+      `<div class="lk-card">
+        <div class="lk-en">${en}</div>
+        <div class="lk-zh">${zh}</div>
+        <div class="lk-act">
+          <button class="lk-spk">🔊 朗读</button>
+          <button class="lk-save">⭐ 收藏</button>
+        </div>
+        <div class="lk-note">联网机器翻译，日常够用；专有名词/地道说法可能不准。</div>
+      </div>`;
+    const card=lookup.querySelector('.lk-card');
+    lookup.querySelector('.lk-spk').onclick=()=>{stopAll();speakOne(en,card);};
+    speakOne(en,card); // 查出来顺便读一遍
+    lookup.querySelector('.lk-save').onclick=function(){
+      const a=getSaved();
+      if(!a.some(x=>x[0]===en)){a.unshift([en,zh]);setSaved(a);renderSaved();}
+      this.textContent='✓ 已收藏';this.disabled=true;
+    };
+  }catch(e){
+    lookup.innerHTML='<div class="lk-card lk-err">没查到，或今天免费额度用完了。过会儿再试，或换个说法。（查词需要联网）</div>';
+  }
+}
+lookupBtn.onclick=translate;
+q.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();translate();}});
+
+/* ---------- 分类筛选 ---------- */
+function filterCat(ci){
+  document.getElementById('q').value='';
+  document.getElementById('lookup').style.display='none';
+  document.querySelectorAll('.cat').forEach(sec=>{
+    sec.style.display=(ci===null||String(sec.dataset.cat)===String(ci))?'':'none';
+  });
+  allRows.forEach(r=>{r.row.style.display='';if(r.sub)r.sub.style.display='';});
+  const target=ci===null?null:document.querySelector(`.cat[data-cat="${ci}"]`);
+  window.scrollTo({top:target?target.offsetTop-60:0,behavior:'smooth'});
+}
+
+/* ---------- 搜索（本地过滤） ---------- */
+q.oninput=()=>{
+  const t=q.value.trim().toLowerCase();
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  if(!t){allChip.classList.add('active');filterCat(null);return;}
+  document.querySelectorAll('.cat').forEach(s=>s.style.display='');
+  allRows.forEach(r=>{
+    const hit=r.en.includes(t)||r.zh.includes(t);
+    r.row.style.display=hit?'':'none';
+  });
+  // 隐藏空小节/空分类
+  document.querySelectorAll('.sub').forEach(sub=>{
+    const any=[...sub.querySelectorAll('.row')].some(x=>x.style.display!=='none');
+    sub.style.display=any?'':'none';
+  });
+  document.querySelectorAll('.cat').forEach(sec=>{
+    const any=[...sec.querySelectorAll('.sub')].some(x=>x.style.display!=='none');
+    sec.style.display=any?'':'none';
+  });
+};
+
+/* ---------- 初始化：渲染收藏 + 收集所有行 ---------- */
+renderSaved();
+</script>
+<script>
+/* ===== PWA：离线缓存 + 安装 ===== */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(()=>{}));
+}
+let deferredPrompt=null;
+const installBtn=document.getElementById('installBtn');
+const iosTip=document.getElementById('iosTip');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;installBtn.style.display='inline-flex';});
+installBtn.onclick=async()=>{
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();await deferredPrompt.userChoice;
+  deferredPrompt=null;installBtn.style.display='none';
+};
+window.addEventListener('appinstalled',()=>{installBtn.style.display='none';});
+// iOS 不支持 beforeinstallprompt，给手动添加提示
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+const standalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
+if(isIOS&&!standalone){iosTip.style.display='block';}
+</script>
+</body>
+</html>
