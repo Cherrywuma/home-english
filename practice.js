@@ -18,7 +18,9 @@
   let answerTimer = null;
 
   const practiceChip = app.chip('复习测试', '#7E7BB5', showPracticeHome);
-  app.chipsBox.appendChild(practiceChip);
+  app.chipsBox.insertBefore(practiceChip, app.chipsBox.children[1] || null);
+  const practiceLaunch = document.getElementById('practiceLaunch');
+  if (practiceLaunch) practiceLaunch.onclick = showPracticeHome;
 
   const originalFilterCat = window.filterCat;
   window.filterCat = function(ci) {

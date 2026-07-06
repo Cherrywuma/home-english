@@ -45,6 +45,13 @@
   .hero p{color:var(--muted);font-size:.95rem;max-width:46ch;}
   .stat{margin-top:12px;font-size:.82rem;color:var(--muted);}
   .stat b{color:var(--ink);}
+  .practice-launch{
+    display:inline-flex;align-items:center;gap:8px;margin-top:14px;
+    font-family:var(--body);font-size:.92rem;font-weight:700;color:#fff;
+    background:var(--accent);border:none;border-radius:999px;padding:11px 18px;
+    cursor:pointer;box-shadow:var(--shadow);
+  }
+  .practice-launch:active{transform:scale(.97);}
   .installbtn{display:none;margin-top:13px;align-items:center;gap:7px;font-family:var(--body);
     font-size:.88rem;font-weight:600;color:#fff;background:var(--accent);border:none;border-radius:999px;
     padding:10px 18px;cursor:pointer;box-shadow:var(--shadow);}
@@ -249,6 +256,7 @@
     <h1>家里每天都在<em>说的话</em></h1>
     <p>厨房、客厅、卧室、盥洗吃喝、和孩子说话——把家里一天用得到的英语整理在一起。点任意一句就能听发音（浏览器免费朗读，不联网 API）。</p>
     <div class="stat">共 <b id="totalCount">0</b> 句 · 点句子听读 · 点「朗读本节」连续播放</div>
+    <button id="practiceLaunch" class="practice-launch" type="button">复习测试 · 检查学习状况</button>
     <button id="installBtn" class="installbtn">📲 安装到手机</button>
     <div id="iosTip" class="iostip">想当 App 用：点 Safari 底部的「分享」<b>↑</b>，再选「<b>添加到主屏幕</b>」。</div>
 
