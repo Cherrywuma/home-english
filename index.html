@@ -155,6 +155,66 @@
   .row .del{flex:0 0 auto;align-self:center;border:none;background:none;color:#C4BBAE;font-size:1rem;cursor:pointer;padding:4px 6px;}
   .row .del:active{color:#B0573A;}
 
+  /* ---------- Practice ---------- */
+  #practicePanel{margin:22px 0 0;}
+  .practice-home,.practice-card,.practice-complete{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px;box-shadow:var(--shadow);
+  }
+  .practice-head h2,.practice-complete h2{font-family:var(--display);font-weight:500;font-size:1.7rem;}
+  .practice-head p,.practice-complete p{color:var(--muted);font-size:.96rem;margin-top:4px;}
+  .practice-setup{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+  .practice-setup label,.practice-input-label{display:flex;flex-direction:column;gap:6px;font-size:.78rem;font-weight:700;color:var(--muted);}
+  .practice-setup select{
+    width:100%;font-family:var(--body);font-size:.98rem;color:var(--ink);
+    border:1px solid var(--line);background:#FCFAF6;border-radius:10px;padding:10px 11px;
+  }
+  .practice-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .practice-mode{
+    text-align:left;font-family:var(--body);background:#FCFAF6;border:1px solid var(--line);
+    border-radius:12px;padding:15px;cursor:pointer;min-height:132px;color:var(--ink);
+    display:flex;flex-direction:column;gap:5px;
+  }
+  .practice-mode:active,.practice-btn:active,.practice-wrong:active,.practice-back:active{transform:scale(.98);}
+  .practice-mode strong{font-size:1.05rem;}
+  .practice-mode span:last-child{color:var(--muted);font-size:.86rem;line-height:1.45;}
+  .practice-icon{font-size:1.45rem;line-height:1;}
+  .practice-resume{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    margin-top:14px;padding:12px;border-radius:12px;background:var(--accent-soft);
+  }
+  .practice-resume strong{display:block;color:var(--ink);}
+  .practice-resume span{display:block;color:var(--muted);font-size:.82rem;margin-top:2px;}
+  .practice-wrong{
+    width:100%;margin-top:12px;font-family:var(--body);font-weight:700;color:var(--accent);
+    border:1px solid #CFE6DC;background:var(--accent-soft);border-radius:12px;padding:12px;cursor:pointer;
+  }
+  .practice-top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--muted);font-size:.84rem;font-weight:700;}
+  .practice-back{font-family:var(--body);border:none;background:none;color:var(--accent);font-weight:700;cursor:pointer;padding:4px 0;}
+  .practice-meta{font-size:.78rem;color:var(--muted);margin-top:12px;}
+  .practice-zh{font-size:1.45rem;font-weight:700;line-height:1.35;margin:12px 0 14px;color:var(--ink);}
+  .practice-tip{color:var(--muted);margin-bottom:14px;}
+  .practice-en{font-size:1.18rem;font-weight:700;line-height:1.45;margin-bottom:12px;}
+  .practice-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center;}
+  .practice-btn{
+    font-family:var(--body);font-size:.92rem;font-weight:700;border:none;border-radius:999px;
+    padding:10px 16px;cursor:pointer;min-height:42px;
+  }
+  .practice-btn.primary{background:var(--accent);color:#fff;}
+  .practice-btn.ghost{background:var(--accent-soft);color:var(--accent);}
+  .practice-btn.wide{width:100%;justify-content:center;}
+  .practice-btn.listening{background:#F0E0D8;color:#B0573A;}
+  .practice-input{
+    width:100%;font-family:var(--body);font-size:1.08rem;line-height:1.5;color:var(--ink);
+    border:1px solid var(--line);background:#FCFAF6;border-radius:12px;padding:12px 13px;resize:vertical;
+  }
+  .practice-feedback{margin-top:12px;}
+  .practice-warning{color:#B0573A;background:#FFF4EF;border:1px solid #F0D7CB;border-radius:10px;padding:10px 12px;font-weight:700;}
+  .practice-correct{color:#1F7A56;background:var(--accent-soft);border:1px solid #CFE6DC;border-radius:10px;padding:10px 12px;font-weight:700;}
+  .practice-small{font-size:.9rem;color:var(--ink);line-height:1.55;margin-top:8px;}
+  .practice-small b{color:var(--muted);}
+  .practice-fallback{font-size:.86rem;color:var(--muted);line-height:1.45;}
+
   footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem;line-height:1.7;}
   footer b{color:var(--ink);}
 
@@ -172,6 +232,12 @@
   @media (max-width:480px){
     .hero h1{font-size:1.8rem;}
     .voicebar select{max-width:140px;}
+    .practice-setup,.practice-mode-grid{grid-template-columns:1fr;}
+    .practice-home,.practice-card,.practice-complete{padding:15px;}
+    .practice-zh{font-size:1.26rem;}
+    .practice-resume{align-items:flex-start;flex-direction:column;}
+    .practice-actions{width:100%;}
+    .practice-actions .practice-btn{flex:1 1 auto;}
   }
 </style>
 </head>
@@ -220,6 +286,7 @@
 
 <button id="stopbar"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg> 停止朗读</button>
 
+<script src="practice-core.js"></script>
 <script>
 /* ============================================================
    内容数据：分类 → 小节 → ["英文","中文"]
@@ -1860,7 +1927,9 @@ q.oninput=()=>{
 
 /* ---------- 初始化：渲染收藏 + 收集所有行 ---------- */
 renderSaved();
+window.HomeEnglishApp = {DATA, content, chipsBox, chip, stopAll, speakOne, makeUtter};
 </script>
+<script src="practice.js"></script>
 <script>
 /* ===== PWA：离线缓存 + 安装 ===== */
 if('serviceWorker' in navigator){
