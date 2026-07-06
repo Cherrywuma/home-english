@@ -114,3 +114,10 @@ test('creates random question ids only when random order is selected', () => {
   const ids = core.createQuestionIds([{ id: 'a' }, { id: 'b' }, { id: 'c' }], 'random', 3, () => 0);
   assert.deepEqual(ids, ['b', 'c', 'a']);
 });
+
+test('practice navigation can move backward and forward within bounds', () => {
+  assert.equal(core.getPracticeNavigationIndex(1, -1, 3), 0);
+  assert.equal(core.getPracticeNavigationIndex(1, 1, 3), 2);
+  assert.equal(core.getPracticeNavigationIndex(0, -1, 3), 0);
+  assert.equal(core.getPracticeNavigationIndex(2, 1, 3), 3);
+});

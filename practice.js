@@ -285,12 +285,20 @@
         <div class="practice-meta">${item.catName} · ${item.subName}</div>
         <div class="practice-zh">${item.zh}</div>
         ${body}
+        <div class="practice-nav">
+          <button class="practice-btn ghost" data-action="prev-question"${session.currentIndex === 0 ? ' disabled' : ''}>上一句</button>
+          <button class="practice-btn ghost" data-action="next-question">${session.currentIndex + 1 >= session.sentenceIds.length ? '完成本轮' : '下一句'}</button>
+        </div>
       </div>`;
   }
 
   function bindBackButton() {
     const back = practiceSection.querySelector('[data-action="home"]');
     if (back) back.onclick = showPracticeHome;
+    const prev = practiceSection.querySelector('[data-action="prev-question"]');
+    if (prev) prev.onclick = () => navigateQuestion(-1);
+    const next = practiceSection.querySelector('[data-action="next-question"]');
+    if (next) next.onclick = () => navigateQuestion(1);
   }
 
   function renderSpeakingQuestion(item) {
@@ -470,9 +478,14 @@
   }
 
   function advanceQuestion() {
+    navigateQuestion(1);
+  }
+
+  function navigateQuestion(delta) {
     stopPracticeActivity();
-    session.currentIndex += 1;
+    session.currentIndex = core.getPracticeNavigationIndex(session.currentIndex, delta, session.sentenceIds.length);
     session.currentHadWrong = false;
+    submitGuard.done();
     saveSession();
     renderCurrentQuestion();
   }

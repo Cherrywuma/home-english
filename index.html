@@ -203,6 +203,12 @@
   .practice-tip{color:var(--muted);margin-bottom:14px;}
   .practice-en{font-size:1.18rem;font-weight:700;line-height:1.45;margin-bottom:12px;}
   .practice-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center;}
+  .practice-nav{
+    display:flex;gap:10px;justify-content:space-between;align-items:center;
+    margin-top:16px;padding-top:14px;border-top:1px solid var(--line);
+  }
+  .practice-nav .practice-btn{flex:1;}
+  .practice-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;}
   .practice-btn{
     font-family:var(--body);font-size:.92rem;font-weight:700;border:none;border-radius:999px;
     padding:10px 16px;cursor:pointer;min-height:42px;
@@ -245,6 +251,8 @@
     .practice-resume{align-items:flex-start;flex-direction:column;}
     .practice-actions{width:100%;}
     .practice-actions .practice-btn{flex:1 1 auto;}
+    .practice-nav{flex-direction:column;}
+    .practice-nav .practice-btn{width:100%;}
   }
 </style>
 </head>

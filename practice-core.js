@@ -202,6 +202,13 @@
     return shuffled.slice(0, limitedCount);
   }
 
+  function getPracticeNavigationIndex(currentIndex, delta, total) {
+    const nextIndex = Number(currentIndex) + Number(delta);
+    if (nextIndex < 0) return 0;
+    if (nextIndex > total) return total;
+    return nextIndex;
+  }
+
   return {
     normalizeAnswer,
     normalizeContractions,
@@ -211,6 +218,7 @@
     createSubmitGuard,
     applySpeechTranscript,
     getSpeechRecognitionConstructor,
-    createQuestionIds
+    createQuestionIds,
+    getPracticeNavigationIndex
   };
 });
