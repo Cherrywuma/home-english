@@ -188,6 +188,20 @@
     return target.SpeechRecognition || target.webkitSpeechRecognition || null;
   }
 
+  function createQuestionIds(items, order, count, randomFn) {
+    const ids = items.map(item => typeof item === 'string' ? item : item.id);
+    const limitedCount = Math.min(Number(count) || ids.length, ids.length);
+    if (order !== 'random') return ids.slice(0, limitedCount);
+
+    const rng = randomFn || Math.random;
+    const shuffled = ids.slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, limitedCount);
+  }
+
   return {
     normalizeAnswer,
     normalizeContractions,
@@ -196,6 +210,7 @@
     isAnswerCorrect,
     createSubmitGuard,
     applySpeechTranscript,
-    getSpeechRecognitionConstructor
+    getSpeechRecognitionConstructor,
+    createQuestionIds
   };
 });

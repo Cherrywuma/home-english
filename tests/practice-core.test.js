@@ -104,3 +104,13 @@ test('empty speech recognition result does not submit', () => {
   assert.equal(result.shouldSubmit, false);
   assert.equal(result.hasTranscript, false);
 });
+
+test('creates ordered question ids without shuffling', () => {
+  const ids = core.createQuestionIds([{ id: 'a' }, { id: 'b' }, { id: 'c' }], 'ordered', 2);
+  assert.deepEqual(ids, ['a', 'b']);
+});
+
+test('creates random question ids only when random order is selected', () => {
+  const ids = core.createQuestionIds([{ id: 'a' }, { id: 'b' }, { id: 'c' }], 'random', 3, () => 0);
+  assert.deepEqual(ids, ['b', 'c', 'a']);
+});

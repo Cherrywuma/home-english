@@ -143,26 +143,25 @@
     return sizes.map(size => `<option value="${size}"${Number(selected) === size ? ' selected' : ''}>${size}句</option>`).join('');
   }
 
+  function orderOptions(selected) {
+    return [
+      `<option value="ordered"${selected === 'ordered' ? ' selected' : ''}>按顺序</option>`,
+      `<option value="random"${selected === 'random' ? ' selected' : ''}>随机抽题</option>`
+    ].join('');
+  }
+
   function getPool(category) {
     return sentenceList.filter(item => category === 'all' || String(item.catIndex) === String(category));
   }
 
-  function shuffledIds(items) {
-    const ids = items.map(item => item.id);
-    for (let i = ids.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [ids[i], ids[j]] = [ids[j], ids[i]];
-    }
-    return ids;
-  }
-
-  function startSession(mode, ids, category, count) {
+  function startSession(mode, ids, category, count, order) {
     stopPracticeActivity();
     session = {
       sessionId: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
       mode,
       category,
       count,
+      order,
       sentenceIds: ids,
       currentIndex: 0,
       round: 1,
@@ -206,6 +205,9 @@
           <label>分类
             <select id="practiceCategory">${categoryOptions('all')}</select>
           </label>
+          <label>出题顺序
+            <select id="practiceOrder">${orderOptions('ordered')}</select>
+          </label>
         </div>
         <div class="practice-mode-grid">
           <button class="practice-mode" data-mode="speaking">
@@ -226,9 +228,10 @@
       button.onclick = () => {
         const category = practiceSection.querySelector('#practiceCategory').value;
         const count = Number(practiceSection.querySelector('#practiceSize').value);
+        const order = practiceSection.querySelector('#practiceOrder').value;
         const pool = getPool(category);
-        const ids = shuffledIds(pool).slice(0, Math.min(count, pool.length));
-        startSession(button.dataset.mode, ids, category, count);
+        const ids = core.createQuestionIds(pool, order, count);
+        startSession(button.dataset.mode, ids, category, count, order);
       };
     });
     const resume = practiceSection.querySelector('[data-action="resume"]');
@@ -239,7 +242,7 @@
       showPracticeHome();
     };
     const wrong = practiceSection.querySelector('[data-action="wrong"]');
-    if (wrong) wrong.onclick = () => startSession('typing', wrongIds, 'wrong', wrongIds.length);
+    if (wrong) wrong.onclick = () => startSession('typing', wrongIds, 'wrong', wrongIds.length, 'ordered');
   }
 
   function modeLabel(mode) {
