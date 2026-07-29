@@ -298,6 +298,11 @@
     return pool[index];
   }
 
+  function filterPracticePool(pool, masteredIds) {
+    const mastered = new Set((Array.isArray(masteredIds) ? masteredIds : []).map(value => String(value)));
+    return (Array.isArray(pool) ? pool : []).filter(item => item && !mastered.has(String(item.id)));
+  }
+
   return {
     normalizeAnswer,
     normalizeContractions,
@@ -317,6 +322,7 @@
     setSentenceMembership,
     getSentenceStatus,
     createSceneProgress,
-    pickRandomUnmasteredScene
+    pickRandomUnmasteredScene,
+    filterPracticePool
   };
 });

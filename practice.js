@@ -22,6 +22,10 @@
     if ((Array.isArray(masteredIds) ? masteredIds : []).map(String).includes(cleanId)) return 'mastered';
     return 'new';
   });
+  const filterPracticePool = core.filterPracticePool || ((pool, masteredIds) => {
+    const mastered = new Set((Array.isArray(masteredIds) ? masteredIds : []).map(value => String(value)));
+    return (Array.isArray(pool) ? pool : []).filter(item => item && !mastered.has(String(item.id)));
+  });
   const sizes = [10, 30, 50];
   const practiceSection = document.createElement('section');
   practiceSection.id = 'practicePanel';
@@ -211,6 +215,10 @@
     return sentenceList.filter(item => category === 'all' || String(item.catIndex) === String(category));
   }
 
+  function getUnmasteredPool(category) {
+    return filterPracticePool(getPool(category), getMasteredIds());
+  }
+
   function startSession(mode, ids, category, count, order) {
     stopPracticeActivity();
     session = {
@@ -242,7 +250,7 @@
       <div class="practice-home">
         <div class="practice-head">
           <h2>复习测试</h2>
-          <p>今天想怎么练？</p>
+          <p>默认只练未掌握；答错会进“不会”，全对会自动标掌握。</p>
         </div>
         ${hasSession ? `
           <div class="practice-resume">
@@ -288,7 +296,11 @@
         const category = practiceSection.querySelector('#practiceCategory').value;
         const count = Number(practiceSection.querySelector('#practiceSize').value);
         const order = practiceSection.querySelector('#practiceOrder').value;
-        const pool = getPool(category);
+        const pool = getUnmasteredPool(category);
+        if (!pool.length) {
+          showNoUnmastered();
+          return;
+        }
         const ids = core.createQuestionIds(pool, order, count);
         startSession(button.dataset.mode, ids, category, count, order);
       };
@@ -304,6 +316,18 @@
     if (wrong) wrong.onclick = () => startSession('typing', wrongIds, 'wrong', wrongIds.length, 'ordered');
     const hard = practiceSection.querySelector('[data-action="hard"]');
     if (hard) hard.onclick = () => startHardPractice();
+  }
+
+  function showNoUnmastered() {
+    practiceSection.innerHTML = `
+      <div class="practice-complete">
+        <h2>这部分都掌握了</h2>
+        <p>普通复习会跳过已掌握句子。想重练的话，可以先在句子列表里取消“掌握”，或者点“专练不会”。</p>
+        <div class="practice-actions">
+          <button class="practice-btn ghost" data-action="home">返回复习测试</button>
+        </div>
+      </div>`;
+    practiceSection.querySelector('[data-action="home"]').onclick = showPracticeHome;
   }
 
   function modeLabel(mode) {
@@ -600,6 +624,10 @@
     startSession('typing', hardIds, 'hard', hardIds.length, 'ordered');
   }
 
+  function markIdsMastered(ids) {
+    ids.filter(id => sentenceMap.has(id)).forEach(id => setPracticeSentenceStatus(id, 'mastered'));
+  }
+
   function renderRoundComplete() {
     stopPracticeActivity();
     const reviewIds = [...new Set(session.mode === 'speaking' ? session.roundReviewIds : session.roundWrongIds)];
@@ -613,6 +641,7 @@
       : (reviewIds.length
         ? `✅ 一次正确：${firstCorrect}句<br>🔁 修改后正确：${reviewIds.length}句<br>还有 ${reviewIds.length} 句需要继续练习。`
         : '全部通过。');
+    if (!reviewIds.length) markIdsMastered(session.sentenceIds);
 
     practiceSection.innerHTML = `
       <div class="practice-complete">

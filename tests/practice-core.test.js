@@ -240,6 +240,19 @@ test('picks a random scene that still has unmastered sentences', () => {
   assert.equal(core.pickRandomUnmasteredScene(scenes, ['a'], () => 0).subName, 'ready');
 });
 
+test('filters mastered sentences from a normal practice pool', () => {
+  const pool = [
+    { id: 'a', en: 'A' },
+    { id: 'b', en: 'B' },
+    { id: 'c', en: 'C' }
+  ];
+
+  assert.deepEqual(core.filterPracticePool(pool, ['b']), [
+    { id: 'a', en: 'A' },
+    { id: 'c', en: 'C' }
+  ]);
+});
+
 test('includes the second Germany first-week scene batch in the page data', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
