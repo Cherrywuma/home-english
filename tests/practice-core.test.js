@@ -215,6 +215,31 @@ test('matches scene word notes during local search', () => {
   assert.equal(core.sceneWordsMatchQuery(words, 'train'), false);
 });
 
+test('sets sentence membership without duplicates', () => {
+  assert.deepEqual(core.setSentenceMembership(['a', 'b'], 'a', true), ['a', 'b']);
+  assert.deepEqual(core.setSentenceMembership(['a', 'b'], 'c', true), ['a', 'b', 'c']);
+  assert.deepEqual(core.setSentenceMembership(['a', 'b'], 'a', false), ['b']);
+});
+
+test('prefers hard status over mastered status', () => {
+  assert.equal(core.getSentenceStatus('1', ['1'], ['1']), 'hard');
+  assert.equal(core.getSentenceStatus('2', [], ['2']), 'mastered');
+  assert.equal(core.getSentenceStatus('3', [], []), 'new');
+});
+
+test('summarizes scene progress from hard and mastered ids', () => {
+  const result = core.createSceneProgress(['1', '2', '3'], ['2'], ['1', '3']);
+  assert.deepEqual(result, { total: 3, hard: 1, mastered: 2, remaining: 1 });
+});
+
+test('picks a random scene that still has unmastered sentences', () => {
+  const scenes = [
+    { subName: 'done', itemIds: ['a'] },
+    { subName: 'ready', itemIds: ['b', 'c'] }
+  ];
+  assert.equal(core.pickRandomUnmasteredScene(scenes, ['a'], () => 0).subName, 'ready');
+});
+
 test('includes the second Germany first-week scene batch in the page data', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 

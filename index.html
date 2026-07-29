@@ -138,6 +138,31 @@
   .row .txt{flex:1;min-width:0;}
   .row .en{font-size:1.02rem;font-weight:600;color:var(--ink);letter-spacing:.01em;}
   .row .zh{font-size:.86rem;color:var(--muted);margin-top:2px;}
+  .row.mastered .en,.row.mastered .zh{opacity:.62;}
+  .row.hard{background:#FFF9F1;}
+  .statusbar{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;}
+  .statusbtn{
+    border:1px solid var(--line);background:#FCFAF6;color:var(--muted);border-radius:999px;
+    padding:5px 9px;font-family:var(--body);font-size:.72rem;font-weight:800;cursor:pointer;
+  }
+  .statusbtn.active-hard{background:#FFF0E8;border-color:#F0CDBE;color:#B0573A;}
+  .statusbtn.active-mastered{background:var(--accent-soft);border-color:#CFE6DC;color:var(--accent);}
+  .scene-training-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px;}
+  .scene-card{
+    text-align:left;border:1px solid var(--line);background:#FCFAF6;border-radius:12px;
+    padding:12px;font-family:var(--body);cursor:pointer;color:var(--ink);
+  }
+  .scene-card strong{display:block;font-size:.95rem;}
+  .scene-card span{display:block;color:var(--muted);font-size:.76rem;margin-top:3px;line-height:1.35;}
+  .scene-card.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .scene-card.primary span{color:rgba(255,255,255,.82);}
+  .scene-list{margin-top:14px;border-top:1px solid var(--line);}
+  .scene-list button{
+    width:100%;text-align:left;border:none;background:transparent;border-bottom:1px solid var(--line);
+    padding:11px 2px;font-family:var(--body);cursor:pointer;color:var(--ink);
+  }
+  .scene-list b{display:block;font-size:.9rem;}
+  .scene-list span{display:block;color:var(--muted);font-size:.76rem;margin-top:2px;}
   .dict-word{
     border:none;background:#FFF2D7;color:#6C4A12;border-radius:8px;
     padding:1px 5px;margin:0 1px;font:inherit;font-weight:750;cursor:pointer;
@@ -265,6 +290,7 @@
     .practice-actions .practice-btn{flex:1 1 auto;}
     .practice-nav{flex-direction:column;}
     .practice-nav .practice-btn{width:100%;}
+    .scene-training-grid{grid-template-columns:1fr;}
   }
 </style>
 </head>
@@ -296,7 +322,7 @@
     </div>
     <div class="lookupbar">
       <button id="lookupBtn">🔎 联网查词 / 翻译</button>
-      <button id="randomSceneBtn" type="button">🎲 随机场景</button>
+      <button id="randomSceneBtn" type="button">🧭 场景训练</button>
       <button id="randomWordBtn" type="button">🎯 随机单词</button>
       <span class="lk-hint">本地没有的词点这里查，中↔英都行（如「粽子」）</span>
     </div>
@@ -2054,6 +2080,8 @@ const SPK_SVG = '<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5z"/><pat
 const content = document.getElementById('content');
 const chipsBox = document.getElementById('chips');
 const dictCore = window.HomeEnglishPracticeCore;
+const HARD_IDS_KEY = 'homeEnglishHardIds';
+const MASTERED_IDS_KEY = 'homeEnglishMasteredIds';
 const sceneWordsMatchQuery = dictCore.sceneWordsMatchQuery || ((words,query)=>{
   const text=String(query||'').trim().toLowerCase();
   if(!text)return false;
@@ -2061,8 +2089,74 @@ const sceneWordsMatchQuery = dictCore.sceneWordsMatchQuery || ((words,query)=>{
     ['term','zh','explain','example','note'].some(field=>String((word||{})[field]||'').toLowerCase().includes(text))
   );
 });
+const setSentenceMembershipCore = dictCore.setSentenceMembership || ((ids,id,enabled)=>{
+  const cleanId=String(id||'').trim();
+  const set=new Set((Array.isArray(ids)?ids:[]).map(value=>String(value)).filter(Boolean));
+  if(cleanId){if(enabled)set.add(cleanId);else set.delete(cleanId);}
+  return [...set];
+});
+const getSentenceStatusCore = dictCore.getSentenceStatus || ((id,hardIds,masteredIds)=>{
+  const cleanId=String(id||'');
+  if((Array.isArray(hardIds)?hardIds:[]).map(String).includes(cleanId))return 'hard';
+  if((Array.isArray(masteredIds)?masteredIds:[]).map(String).includes(cleanId))return 'mastered';
+  return 'new';
+});
+const createSceneProgressCore = dictCore.createSceneProgress || ((itemIds,hardIds,masteredIds)=>{
+  const ids=Array.isArray(itemIds)?itemIds.map(String):[];
+  const hard=new Set((Array.isArray(hardIds)?hardIds:[]).map(String));
+  const mastered=new Set((Array.isArray(masteredIds)?masteredIds:[]).map(String));
+  const hardCount=ids.filter(id=>hard.has(id)).length;
+  const masteredCount=ids.filter(id=>mastered.has(id)).length;
+  return {total:ids.length,hard:hardCount,mastered:masteredCount,remaining:Math.max(0,ids.length-masteredCount)};
+});
+const pickRandomUnmasteredSceneCore = dictCore.pickRandomUnmasteredScene || ((scenes,masteredIds)=>{
+  const mastered=new Set((Array.isArray(masteredIds)?masteredIds:[]).map(String));
+  const pool=(Array.isArray(scenes)?scenes:[]).filter(scene=>scene&&Array.isArray(scene.itemIds)&&scene.itemIds.some(id=>!mastered.has(String(id))));
+  return pool.length?pool[Math.floor(Math.random()*pool.length)]:null;
+});
 let allRows = [];
 let sceneWordEntries = [];
+
+function readIdList(key){
+  try{return JSON.parse(localStorage.getItem(key)||'[]');}catch(e){return [];}
+}
+function writeIdList(key,ids){
+  try{localStorage.setItem(key,JSON.stringify(ids));}catch(e){}
+}
+function getHardIds(){return readIdList(HARD_IDS_KEY);}
+function getMasteredIds(){return readIdList(MASTERED_IDS_KEY);}
+function setSentenceStatus(id,status){
+  let hard=getHardIds();
+  let mastered=getMasteredIds();
+  if(status==='hard'){
+    const isHard=hard.map(String).includes(String(id));
+    hard=setSentenceMembershipCore(hard,id,!isHard);
+    mastered=setSentenceMembershipCore(mastered,id,false);
+  }else if(status==='mastered'){
+    const isMastered=mastered.map(String).includes(String(id));
+    mastered=setSentenceMembershipCore(mastered,id,!isMastered);
+    hard=setSentenceMembershipCore(hard,id,false);
+  }else{
+    hard=setSentenceMembershipCore(hard,id,false);
+    mastered=setSentenceMembershipCore(mastered,id,false);
+  }
+  writeIdList(HARD_IDS_KEY,hard);
+  writeIdList(MASTERED_IDS_KEY,mastered);
+  refreshAllSentenceStatus();
+}
+function refreshSentenceStatus(row){
+  if(!row||!row.dataset.sentenceId)return;
+  const status=getSentenceStatusCore(row.dataset.sentenceId,getHardIds(),getMasteredIds());
+  row.classList.toggle('hard',status==='hard');
+  row.classList.toggle('mastered',status==='mastered');
+  const hardBtn=row.querySelector('[data-status="hard"]');
+  const masteredBtn=row.querySelector('[data-status="mastered"]');
+  if(hardBtn)hardBtn.classList.toggle('active-hard',status==='hard');
+  if(masteredBtn)masteredBtn.classList.toggle('active-mastered',status==='mastered');
+}
+function refreshAllSentenceStatus(){
+  document.querySelectorAll('.row[data-sentence-id]').forEach(refreshSentenceStatus);
+}
 
 // 总句数
 let total = 0;
@@ -2129,7 +2223,7 @@ DATA.forEach((cat,ci)=>{
   const sec=document.createElement('section');
   sec.className='cat';sec.dataset.cat=ci;sec.style.setProperty('--c',cat.color);
   sec.innerHTML=`<div class="cathead"><div class="bar"></div><h2>${cat.name}</h2><span class="en">${cat.en}</span></div>`;
-  cat.subs.forEach(sub=>{
+  cat.subs.forEach((sub,si)=>{
     const subEl=document.createElement('div');subEl.className='sub';
     const head=document.createElement('div');head.className='subhead';
     head.innerHTML=`<h3>${sub.name}<span>${sub.en}</span></h3>`;
@@ -2141,15 +2235,21 @@ DATA.forEach((cat,ci)=>{
 
     const list=document.createElement('div');list.className='list';
     const rowEls=[];
-    if(sub.sceneWords)sceneWordEntries.push({catIndex:ci,catName:cat.name,subName:sub.name,subEl,words:sub.sceneWords});
-    sub.items.forEach(([en,zh])=>{
+    const itemIds=sub.items.map((_,itemIndex)=>`${ci}-${si}-${itemIndex}`);
+    if(sub.sceneWords)sceneWordEntries.push({catIndex:ci,subIndex:si,catName:cat.name,subName:sub.name,subEl,words:sub.sceneWords,itemIds});
+    sub.items.forEach(([en,zh],itemIndex)=>{
+      const sentenceId=`${ci}-${si}-${itemIndex}`;
       const row=document.createElement('div');row.className='row';
-      row.innerHTML=`<div class="spk">${SPK_SVG}</div><div class="txt"><div class="en"></div><div class="zh"></div></div>`;
+      row.dataset.sentenceId=sentenceId;
+      row.innerHTML=`<div class="spk">${SPK_SVG}</div><div class="txt"><div class="en"></div><div class="zh"></div><div class="statusbar"><button class="statusbtn" data-status="hard" type="button">不会</button><button class="statusbtn" data-status="mastered" type="button">掌握</button></div></div>`;
       addTextWithDictionary(row.querySelector('.en'),en,sub.sceneWords);
       row.querySelector('.zh').textContent=zh;
       row.onclick=()=>{stopAll();speakOne(en,row);};
+      row.querySelector('[data-status="hard"]').onclick=e=>{e.stopPropagation();setSentenceStatus(sentenceId,'hard');};
+      row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(sentenceId,'mastered');};
       list.appendChild(row);
       rowEls.push(row);
+      refreshSentenceStatus(row);
     });
     addWordBank(list,sub.sceneWords);
     subEl.appendChild(list);
@@ -2313,14 +2413,90 @@ function showLocalDictionary(words,term){
   window.scrollTo({top:lookup.offsetTop-12,behavior:'smooth'});
 }
 
-function showRandomScene(){
-  if(!sceneWordEntries.length)return;
-  const scene=sceneWordEntries[Math.floor(Math.random()*sceneWordEntries.length)];
+function sceneProgressText(scene){
+  const p=createSceneProgressCore(scene.itemIds,getHardIds(),getMasteredIds());
+  return `${p.total}句 · 不会${p.hard} · 掌握${p.mastered}`;
+}
+function showScene(scene){
+  if(!scene)return;
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   document.querySelectorAll('.cat').forEach(sec=>{sec.style.display=(String(sec.dataset.cat)===String(scene.catIndex))?'':'none';});
   allRows.forEach(r=>{r.row.style.display='';if(r.sub)r.sub.style.display='';});
   document.getElementById('lookup').style.display='none';
   window.scrollTo({top:scene.subEl.offsetTop-60,behavior:'smooth'});
+}
+
+function showRowsByIds(ids){
+  const wanted=new Set(ids.map(String));
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  document.getElementById('lookup').style.display='none';
+  document.querySelectorAll('.cat').forEach(sec=>sec.style.display='');
+  allRows.forEach(r=>{
+    const hit=wanted.has(r.row.dataset.sentenceId);
+    r.row.style.display=hit?'':'none';
+  });
+  document.querySelectorAll('.sub').forEach(sub=>{
+    const any=[...sub.querySelectorAll('.row')].some(x=>x.style.display!=='none');
+    sub.style.display=any?'':'none';
+  });
+  document.querySelectorAll('.cat').forEach(sec=>{
+    const any=[...sec.querySelectorAll('.sub')].some(x=>x.style.display!=='none');
+    sec.style.display=any?'':'none';
+  });
+  window.scrollTo({top:content.offsetTop-40,behavior:'smooth'});
+}
+
+function scenesForGroup(type){
+  const patterns={
+    travel:/机场|行李|火车|地铁|打车|入境/,
+    life:/酒店|超市|餐厅|咖啡|面包|手机|药店/,
+    work:/客户|工厂|展会/,
+    rescue:/听不懂|突发|求助/
+  };
+  return sceneWordEntries.filter(scene=>patterns[type].test(scene.subName));
+}
+
+function sceneButtonHtml(scene){
+  return `<button data-scene-index="${sceneWordEntries.indexOf(scene)}"><b>${scene.subName}</b><span>${scene.catName} · ${sceneProgressText(scene)}</span></button>`;
+}
+
+function showSceneTrainingPanel(){
+  const hardIds=getHardIds();
+  const masteredIds=getMasteredIds();
+  const randomScene=pickRandomUnmasteredSceneCore(sceneWordEntries,masteredIds);
+  lookup.style.display='block';
+  lookup.innerHTML=`
+    <div class="lk-card">
+      <div class="lk-en">场景训练</div>
+      <div class="lk-zh">先找对场景，再反复练不会的句子。</div>
+      <div class="scene-training-grid">
+        <button class="scene-card primary" data-action="hard-practice"><strong>专练不会</strong><span>${hardIds.length ? `${hardIds.length}句，反复练到你点掌握` : '还没有标记不会的句子'}</span></button>
+        <button class="scene-card" data-action="hard-list"><strong>我标记不会的句子</strong><span>先看列表，再决定练哪句</span></button>
+        <button class="scene-card" data-action="random-unmastered"><strong>随机一个未掌握场景</strong><span>${randomScene ? sceneProgressText(randomScene) : '全部场景都已掌握'}</span></button>
+        <button class="scene-card" data-group="rescue"><strong>听不懂保命句</strong><span>${scenesForGroup('rescue').length}个场景</span></button>
+        <button class="scene-card" data-group="travel"><strong>德国出行</strong><span>${scenesForGroup('travel').length}个场景</span></button>
+        <button class="scene-card" data-group="life"><strong>德国生活</strong><span>${scenesForGroup('life').length}个场景</span></button>
+        <button class="scene-card" data-group="work"><strong>德国客户/工厂</strong><span>${scenesForGroup('work').length}个场景</span></button>
+      </div>
+      <div class="scene-list" id="sceneList"></div>
+    </div>`;
+  const list=lookup.querySelector('#sceneList');
+  function renderGroup(type){
+    const scenes=scenesForGroup(type);
+    list.innerHTML=scenes.length ? scenes.map(sceneButtonHtml).join('') : '<button type="button"><b>暂无场景</b><span>后面可以继续补</span></button>';
+    list.querySelectorAll('[data-scene-index]').forEach(btn=>{
+      btn.onclick=()=>showScene(sceneWordEntries[Number(btn.dataset.sceneIndex)]);
+    });
+  }
+  lookup.querySelector('[data-action="hard-practice"]').onclick=()=>{
+    if(window.HomeEnglishPractice&&window.HomeEnglishPractice.startHardPractice)window.HomeEnglishPractice.startHardPractice();
+    else showRowsByIds(hardIds);
+  };
+  lookup.querySelector('[data-action="hard-list"]').onclick=()=>showRowsByIds(hardIds);
+  lookup.querySelector('[data-action="random-unmastered"]').onclick=()=>showScene(randomScene);
+  lookup.querySelectorAll('[data-group]').forEach(btn=>{btn.onclick=()=>renderGroup(btn.dataset.group);});
+  renderGroup('rescue');
+  window.scrollTo({top:lookup.offsetTop-12,behavior:'smooth'});
 }
 
 function showRandomWord(){
@@ -2367,7 +2543,7 @@ async function translate(){
   }
 }
 lookupBtn.onclick=translate;
-randomSceneBtn.onclick=showRandomScene;
+randomSceneBtn.onclick=showSceneTrainingPanel;
 randomWordBtn.onclick=showRandomWord;
 q.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();translate();}});
 
@@ -2410,7 +2586,8 @@ q.oninput=()=>{
 
 /* ---------- 初始化：渲染收藏 + 收集所有行 ---------- */
 renderSaved();
-window.HomeEnglishApp = {DATA, content, chipsBox, chip, stopAll, speakOne, makeUtter};
+refreshAllSentenceStatus();
+window.HomeEnglishApp = {DATA, content, chipsBox, chip, stopAll, speakOne, makeUtter, getHardIds, getMasteredIds, setSentenceStatus, refreshAllSentenceStatus};
 </script>
 <script src="practice.js"></script>
 <script>

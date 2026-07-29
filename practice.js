@@ -5,6 +5,23 @@
 
   const SESSION_KEY = 'homeEnglishPracticeSession';
   const WRONG_IDS_KEY = 'homeEnglishPracticeWrongIds';
+  const HARD_IDS_KEY = 'homeEnglishHardIds';
+  const MASTERED_IDS_KEY = 'homeEnglishMasteredIds';
+  const setSentenceMembership = core.setSentenceMembership || ((ids, id, enabled) => {
+    const cleanId = String(id || '').trim();
+    const set = new Set((Array.isArray(ids) ? ids : []).map(value => String(value)).filter(Boolean));
+    if (cleanId) {
+      if (enabled) set.add(cleanId);
+      else set.delete(cleanId);
+    }
+    return [...set];
+  });
+  const getSentenceStatus = core.getSentenceStatus || ((id, hardIds, masteredIds) => {
+    const cleanId = String(id || '');
+    if ((Array.isArray(hardIds) ? hardIds : []).map(String).includes(cleanId)) return 'hard';
+    if ((Array.isArray(masteredIds) ? masteredIds : []).map(String).includes(cleanId)) return 'mastered';
+    return 'new';
+  });
   const sizes = [10, 30, 50];
   const practiceSection = document.createElement('section');
   practiceSection.id = 'practicePanel';
@@ -90,6 +107,46 @@
     try {
       localStorage.setItem(WRONG_IDS_KEY, JSON.stringify([...ids]));
     } catch (error) {}
+  }
+
+  function getIdList(key) {
+    try {
+      return JSON.parse(localStorage.getItem(key) || '[]');
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function setIdList(key, ids) {
+    try {
+      localStorage.setItem(key, JSON.stringify(ids));
+    } catch (error) {}
+  }
+
+  function getHardIds() {
+    return getIdList(HARD_IDS_KEY);
+  }
+
+  function getMasteredIds() {
+    return getIdList(MASTERED_IDS_KEY);
+  }
+
+  function addHardId(id) {
+    setIdList(HARD_IDS_KEY, setSentenceMembership(getHardIds(), id, true));
+    setIdList(MASTERED_IDS_KEY, setSentenceMembership(getMasteredIds(), id, false));
+    if (app.refreshAllSentenceStatus) app.refreshAllSentenceStatus();
+  }
+
+  function setPracticeSentenceStatus(id, status) {
+    if (app.setSentenceStatus) {
+      app.setSentenceStatus(id, status);
+      return;
+    }
+    if (status === 'hard') addHardId(id);
+    if (status === 'mastered') {
+      setIdList(MASTERED_IDS_KEY, setSentenceMembership(getMasteredIds(), id, true));
+      setIdList(HARD_IDS_KEY, setSentenceMembership(getHardIds(), id, false));
+    }
   }
 
   function activatePracticeChip() {
@@ -180,6 +237,7 @@
     showPracticeOnly();
     const hasSession = session && session.sentenceIds && session.currentIndex < session.sentenceIds.length;
     const wrongIds = getWrongIds().filter(id => sentenceMap.has(id));
+    const hardIds = getHardIds().filter(id => sentenceMap.has(id));
     practiceSection.innerHTML = `
       <div class="practice-home">
         <div class="practice-head">
@@ -221,6 +279,7 @@
             <span>看中文，输入或说出英文，系统检查答案。</span>
           </button>
         </div>
+        ${hardIds.length ? `<button class="practice-wrong" data-action="hard">专练不会 · ${hardIds.length}句</button>` : ''}
         ${wrongIds.length ? `<button class="practice-wrong" data-action="wrong">专练错题 · ${wrongIds.length}句</button>` : ''}
       </div>`;
 
@@ -243,6 +302,8 @@
     };
     const wrong = practiceSection.querySelector('[data-action="wrong"]');
     if (wrong) wrong.onclick = () => startSession('typing', wrongIds, 'wrong', wrongIds.length, 'ordered');
+    const hard = practiceSection.querySelector('[data-action="hard"]');
+    if (hard) hard.onclick = () => startHardPractice();
   }
 
   function modeLabel(mode) {
@@ -276,6 +337,7 @@
   }
 
   function questionShell(item, body) {
+    const status = getSentenceStatus(item.id, getHardIds(), getMasteredIds());
     return `
       <div class="practice-card">
         <div class="practice-top">
@@ -284,6 +346,10 @@
         </div>
         <div class="practice-meta">${item.catName} · ${item.subName}</div>
         <div class="practice-zh">${item.zh}</div>
+        <div class="practice-actions">
+          <button class="practice-btn ghost${status === 'hard' ? ' listening' : ''}" data-action="mark-hard">不会，加入重点</button>
+          <button class="practice-btn ghost${status === 'mastered' ? ' listening' : ''}" data-action="mark-mastered">已掌握</button>
+        </div>
         ${body}
         <div class="practice-nav">
           <button class="practice-btn ghost" data-action="prev-question"${session.currentIndex === 0 ? ' disabled' : ''}>上一句</button>
@@ -299,6 +365,20 @@
     if (prev) prev.onclick = () => navigateQuestion(-1);
     const next = practiceSection.querySelector('[data-action="next-question"]');
     if (next) next.onclick = () => navigateQuestion(1);
+    const markHard = practiceSection.querySelector('[data-action="mark-hard"]');
+    if (markHard) markHard.onclick = () => {
+      const item = currentSentence();
+      if (!item) return;
+      setPracticeSentenceStatus(item.id, 'hard');
+      renderCurrentQuestion();
+    };
+    const markMastered = practiceSection.querySelector('[data-action="mark-mastered"]');
+    if (markMastered) markMastered.onclick = () => {
+      const item = currentSentence();
+      if (!item) return;
+      setPracticeSentenceStatus(item.id, 'mastered');
+      renderCurrentQuestion();
+    };
   }
 
   function renderSpeakingQuestion(item) {
@@ -382,6 +462,7 @@
     }
     if (!session.roundWrongIds.includes(item.id)) session.roundWrongIds.push(item.id);
     addWrongId(item.id);
+    addHardId(item.id);
     session.currentHadWrong = true;
     saveSession();
     const diff = core.compareWords(answer, item.en);
@@ -501,6 +582,24 @@
     renderCurrentQuestion();
   }
 
+  function startHardPractice() {
+    const hardIds = getHardIds().filter(id => sentenceMap.has(id));
+    showPracticeOnly();
+    if (!hardIds.length) {
+      practiceSection.innerHTML = `
+        <div class="practice-complete">
+          <h2>还没有不会的句子</h2>
+          <p>在句子旁边点“不会”，这里就会出现专练入口。</p>
+          <div class="practice-actions">
+            <button class="practice-btn ghost" data-action="home">返回复习测试</button>
+          </div>
+        </div>`;
+      practiceSection.querySelector('[data-action="home"]').onclick = showPracticeHome;
+      return;
+    }
+    startSession('typing', hardIds, 'hard', hardIds.length, 'ordered');
+  }
+
   function renderRoundComplete() {
     stopPracticeActivity();
     const reviewIds = [...new Set(session.mode === 'speaking' ? session.roundReviewIds : session.roundWrongIds)];
@@ -532,4 +631,6 @@
     };
     saveSession();
   }
+
+  window.HomeEnglishPractice = { showPracticeHome, startHardPractice };
 })();

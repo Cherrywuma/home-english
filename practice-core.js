@@ -255,6 +255,49 @@
     });
   }
 
+  function setSentenceMembership(ids, id, enabled) {
+    const cleanId = String(id || '').trim();
+    const set = new Set((Array.isArray(ids) ? ids : []).map(value => String(value)).filter(Boolean));
+    if (!cleanId) return [...set];
+    if (enabled) set.add(cleanId);
+    else set.delete(cleanId);
+    return [...set];
+  }
+
+  function getSentenceStatus(id, hardIds, masteredIds) {
+    const cleanId = String(id || '');
+    const hard = new Set((Array.isArray(hardIds) ? hardIds : []).map(value => String(value)));
+    const mastered = new Set((Array.isArray(masteredIds) ? masteredIds : []).map(value => String(value)));
+    if (hard.has(cleanId)) return 'hard';
+    if (mastered.has(cleanId)) return 'mastered';
+    return 'new';
+  }
+
+  function createSceneProgress(itemIds, hardIds, masteredIds) {
+    const ids = Array.isArray(itemIds) ? itemIds.map(value => String(value)) : [];
+    const hard = new Set((Array.isArray(hardIds) ? hardIds : []).map(value => String(value)));
+    const mastered = new Set((Array.isArray(masteredIds) ? masteredIds : []).map(value => String(value)));
+    const hardCount = ids.filter(id => hard.has(id)).length;
+    const masteredCount = ids.filter(id => mastered.has(id)).length;
+    return {
+      total: ids.length,
+      hard: hardCount,
+      mastered: masteredCount,
+      remaining: Math.max(0, ids.length - masteredCount)
+    };
+  }
+
+  function pickRandomUnmasteredScene(scenes, masteredIds, randomFn) {
+    const mastered = new Set((Array.isArray(masteredIds) ? masteredIds : []).map(value => String(value)));
+    const pool = (Array.isArray(scenes) ? scenes : []).filter(scene =>
+      scene && Array.isArray(scene.itemIds) && scene.itemIds.some(id => !mastered.has(String(id)))
+    );
+    if (!pool.length) return null;
+    const rng = randomFn || Math.random;
+    const index = Math.min(pool.length - 1, Math.floor(rng() * pool.length));
+    return pool[index];
+  }
+
   return {
     normalizeAnswer,
     normalizeContractions,
@@ -270,6 +313,10 @@
     findDictionaryEntry,
     pickRandomDictionaryEntry,
     validateSceneWords,
-    sceneWordsMatchQuery
+    sceneWordsMatchQuery,
+    setSentenceMembership,
+    getSentenceStatus,
+    createSceneProgress,
+    pickRandomUnmasteredScene
   };
 });
