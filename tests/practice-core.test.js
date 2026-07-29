@@ -1,4 +1,6 @@
 const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 const core = require('../practice-core');
 
 function test(name, fn) {
@@ -195,4 +197,13 @@ test('reports missing dictionary fields by term', () => {
   assert.deepEqual(result, [
     { term: 'boarding pass', missing: ['explain', 'note'] }
   ]);
+});
+
+test('includes the second Germany first-week scene batch in the page data', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('德国酒店入住'));
+  assert.ok(html.includes('德国超市买东西'));
+  assert.ok(html.includes('room key'));
+  assert.ok(html.includes('bottle deposit'));
 });
