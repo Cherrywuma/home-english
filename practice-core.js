@@ -209,6 +209,27 @@
     return nextIndex;
   }
 
+  function createDictionaryMap(words) {
+    const map = new Map();
+    (Array.isArray(words) ? words : []).forEach(word => {
+      if (!word || !word.term) return;
+      map.set(String(word.term).toLowerCase(), word);
+    });
+    return map;
+  }
+
+  function findDictionaryEntry(words, term) {
+    return createDictionaryMap(words).get(String(term || '').toLowerCase()) || null;
+  }
+
+  function pickRandomDictionaryEntry(words, randomFn) {
+    const entries = Array.isArray(words) ? words.filter(word => word && word.term) : [];
+    if (!entries.length) return null;
+    const rng = randomFn || Math.random;
+    const index = Math.min(entries.length - 1, Math.floor(rng() * entries.length));
+    return entries[index];
+  }
+
   return {
     normalizeAnswer,
     normalizeContractions,
@@ -219,6 +240,9 @@
     applySpeechTranscript,
     getSpeechRecognitionConstructor,
     createQuestionIds,
-    getPracticeNavigationIndex
+    getPracticeNavigationIndex,
+    createDictionaryMap,
+    findDictionaryEntry,
+    pickRandomDictionaryEntry
   };
 });

@@ -121,3 +121,43 @@ test('practice navigation can move backward and forward within bounds', () => {
   assert.equal(core.getPracticeNavigationIndex(0, -1, 3), 0);
   assert.equal(core.getPracticeNavigationIndex(2, 1, 3), 3);
 });
+
+test('builds a dictionary map from hand-written scene word notes', () => {
+  const map = core.createDictionaryMap([
+    {
+      term: 'broom',
+      zh: '扫帚',
+      explain: 'A tool used to sweep the floor.',
+      example: 'I use a broom to sweep the floor.'
+    },
+    {
+      term: 'trash can',
+      zh: '垃圾桶',
+      explain: 'A container for trash.',
+      example: 'Throw it into the trash can.'
+    }
+  ]);
+  assert.equal(map.get('broom').zh, '扫帚');
+  assert.equal(map.get('trash can').example, 'Throw it into the trash can.');
+});
+
+test('finds dictionary entries case-insensitively', () => {
+  const words = [
+    {
+      term: 'water stain',
+      zh: '水渍',
+      explain: 'A mark left by water.',
+      example: 'There is a water stain near the door.'
+    }
+  ];
+  assert.equal(core.findDictionaryEntry(words, 'Water Stain').zh, '水渍');
+});
+
+test('picks a deterministic random dictionary word', () => {
+  const words = [
+    { term: 'floor', zh: '地面', explain: 'Surface.', example: 'The floor is dirty.' },
+    { term: 'mop', zh: '拖把', explain: 'Tool.', example: 'I mop the floor.' },
+    { term: 'crumbs', zh: '碎屑', explain: 'Small pieces.', example: 'There are crumbs on the floor.' }
+  ];
+  assert.equal(core.pickRandomDictionaryEntry(words, () => 0.5).term, 'mop');
+});

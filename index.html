@@ -138,14 +138,24 @@
   .row .txt{flex:1;min-width:0;}
   .row .en{font-size:1.02rem;font-weight:600;color:var(--ink);letter-spacing:.01em;}
   .row .zh{font-size:.86rem;color:var(--muted);margin-top:2px;}
+  .dict-word{
+    border:none;background:#FFF2D7;color:#6C4A12;border-radius:8px;
+    padding:1px 5px;margin:0 1px;font:inherit;font-weight:750;cursor:pointer;
+  }
+  .dict-word:active{transform:scale(.97);}
+  .wordbank{display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:#FFFDF8;border-top:1px solid var(--line);}
+  .wordchip{
+    border:1px solid #ECD8A6;background:#FFF8E8;color:#6C4A12;border-radius:999px;
+    padding:7px 11px;font-family:var(--body);font-size:.78rem;font-weight:700;cursor:pointer;
+  }
 
   .empty{text-align:center;color:var(--muted);padding:50px 0;font-size:.95rem;}
 
   /* 查词 */
   .lookupbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;}
-  #lookupBtn{flex:0 0 auto;font-family:var(--body);font-size:.84rem;font-weight:600;color:var(--accent);
+  #lookupBtn,#randomSceneBtn,#randomWordBtn{flex:0 0 auto;font-family:var(--body);font-size:.84rem;font-weight:600;color:var(--accent);
     background:var(--accent-soft);border:1px solid #CFE6DC;border-radius:999px;padding:8px 14px;cursor:pointer;}
-  #lookupBtn:active{transform:scale(.97);}
+  #lookupBtn:active,#randomSceneBtn:active,#randomWordBtn:active{transform:scale(.97);}
   .lk-hint{font-size:.76rem;color:var(--muted);}
   .lookup{display:none;margin-top:10px;}
   .lk-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;box-shadow:var(--shadow);}
@@ -157,6 +167,8 @@
   .lk-save{color:var(--accent);background:var(--accent-soft);}
   .lk-save:disabled{color:var(--muted);background:var(--line);}
   .lk-note{font-size:.72rem;color:#A89F90;margin-top:10px;}
+  .lk-example{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--accent-soft);color:var(--ink);font-weight:650;}
+  .lk-source{margin-top:8px;font-size:.74rem;color:var(--muted);}
   .lk-load{color:var(--muted);font-size:.9rem;padding:6px 2px;}
   .lk-err{color:#B0573A;font-size:.9rem;}
   .row .del{flex:0 0 auto;align-self:center;border:none;background:none;color:#C4BBAE;font-size:1rem;cursor:pointer;padding:4px 6px;}
@@ -284,6 +296,8 @@
     </div>
     <div class="lookupbar">
       <button id="lookupBtn">🔎 联网查词 / 翻译</button>
+      <button id="randomSceneBtn" type="button">🎲 随机场景</button>
+      <button id="randomWordBtn" type="button">🎯 随机单词</button>
       <span class="lk-hint">本地没有的词点这里查，中↔英都行（如「粽子」）</span>
     </div>
     <div id="lookup" class="lookup"></div>
@@ -1185,6 +1199,29 @@ const DATA = [
         ["The bathroom needs scrubbing.","厕所得刷一刷。"],
         ["I'll handle the kitchen, you take the bedroom.","我弄厨房，你收拾卧室。"],
       ]},
+      { name:"扫地拖地串联", en:"Sweeping & Mopping", sceneWords:[
+        { term:"floor", zh:"地面；地板", explain:"The flat surface you walk on inside a room.", example:"The floor is dirty.", note:"家里、办公室、车间脚下的地面都可以说 floor。" },
+        { term:"dirty floor", zh:"脏地面", explain:"A floor with dust, stains, crumbs, or trash on it.", example:"The dirty floor needs to be cleaned.", note:"描述状态时很自然：The floor is dirty." },
+        { term:"broom", zh:"扫帚", explain:"A tool used to sweep dust and trash from the floor.", example:"I use a broom to sweep the floor.", note:"用扫帚扫地，动词常用 sweep。" },
+        { term:"sweep", zh:"扫；扫地", explain:"To clean the floor with a broom.", example:"Please sweep the floor before you mop it.", note:"sweep the floor 是很常用的扫地表达。" },
+        { term:"dustpan", zh:"簸箕", explain:"A small flat container used to collect dust and trash after sweeping.", example:"Put the crumbs into the dustpan.", note:"扫完以后用 dustpan 把垃圾收起来。" },
+        { term:"mop", zh:"拖把；拖地", explain:"A cleaning tool for washing the floor, or the action of using it.", example:"I mop the floor with clean water.", note:"mop 既可以是名词“拖把”，也可以是动词“拖地”。" },
+        { term:"trash", zh:"垃圾", explain:"Things that are dirty, useless, or ready to be thrown away.", example:"There is trash near the table.", note:"美式英语里 trash 很常用；rubbish 更偏英式。" },
+        { term:"trash can", zh:"垃圾桶", explain:"A container for trash.", example:"Throw the trash into the trash can.", note:"也可以说 garbage can，但 trash can 很日常。" },
+        { term:"crumbs", zh:"食物碎屑", explain:"Tiny pieces of bread, cookies, or other dry food.", example:"There are crumbs on the floor.", note:"吃完饭或吃饼干后地上的小碎屑，常说 crumbs。" },
+        { term:"debris", zh:"碎屑；杂物", explain:"Small broken pieces or loose waste left on a surface.", example:"Sweep the debris toward the door.", note:"debris 比 crumbs 更泛，可以指碎片、碎屑、杂物。" },
+        { term:"dirty water", zh:"脏水", explain:"Water that has become unclean after washing or mopping.", example:"Do not spread dirty water across the clean floor.", note:"拖地后的水、清洗东西后的水都可以说 dirty water。" },
+        { term:"water stain", zh:"水渍", explain:"A mark left by water on the floor or another surface.", example:"There is a water stain near the door.", note:"水干了以后留下的痕迹，可以说 water stain。" },
+      ], items:[
+        ["The floor is dirty after dinner.","晚饭后，地面有点脏。"],
+        ["There are crumbs and small pieces of trash near the table.","桌子旁边有碎屑和小块垃圾。"],
+        ["I pick up the broom and sweep the floor from the corner to the door.","我拿起扫帚，从角落往门口扫地。"],
+        ["Then I use a dustpan to collect the trash.","然后我用簸箕把垃圾收起来。"],
+        ["I throw the trash into the trash can.","我把垃圾倒进垃圾桶里。"],
+        ["After sweeping, I use a mop to clean the floor again.","扫完以后，我再用拖把拖一遍地。"],
+        ["There is some dirty water on the floor, so I rinse the mop.","地上有一些脏水，所以我把拖把冲洗一下。"],
+        ["Finally, I wipe the water stain near the door and let the floor dry.","最后，我擦掉门口附近的水渍，让地面晾干。"],
+      ]},
       { name:"修理与故障", en:"Repairs", items:[
         ["The faucet is leaking.","水龙头漏水。"],
         ["The drain is clogged.","下水道堵了。"],
@@ -1691,7 +1728,9 @@ const DATA = [
 const SPK_SVG = '<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M16 9a4 4 0 0 1 0 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 const content = document.getElementById('content');
 const chipsBox = document.getElementById('chips');
+const dictCore = window.HomeEnglishPracticeCore;
 let allRows = [];
+let sceneWordEntries = [];
 
 // 总句数
 let total = 0;
@@ -1713,6 +1752,46 @@ function chip(label,color,onclick,active){
   return b;
 }
 
+function escapeRegExp(text){
+  return String(text).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+}
+
+function addTextWithDictionary(container,text,words){
+  container.textContent='';
+  if(!words||!words.length){container.textContent=text;return;}
+  const terms=words.map(w=>w.term).sort((a,b)=>b.length-a.length);
+  const pattern=new RegExp(`\\b(${terms.map(escapeRegExp).join('|')})\\b`,'gi');
+  let last=0,match;
+  while((match=pattern.exec(text))!==null){
+    if(match.index>last)container.appendChild(document.createTextNode(text.slice(last,match.index)));
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='dict-word';
+    btn.dataset.term=match[0].toLowerCase();
+    btn.textContent=match[0];
+    btn.onclick=e=>{e.stopPropagation();showLocalDictionary(words,btn.dataset.term);};
+    container.appendChild(btn);
+    last=pattern.lastIndex;
+  }
+  if(last<text.length)container.appendChild(document.createTextNode(text.slice(last)));
+}
+
+function addWordBank(list,words){
+  if(!words||!words.length)return;
+  const bank=document.createElement('div');
+  bank.className='wordbank';
+  words.forEach(word=>{
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='wordchip';
+    btn.dataset.term=word.term.toLowerCase();
+    btn.textContent=`${word.term} / ${word.zh}`;
+    btn.onclick=e=>{e.stopPropagation();showLocalDictionary(words,btn.dataset.term);};
+    bank.appendChild(btn);
+  });
+  list.appendChild(bank);
+}
+
 // build sections
 DATA.forEach((cat,ci)=>{
   const sec=document.createElement('section');
@@ -1730,13 +1809,17 @@ DATA.forEach((cat,ci)=>{
 
     const list=document.createElement('div');list.className='list';
     const rowEls=[];
+    if(sub.sceneWords)sceneWordEntries.push({catIndex:ci,catName:cat.name,subName:sub.name,subEl,words:sub.sceneWords});
     sub.items.forEach(([en,zh])=>{
       const row=document.createElement('div');row.className='row';
-      row.innerHTML=`<div class="spk">${SPK_SVG}</div><div class="txt"><div class="en">${en}</div><div class="zh">${zh}</div></div>`;
+      row.innerHTML=`<div class="spk">${SPK_SVG}</div><div class="txt"><div class="en"></div><div class="zh"></div></div>`;
+      addTextWithDictionary(row.querySelector('.en'),en,sub.sceneWords);
+      row.querySelector('.zh').textContent=zh;
       row.onclick=()=>{stopAll();speakOne(en,row);};
       list.appendChild(row);
       rowEls.push(row);
     });
+    addWordBank(list,sub.sceneWords);
     subEl.appendChild(list);
     playBtn.onclick=()=>{
       if(playBtn.classList.contains('playing')){stopAll();return;}
@@ -1869,6 +1952,52 @@ function renderSaved(){
 const q=document.getElementById('q');
 const lookup=document.getElementById('lookup');
 const lookupBtn=document.getElementById('lookupBtn');
+const randomSceneBtn=document.getElementById('randomSceneBtn');
+const randomWordBtn=document.getElementById('randomWordBtn');
+
+function showLocalDictionary(words,term){
+  const word=dictCore.findDictionaryEntry(words,term);
+  if(!word)return;
+  lookup.style.display='block';
+  lookup.innerHTML=
+    `<div class="lk-card">
+      <div class="lk-en">${word.term}</div>
+      <div class="lk-zh">${word.zh}</div>
+      <div class="lk-note">${word.explain}</div>
+      <div class="lk-example">${word.example}</div>
+      <div class="lk-source">${word.note||'人工整理的生活场景词条。'}</div>
+      <div class="lk-act">
+        <button class="lk-spk">🔊 朗读</button>
+        <button class="lk-save">⭐ 收藏</button>
+      </div>
+    </div>`;
+  const card=lookup.querySelector('.lk-card');
+  lookup.querySelector('.lk-spk').onclick=()=>{stopAll();speakOne(`${word.term}. ${word.example}`,card);};
+  lookup.querySelector('.lk-save').onclick=function(){
+    const a=getSaved();
+    if(!a.some(x=>x[0]===word.term)){a.unshift([word.term,`${word.zh}｜${word.example}`]);setSaved(a);renderSaved();}
+    this.textContent='✓ 已收藏';this.disabled=true;
+  };
+  window.scrollTo({top:lookup.offsetTop-12,behavior:'smooth'});
+}
+
+function showRandomScene(){
+  if(!sceneWordEntries.length)return;
+  const scene=sceneWordEntries[Math.floor(Math.random()*sceneWordEntries.length)];
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.cat').forEach(sec=>{sec.style.display=(String(sec.dataset.cat)===String(scene.catIndex))?'':'none';});
+  allRows.forEach(r=>{r.row.style.display='';if(r.sub)r.sub.style.display='';});
+  document.getElementById('lookup').style.display='none';
+  window.scrollTo({top:scene.subEl.offsetTop-60,behavior:'smooth'});
+}
+
+function showRandomWord(){
+  const allWords=sceneWordEntries.flatMap(scene=>scene.words);
+  const word=dictCore.pickRandomDictionaryEntry(allWords);
+  if(!word)return;
+  showLocalDictionary(allWords,word.term);
+}
+
 async function translate(){
   const text=q.value.trim();
   if(!text)return;
@@ -1906,6 +2035,8 @@ async function translate(){
   }
 }
 lookupBtn.onclick=translate;
+randomSceneBtn.onclick=showRandomScene;
+randomWordBtn.onclick=showRandomWord;
 q.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();translate();}});
 
 /* ---------- 分类筛选 ---------- */
