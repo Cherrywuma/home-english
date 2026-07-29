@@ -1044,6 +1044,28 @@ const DATA = [
         ["Do you take mobile payment?","能手机付款吗？"],
         ["Keep the change.","不用找了。"],
       ]},
+      { name:"德国打车接送", en:"Taxi & Pickup in Germany", sceneWords:[
+        {term:"pickup point",zh:"上车点 / 接人点",explain:"The exact place where a driver should pick you up.",example:"I am waiting at the pickup point.",note:"机场、车站、展馆门口都很实用。"},
+        {term:"drop-off point",zh:"下车点",explain:"The place where a driver leaves you.",example:"The drop-off point is near the main entrance.",note:"drop off 是送到某处，drop-off point 是下车点。"},
+        {term:"license plate",zh:"车牌号",explain:"The number and letters on a car.",example:"Could you tell me the license plate number?",note:"找车时比只看车型更稳。"},
+        {term:"main entrance",zh:"正门 / 主入口",explain:"The most important or front entrance of a building.",example:"Please pick me up at the main entrance.",note:"约客户或司机接送时常用。"},
+        {term:"terminal",zh:"航站楼",explain:"A building at an airport where flights arrive and leave.",example:"I am at Terminal 1.",note:"机场接送一定要说清 terminal。"},
+        {term:"ride",zh:"一程车 / 打车",explain:"A trip in a car, taxi, or app car.",example:"I booked a ride to the hotel.",note:"ride 比 taxi 更宽，可以包括约车软件。"},
+        {term:"driver",zh:"司机",explain:"The person driving the car.",example:"I cannot find the driver.",note:"联系不到司机时能直接用。"},
+        {term:"traffic jam",zh:"堵车",explain:"A line of slow or stopped vehicles.",example:"There is a traffic jam on the way.",note:"比 traffic is bad 更具体一点。"},
+        {term:"cash only",zh:"只收现金",explain:"A place or driver accepts only cash.",example:"Is it cash only?",note:"上车前问清楚付款方式。"},
+        {term:"receipt",zh:"小票 / 收据",explain:"Proof that you paid.",example:"Could I have a receipt, please?",note:"出差报销时要记得问。"}
+      ], items:[
+        ["I am waiting at the pickup point near Terminal 1.","我在 1 号航站楼附近的上车点等。"],
+        ["Could you tell me the license plate number?","能告诉我车牌号吗？"],
+        ["Please pick me up at the main entrance.","请在正门接我。"],
+        ["The drop-off point is near the hotel lobby.","下车点在酒店大堂附近。"],
+        ["I booked a ride to the customer site.","我约了一辆车去客户现场。"],
+        ["I cannot find the driver. Could you call me?","我找不到司机，能给我打电话吗？"],
+        ["There is a traffic jam, so I may be ten minutes late.","路上堵车，所以我可能会晚十分钟。"],
+        ["Is it cash only, or can I pay by card?","只能付现金吗，还是可以刷卡？"],
+        ["Could I have a receipt, please?","能给我一张收据吗？"]
+      ]},
       { name:"公交地铁", en:"Bus & Subway", items:[
         ["Which bus goes downtown?","哪路车去市区？"],
         ["Does this train stop at the museum?","这趟车在博物馆停吗？"],
@@ -1109,6 +1131,28 @@ const DATA = [
         ["I'm using mobile data.","我在用流量。"],
         ["My data is almost used up.","我流量快用完了。"],
         ["Let me look it up online.","我上网查一下。"],
+      ]},
+      { name:"德国手机上网", en:"Mobile Internet in Germany", sceneWords:[
+        {term:"SIM card",zh:"手机卡",explain:"A small card that connects your phone to a mobile network.",example:"I need a SIM card for Germany.",note:"也可以说 local SIM card，表示当地手机卡。"},
+        {term:"eSIM",zh:"电子 SIM 卡",explain:"A digital SIM that can be installed on a phone without a physical card.",example:"Does my phone support eSIM?",note:"不确定手机支不支持时就这样问。"},
+        {term:"mobile data",zh:"手机流量",explain:"Internet service on your phone without Wi-Fi.",example:"My mobile data is not working.",note:"data 在手机语境里经常指流量。"},
+        {term:"data plan",zh:"流量套餐",explain:"A package of mobile internet service.",example:"Which data plan is good for one week?",note:"这里只问适合多久，不承诺具体价格或流量。"},
+        {term:"coverage",zh:"信号覆盖",explain:"The area where a mobile network works.",example:"Is the coverage good near the hotel?",note:"信号好不好可以问 coverage。"},
+        {term:"hotspot",zh:"热点",explain:"A phone or device sharing internet with another device.",example:"Can I use your hotspot for a minute?",note:"临时借网时很实用。"},
+        {term:"roaming",zh:"漫游",explain:"Using your phone service outside your home network area.",example:"Is roaming turned on?",note:"不确定为什么没网时可以检查 roaming。"},
+        {term:"activate",zh:"激活",explain:"To start a SIM card or service so it works.",example:"How do I activate this SIM card?",note:"买卡后不能用，先问 activate。"},
+        {term:"QR code",zh:"二维码",explain:"A square code that a phone can scan.",example:"Should I scan this QR code for the eSIM?",note:"eSIM 常会用到 QR code。"},
+        {term:"no signal",zh:"没信号",explain:"The phone cannot connect to the network.",example:"I have no signal here.",note:"这句简单直接，路上很常用。"}
+      ], items:[
+        ["I need a SIM card for Germany. Do you sell local SIM cards?","我需要一张德国手机卡，你们卖当地手机卡吗？"],
+        ["Does my phone support eSIM?","我的手机支持 eSIM 吗？"],
+        ["Which data plan is good for one week?","哪种流量套餐适合用一周？"],
+        ["How do I activate this SIM card?","这张手机卡怎么激活？"],
+        ["Should I scan this QR code for the eSIM?","我需要扫这个二维码来安装 eSIM 吗？"],
+        ["My mobile data is not working. Could you help me check it?","我的手机流量不能用，能帮我看一下吗？"],
+        ["Is the coverage good near the hotel and the customer site?","酒店和客户现场附近信号好吗？"],
+        ["I have no signal here. Can I use your hotspot for a minute?","我这里没信号，可以临时用一下你的热点吗？"],
+        ["Is roaming turned on, or should I turn it off?","漫游开着了吗，还是我应该关掉？"]
       ]},
     ]
   },
@@ -1705,6 +1749,28 @@ const DATA = [
         ["I need to cancel my appointment.","我要取消预约。"],
         ["Can we reschedule for tomorrow?","能改到明天吗？"],
         ["Thanks for coming on short notice.","谢谢你这么快赶来。"],
+      ]},
+      { name:"德国药店求助", en:"At a Pharmacy in Germany", sceneWords:[
+        {term:"pharmacy",zh:"药店",explain:"A shop where you can buy medicine and health items.",example:"Is there a pharmacy nearby?",note:"在德国看到 Apotheke，英语里可以解释成 pharmacy。"},
+        {term:"sore throat",zh:"嗓子疼",explain:"Pain or irritation in the throat.",example:"I have a sore throat.",note:"说症状就好，不需要自己下诊断。"},
+        {term:"runny nose",zh:"流鼻涕",explain:"When liquid keeps coming from your nose.",example:"I have a runny nose.",note:"感冒不舒服时很常用。"},
+        {term:"cough",zh:"咳嗽",explain:"A sudden push of air from the throat or chest.",example:"I have a cough.",note:"名词和动词都可以用 cough。"},
+        {term:"headache",zh:"头痛",explain:"Pain in your head.",example:"I have a headache.",note:"I have a headache. 简单够用。"},
+        {term:"stomachache",zh:"胃痛 / 肚子痛",explain:"Pain in the stomach or belly.",example:"I have a stomachache.",note:"不确定是胃还是肚子，先这样说。"},
+        {term:"allergy",zh:"过敏",explain:"A bad reaction to food, medicine, or something in the air.",example:"I have an allergy to this medicine.",note:"有已知过敏一定要说清楚。"},
+        {term:"dosage",zh:"剂量 / 用量",explain:"How much medicine to take and how often.",example:"Could you explain the dosage?",note:"买药后一定要问清怎么用。"},
+        {term:"prescription",zh:"处方",explain:"A doctor's written order for medicine.",example:"Do I need a prescription for this?",note:"有些药必须有医生处方。"},
+        {term:"bandage",zh:"绷带 / 创可贴类包扎用品",explain:"A strip or piece used to cover a small wound.",example:"Do you have a small bandage?",note:"小伤口买用品时能用。"}
+      ], items:[
+        ["Is there a pharmacy nearby?","附近有药店吗？"],
+        ["I have a sore throat and a runny nose.","我嗓子疼，还流鼻涕。"],
+        ["I have a cough, but I do not have a fever.","我有点咳嗽，但没有发烧。"],
+        ["I have a headache. Is there something mild I can buy?","我头痛，有没有温和一点的东西可以买？"],
+        ["I have a stomachache. Could you help me choose something?","我肚子痛，能帮我选一下吗？"],
+        ["I have an allergy to this medicine.","我对这种药过敏。"],
+        ["Do I need a prescription for this?","这个需要处方吗？"],
+        ["Could you explain the dosage slowly?","能慢慢给我说明一下用量吗？"],
+        ["Do you have a small bandage?","你们有小一点的绷带或创可贴吗？"]
       ]},
     ]
   },
