@@ -245,3 +245,14 @@ test('includes the fourth Germany first-week scene batch in the page data', () =
   assert.ok(html.includes('pickup point'));
   assert.ok(html.includes('sore throat'));
 });
+
+test('includes the fifth Germany first-week scene batch in the page data', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('德国行李出问题'));
+  assert.ok(html.includes('德国工厂参观'));
+  assert.ok(html.includes('德国咖啡面包店'));
+  assert.ok(html.includes('missing suitcase'));
+  assert.ok(html.includes('safety shoes'));
+  assert.ok(html.includes('pastry'));
+});

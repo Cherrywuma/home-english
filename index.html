@@ -529,6 +529,27 @@ const DATA = [
         ["Can we split the bill, or should one person pay first?","我们可以分开付吗，还是先由一个人付？"],
         ["Could I get a takeaway box for this?","这个能给我一个打包盒吗？"]
       ]},
+      { name:"德国咖啡面包店", en:"Cafe & Bakery in Germany", sceneWords:[
+        {term:"bakery",zh:"面包店",explain:"A shop that sells bread, pastries, and simple baked food.",example:"Is there a bakery nearby?",note:"德国路上很常见，早餐或赶路时很实用。"},
+        {term:"pastry",zh:"酥皮点心 / 甜点",explain:"A sweet or savory baked item.",example:"What kind of pastry is this?",note:"看不懂柜台里的东西时可以问。"},
+        {term:"croissant",zh:"可颂",explain:"A flaky crescent-shaped bread.",example:"Could I have one croissant?",note:"发音不用纠结，慢慢说对方通常能懂。"},
+        {term:"black coffee",zh:"黑咖啡",explain:"Coffee without milk.",example:"Black coffee, please.",note:"不想加奶就这样说。"},
+        {term:"milk foam",zh:"奶泡",explain:"Foamed milk on top of coffee.",example:"Could I have a coffee with milk foam?",note:"点拿铁、卡布奇诺时可能听到。"},
+        {term:"to go",zh:"带走",explain:"Food or drink packed for taking away.",example:"To go, please.",note:"也可以说 takeaway，但 to go 更短。"},
+        {term:"for here",zh:"堂食",explain:"Food or drink you will have inside the place.",example:"For here, please.",note:"店员问 for here or to go 时能听懂。"},
+        {term:"small cup",zh:"小杯",explain:"A smaller serving size for a drink.",example:"A small cup is enough.",note:"不想喝太多时很自然。"},
+        {term:"not too sweet",zh:"不要太甜",explain:"A request for less sweetness.",example:"Could you make it not too sweet?",note:"甜品或饮料都能用。"},
+        {term:"card machine",zh:"刷卡机",explain:"A machine used for card payment.",example:"Is the card machine working?",note:"刷卡不成功时可以问。"}
+      ], items:[
+        ["Is there a bakery nearby? I just need something quick.","附近有面包店吗？我想随便买点快的。"],
+        ["What kind of pastry is this?","这是什么点心？"],
+        ["Could I have one croissant and a black coffee?","我要一个可颂和一杯黑咖啡。"],
+        ["A small cup is enough for me.","小杯就够了。"],
+        ["Could you make it not too sweet?","能不要太甜吗？"],
+        ["Is this for here or to go?","这是堂食还是带走？"],
+        ["To go, please. I have to catch a train.","带走，谢谢。我得赶火车。"],
+        ["Is the card machine working, or should I pay in cash?","刷卡机能用吗，还是我应该付现金？"]
+      ]},
       { name:"外卖与零食", en:"Takeout & Snacks", items:[
         ["Let's order takeout tonight.","今晚点外卖吧。"],
         ["What are you in the mood for?","你想吃点啥？"],
@@ -1206,6 +1227,28 @@ const DATA = [
         ["We brought a small sample for you to check.","我们带了一个小样品给您看。"],
         ["I will follow up by email after the meeting.","会后我会用邮件跟进。"]
       ]},
+      { name:"德国工厂参观", en:"Factory Visit in Germany", sceneWords:[
+        {term:"safety shoes",zh:"安全鞋",explain:"Protective shoes worn in a factory or workshop.",example:"Do I need safety shoes for the factory tour?",note:"进车间前常会被要求穿。"},
+        {term:"safety glasses",zh:"护目镜",explain:"Protective glasses for your eyes.",example:"Should I wear safety glasses here?",note:"进加工区或测试区时很常见。"},
+        {term:"production line",zh:"生产线",explain:"A set of machines and workers making products step by step.",example:"Could we see the production line?",note:"参观工厂最常用的词之一。"},
+        {term:"workshop",zh:"车间",explain:"An area where work or manufacturing is done.",example:"Is this the main workshop?",note:"factory 是工厂，workshop 是车间。"},
+        {term:"quality check",zh:"质量检查",explain:"A process to check whether something is made correctly.",example:"Where do you do the quality check?",note:"比 quality control 更口语一点。"},
+        {term:"machine layout",zh:"机器布局",explain:"The way machines are arranged in a factory.",example:"Could you explain the machine layout?",note:"看现场布置时很实用。"},
+        {term:"cycle time",zh:"循环时间 / 单次节拍",explain:"The time needed to finish one repeated production step.",example:"What is the cycle time for this process?",note:"技术沟通里常见，但不替客户填具体参数。"},
+        {term:"downtime",zh:"停机时间",explain:"Time when a machine is not running.",example:"How much downtime does this usually cause?",note:"问影响时很实用。"},
+        {term:"maintenance team",zh:"维修团队",explain:"The people who keep machines working.",example:"Can the maintenance team join this discussion?",note:"谈设备问题时常要请维修人员一起听。"},
+        {term:"take notes",zh:"做记录",explain:"To write down important information.",example:"I will take notes and check later.",note:"听不懂或细节多时，这句很稳。"}
+      ], items:[
+        ["Do I need safety shoes and safety glasses for the factory tour?","参观工厂需要穿安全鞋和戴护目镜吗？"],
+        ["Could we see the production line first?","我们可以先看一下生产线吗？"],
+        ["Is this the main workshop?","这是主要车间吗？"],
+        ["Could you explain the machine layout?","能给我说明一下机器布局吗？"],
+        ["Where do you do the quality check?","你们在哪里做质量检查？"],
+        ["What is the cycle time for this process?","这个工序的循环时间是多少？"],
+        ["How much downtime does this usually cause?","这个通常会造成多少停机时间？"],
+        ["Can the maintenance team join this discussion?","维修团队可以一起参加这个讨论吗？"],
+        ["I will take notes and check the details later.","我先做记录，细节回头再核对。"]
+      ]},
       { name:"请假与时间", en:"Time Off", items:[
         ["I'd like to take a day off.","我想请一天假。"],
         ["I'm calling in sick today.","我今天请病假。"],
@@ -1640,6 +1683,28 @@ const DATA = [
         ["I have nothing to declare, but I can open my bag if needed.","我没有东西要申报，不过需要的话我可以打开行李。"],
         ["I have a connection this afternoon, so I need to move quickly.","我今天下午还要转下一段，所以得快一点。"],
         ["Could you tell me where the arrival hall is?","请问到达大厅在哪里？"]
+      ]},
+      { name:"德国行李出问题", en:"Baggage Problems in Germany", sceneWords:[
+        {term:"missing suitcase",zh:"行李箱不见了",explain:"A suitcase that did not arrive or cannot be found.",example:"My suitcase is missing.",note:"到行李转盘等不到时，这句先说出来。"},
+        {term:"baggage tag",zh:"行李牌",explain:"The small tag or sticker used to track checked baggage.",example:"Here is my baggage tag.",note:"托运行李的小票或贴纸一定要留好。"},
+        {term:"baggage counter",zh:"行李服务柜台",explain:"A desk where airport staff help with baggage problems.",example:"Where is the baggage counter?",note:"找不到行李时先找这个柜台。"},
+        {term:"delayed baggage",zh:"延误行李",explain:"Checked baggage that arrives later than the passenger.",example:"I need to report delayed baggage.",note:"行李不是永久丢失，先按 delayed baggage 处理。"},
+        {term:"damaged suitcase",zh:"行李箱损坏",explain:"A suitcase that is broken or damaged.",example:"My suitcase was damaged during the flight.",note:"破损时尽量当场说清楚。"},
+        {term:"claim form",zh:"申报表 / 索赔表",explain:"A form used to report a problem and request help.",example:"Do I need to fill out a claim form?",note:"不用自己判断流程，直接问是否要填表。"},
+        {term:"delivery address",zh:"派送地址",explain:"The address where delayed baggage can be sent.",example:"This is my delivery address.",note:"填酒店地址时很有用。"},
+        {term:"contact number",zh:"联系电话",explain:"A phone number where someone can reach you.",example:"This is my contact number.",note:"如果刚换卡，要确认号码能接通。"},
+        {term:"reference number",zh:"查询编号 / 案件编号",explain:"A number used to track a report or case.",example:"Could I have the reference number?",note:"办完一定要拿这个号码，方便后续查询。"},
+        {term:"toiletry kit",zh:"洗漱应急包",explain:"A small set of basic bathroom items.",example:"Do you provide a toiletry kit?",note:"行李延误时可以礼貌询问有没有应急用品。"}
+      ], items:[
+        ["My suitcase is missing. It did not arrive on the belt.","我的行李箱不见了，没有从传送带出来。"],
+        ["Here is my baggage tag and boarding pass.","这是我的行李牌和登机牌。"],
+        ["Where is the baggage counter?","行李服务柜台在哪里？"],
+        ["I need to report delayed baggage.","我要登记行李延误。"],
+        ["My suitcase was damaged during the flight.","我的行李箱在飞行途中损坏了。"],
+        ["Do I need to fill out a claim form?","我需要填一张申报表吗？"],
+        ["This is my hotel address and contact number.","这是我的酒店地址和联系电话。"],
+        ["Could I have the reference number for this report?","能给我这个记录的查询编号吗？"],
+        ["Do you provide a toiletry kit while I wait for my bag?","等行李期间，你们有洗漱应急包吗？"]
       ]},
       { name:"德国火车地铁", en:"Trains & Local Transit in Germany", sceneWords:[
         {term:"train station",zh:"火车站",explain:"A place where trains arrive and leave.",example:"How do I get to the train station?",note:"station 是车站；bus station, train station 都可以这样搭配。"},
