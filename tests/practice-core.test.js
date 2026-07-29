@@ -256,3 +256,14 @@ test('includes the fifth Germany first-week scene batch in the page data', () =>
   assert.ok(html.includes('safety shoes'));
   assert.ok(html.includes('pastry'));
 });
+
+test('includes the sixth Germany first-week scene batch in the page data', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('听不懂时接话'));
+  assert.ok(html.includes('展会客户现场'));
+  assert.ok(html.includes('say that again'));
+  assert.ok(html.includes('make sure I understood'));
+  assert.ok(html.includes('booth'));
+  assert.ok(html.includes('technical brochure'));
+});
