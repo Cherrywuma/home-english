@@ -199,6 +199,22 @@ test('reports missing dictionary fields by term', () => {
   ]);
 });
 
+test('matches scene word notes during local search', () => {
+  const words = [
+    {
+      term: 'lost wallet',
+      zh: '钱包丢了',
+      explain: 'A wallet that you cannot find.',
+      example: 'I think I lost my wallet.',
+      note: '先说 I think 比直接下结论更自然。'
+    }
+  ];
+
+  assert.equal(core.sceneWordsMatchQuery(words, 'lost wallet'), true);
+  assert.equal(core.sceneWordsMatchQuery(words, '钱包'), true);
+  assert.equal(core.sceneWordsMatchQuery(words, 'train'), false);
+});
+
 test('includes the second Germany first-week scene batch in the page data', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
@@ -206,4 +222,15 @@ test('includes the second Germany first-week scene batch in the page data', () =
   assert.ok(html.includes('德国超市买东西'));
   assert.ok(html.includes('room key'));
   assert.ok(html.includes('bottle deposit'));
+});
+
+test('includes the third Germany first-week scene batch in the page data', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('德国餐厅点餐'));
+  assert.ok(html.includes('客户见面寒暄'));
+  assert.ok(html.includes('突发情况求助'));
+  assert.ok(html.includes('tap water'));
+  assert.ok(html.includes('business card'));
+  assert.ok(html.includes('lost wallet'));
 });

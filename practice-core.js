@@ -244,6 +244,17 @@
     }, []);
   }
 
+  function sceneWordsMatchQuery(words, query) {
+    const text = String(query || '').trim().toLowerCase();
+    if (!text) return false;
+    return (Array.isArray(words) ? words : []).some(word => {
+      if (!word) return false;
+      return ['term', 'zh', 'explain', 'example', 'note'].some(field =>
+        String(word[field] || '').toLowerCase().includes(text)
+      );
+    });
+  }
+
   return {
     normalizeAnswer,
     normalizeContractions,
@@ -258,6 +269,7 @@
     createDictionaryMap,
     findDictionaryEntry,
     pickRandomDictionaryEntry,
-    validateSceneWords
+    validateSceneWords,
+    sceneWordsMatchQuery
   };
 });
