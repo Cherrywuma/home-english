@@ -161,3 +161,38 @@ test('picks a deterministic random dictionary word', () => {
   ];
   assert.equal(core.pickRandomDictionaryEntry(words, () => 0.5).term, 'mop');
 });
+
+test('validates scene word notes have all dictionary fields', () => {
+  const result = core.validateSceneWords([
+    {
+      term: 'passport',
+      zh: '护照',
+      explain: 'The booklet you show when you enter another country.',
+      example: 'May I see your passport?',
+      note: '机场柜台、海关、酒店都可能会用到。'
+    },
+    {
+      term: 'platform',
+      zh: '站台',
+      explain: 'The place where you wait for a train.',
+      example: 'Which platform does the train leave from?',
+      note: '坐火车时比 station 更具体。'
+    }
+  ]);
+
+  assert.deepEqual(result, []);
+});
+
+test('reports missing dictionary fields by term', () => {
+  const result = core.validateSceneWords([
+    {
+      term: 'boarding pass',
+      zh: '登机牌',
+      example: 'Here is my boarding pass.'
+    }
+  ]);
+
+  assert.deepEqual(result, [
+    { term: 'boarding pass', missing: ['explain', 'note'] }
+  ]);
+});

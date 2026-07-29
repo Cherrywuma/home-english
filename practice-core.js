@@ -230,6 +230,20 @@
     return entries[index];
   }
 
+  function validateSceneWords(words) {
+    const required = ['term', 'zh', 'explain', 'example', 'note'];
+    return (Array.isArray(words) ? words : []).reduce((errors, word, index) => {
+      const missing = required.filter(field => !String((word || {})[field] || '').trim());
+      if (missing.length) {
+        errors.push({
+          term: String((word || {}).term || `#${index + 1}`),
+          missing
+        });
+      }
+      return errors;
+    }, []);
+  }
+
   return {
     normalizeAnswer,
     normalizeContractions,
@@ -243,6 +257,7 @@
     getPracticeNavigationIndex,
     createDictionaryMap,
     findDictionaryEntry,
-    pickRandomDictionaryEntry
+    pickRandomDictionaryEntry,
+    validateSceneWords
   };
 });
