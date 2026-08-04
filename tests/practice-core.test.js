@@ -279,26 +279,26 @@ test('reads hand-written sentence study notes from array metadata', () => {
   assert.deepEqual(notes.sentence, ['Grab the ... and ...']);
 });
 
-test('infers study notes for older plain sentences', () => {
+test('does not invent study notes for older plain sentences', () => {
   const notes = core.getSentenceStudyNotes([
     'Pass me the remote.',
     '把遥控器递给我。'
   ]);
 
-  assert.ok(notes.key.includes('remote'));
-  assert.ok(notes.power.includes('pass'));
+  assert.deepEqual(notes.key, []);
+  assert.deepEqual(notes.power, []);
   assert.deepEqual(notes.sentence, []);
 });
 
-test('uses local scene words as inferred key vocabulary', () => {
+test('does not turn scene words into sentence tags without hand-written metadata', () => {
   const notes = core.getSentenceStudyNotes(
     ['Could I have the receipt, please?', '能给我小票吗？'],
     [{ term: 'receipt', zh: '小票' }]
   );
 
-  assert.ok(notes.key.includes('receipt'));
-  assert.ok(notes.power.includes('could I have'));
-  assert.ok(notes.sentence.includes('Could I have ...?'));
+  assert.deepEqual(notes.key, []);
+  assert.deepEqual(notes.power, []);
+  assert.deepEqual(notes.sentence, []);
 });
 
 test('does not invent a universal sentence when there is no reusable frame', () => {
@@ -307,7 +307,7 @@ test('does not invent a universal sentence when there is no reusable frame', () 
     '饭好了。'
   ]);
 
-  assert.ok(notes.key.includes('dinner'));
+  assert.deepEqual(notes.key, []);
   assert.deepEqual(notes.sentence, []);
 });
 
@@ -408,6 +408,16 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('What is the dosage for an adult?'));
   assert.ok(html.includes('手机没网和付款失败'));
   assert.ok(html.includes('The payment failed, but the money may have been deducted.'));
+  assert.ok(html.includes('Laundry from Basket to Closet'));
+  assert.ok(html.includes('Put all the dirty clothes in the laundry basket first.'));
+  assert.ok(html.includes('Neighbor Noise and Upstairs Leak'));
+  assert.ok(html.includes('There is water leaking through the ceiling.'));
+  assert.ok(html.includes('Talking with a Landlord'));
+  assert.ok(html.includes('Does the rent include utility bills?'));
+  assert.ok(html.includes('Asking for Leave from School'));
+  assert.ok(html.includes('I need to ask for sick leave for him today.'));
+  assert.ok(html.includes('Explaining a Haircut'));
+  assert.ok(html.includes('Please do not cut it too short.'));
 });
 
 test('page stays usable without external font cdn links', () => {

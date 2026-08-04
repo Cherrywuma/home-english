@@ -308,90 +308,18 @@
     return (Array.isArray(pool) ? pool : []).filter(item => item && hard.has(String(item.id)));
   }
 
-  const STOP_WORDS = new Set([
-    'a', 'an', 'and', 'are', 'at', 'be', 'before', 'for', 'from', 'have', 'here',
-    'i', 'if', 'in', 'is', 'it', 'me', 'my', 'of', 'on', 'or', 'please', 'so',
-    'the', 'there', 'this', 'to', 'we', 'you', 'your'
-  ]);
-
-  const POWER_PATTERNS = [
-    ['could i have', 'Could I have ...?', 'could I have'],
-    ['could you', 'Could you ...?', 'could you'],
-    ['can i', 'Can I ...?', 'can I'],
-    ['can you', 'Can you ...?', 'can you'],
-    ['i need to', 'I need to ...', 'I need to'],
-    ['i have to', 'I have to ...', 'I have to'],
-    ["i'd like to", "I'd like to ...", "I'd like to"],
-    ['let me', 'Let me ...', 'let me'],
-    ["let's", "Let's ...", "let's"],
-    ["don't", "Don't ...", "don't"],
-    ['take out', '', 'take out'],
-    ['put back', '', 'put back'],
-    ['pick up', '', 'pick up'],
-    ['throw away', '', 'throw away'],
-    ['turn off', '', 'turn off'],
-    ['turn on', '', 'turn on'],
-    ['pass', '', 'pass'],
-    ['bring', '', 'bring'],
-    ['put', '', 'put'],
-    ['take', '', 'take'],
-    ['get', '', 'get'],
-    ['make', '', 'make'],
-    ['add', '', 'add'],
-    ['pour', '', 'pour'],
-    ['cut', '', 'cut'],
-    ['rinse', '', 'rinse'],
-    ['wipe', '', 'wipe'],
-    ['sweep', '', 'sweep']
-  ];
-
   function unique(values) {
     return [...new Set((Array.isArray(values) ? values : [])
       .map(value => String(value || '').trim())
       .filter(Boolean))];
   }
 
-  function inferKeyWords(text, sceneWords) {
-    const normalized = normalizeAnswer(text);
-    const fromScene = unique((Array.isArray(sceneWords) ? sceneWords : [])
-      .filter(word => word && word.term && normalized.includes(normalizeAnswer(word.term)))
-      .map(word => word.term));
-    if (fromScene.length) return fromScene.slice(0, 3);
-
-    return unique(tokenize(text)
-      .map(word => word.replace(/'s$/, ''))
-      .filter(word => word.length > 3 && !STOP_WORDS.has(word) && !POWER_PATTERNS.some(([pattern]) => pattern.split(' ').includes(word)))
-      .slice(-3));
-  }
-
-  function inferPowerNotes(text) {
-    const normalized = normalizeAnswer(text);
-    return POWER_PATTERNS
-      .filter(([pattern]) => normalized.includes(pattern))
-      .map(([, frame, label]) => label)
-      .slice(0, 2);
-  }
-
-  function inferSentenceFrames(text) {
-    const normalized = normalizeAnswer(text);
-    const hit = POWER_PATTERNS.find(([pattern]) => normalized.includes(pattern));
-    return hit && hit[1] ? [hit[1]] : [];
-  }
-
-  function getSentenceStudyNotes(item, sceneWords) {
+  function getSentenceStudyNotes(item) {
     const meta = Array.isArray(item) ? item[2] : item && item.notes;
-    const text = Array.isArray(item) ? item[0] : item && item.en;
-    const manual = {
+    return {
       key: unique(meta && meta.key),
       power: unique(meta && meta.power),
       sentence: unique(meta && meta.sentence)
-    };
-    if (manual.key.length || manual.power.length || manual.sentence.length) return manual;
-
-    return {
-      key: inferKeyWords(text, sceneWords),
-      power: inferPowerNotes(text),
-      sentence: inferSentenceFrames(text)
     };
   }
 

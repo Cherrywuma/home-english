@@ -147,8 +147,10 @@
   .study-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;}
   .study-tag{
     display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 9px;
-    font-size:.72rem;font-weight:800;line-height:1.2;border:1px solid transparent;
+    font-family:var(--body);font-size:.72rem;font-weight:800;line-height:1.2;border:1px solid transparent;
   }
+  button.study-tag{cursor:pointer;}
+  button.study-tag:active{transform:scale(.97);}
   .study-tag.key{background:#FFF2D7;border-color:#ECD8A6;color:#6C4A12;}
   .study-tag.power{background:#E9F2FF;border-color:#CFE0F6;color:#285B8F;}
   .study-tag.sentence{background:#F3EAFE;border-color:#DDCCF1;color:#6A438F;}
@@ -342,7 +344,7 @@
   <footer>
     <b>怎么用：</b>每天挑一两个场景，点「朗读本节」边听边小声跟读，读熟了用搜索抽查自己。<br>
     <b>关于发音：</b>用的是你设备/浏览器自带的语音（iPhone 上 Safari 效果最稳，第一次需先点一下页面任意处才会出声）。换 en-US / en-GB 口音、调语速都在上面那一栏。<br>
-    <b>想加内容：</b>所有句子都在本文件底部的 <b>DATA</b> 里。普通句子用 <code>["English","中文"]</code>，需要重点词时可以在第三项加 <code>{key, power, sentence}</code>。
+    <b>想加内容：</b>所有句子都在本文件底部的 <b>DATA</b> 里。普通句子用 <code>["English","中文"]</code>；需要显示词汇时，先在本场景 <code>sceneWords</code> 写好英文和中文意思，再在第三项加 <code>{key, power, sentence}</code>。
   </footer>
 </div>
 
@@ -768,6 +770,27 @@ const DATA = [
         ["I will be home after six.","我六点以后在家。",{key:["home"],power:["after"],sentence:[]}],
         ["Could you record this maintenance request for me?","能帮我登记一下这个报修吗？",{key:["maintenance request"],power:["record"],sentence:["Could you ... for me?"]}],
       ]},
+      { name:"邻居噪音和楼上漏水", en:"Neighbor Noise and Upstairs Leak", sceneWords:[
+        {term:"neighbor",zh:"邻居",explain:"A person who lives near you.",example:"Our neighbor upstairs is making noise.",note:"楼上楼下邻居都可以说 neighbor。"},
+        {term:"upstairs",zh:"楼上",explain:"On a higher floor.",example:"The upstairs bathroom may be leaking.",note:"楼上漏水时很常用。"},
+        {term:"downstairs",zh:"楼下",explain:"On a lower floor.",example:"The downstairs neighbor came to talk to us.",note:"楼下邻居反映问题也能用。"},
+        {term:"leak through",zh:"渗下来；漏下来",explain:"To come through a wall or ceiling as water.",example:"Water is leaking through the ceiling.",note:"天花板渗水时很准确。"},
+        {term:"ceiling",zh:"天花板",explain:"The top inside surface of a room.",example:"There is a water stain on the ceiling.",note:"不是 roof，室内上方是 ceiling。"},
+        {term:"keep it down",zh:"小声点；别太吵",explain:"To make less noise.",example:"Could you keep it down a little?",note:"比 stop making noise 礼貌。"},
+        {term:"water stain",zh:"水印；水渍",explain:"A mark left by water.",example:"There is a water stain on the ceiling.",note:"墙面、天花板、地板都能用。"},
+      ], items:[
+        ["The upstairs neighbor is making a lot of noise.","楼上邻居声音很大。",{key:["upstairs neighbor","noise"],power:["a lot of"],sentence:[]}],
+        ["It has been going on for more than an hour.","已经持续一个多小时了。",{key:["hour"],power:["going on"],sentence:[]}],
+        ["Could you keep it down a little?","能稍微小声一点吗？",{key:["keep it down"],power:["a little"],sentence:["Could you keep it down a little?"]}],
+        ["We have a child sleeping at home.","家里有孩子在睡觉。",{key:["child","sleeping"],power:["at home"],sentence:[]}],
+        ["There is water leaking through the ceiling.","有水从天花板渗下来。",{key:["leaking through","ceiling"],power:["there is"],sentence:["There is water leaking through ..."]}],
+        ["The water stain is getting bigger.","水印越来越大了。",{key:["water stain"],power:["getting bigger"],sentence:[]}],
+        ["Could you check your bathroom upstairs?","能检查一下你楼上的卫生间吗？",{key:["bathroom","upstairs"],power:["check"],sentence:["Could you check ...?"]}],
+        ["I already called property management.","我已经给物业打过电话了。",{key:["property management"],power:["already"],sentence:[]}],
+        ["Can we take a photo first, just in case?","我们先拍张照片留一下，以防万一。",{key:["photo"],power:["just in case"],sentence:["Can we ... just in case?"]}],
+        ["Let's talk about it calmly and figure out what happened.","咱们冷静说，把原因弄清楚。",{key:["calmly"],power:["figure out"],sentence:[]}],
+        ["If there is damage, we can ask property management to record it.","如果有损坏，可以让物业登记一下。",{key:["damage","record"],power:["if"],sentence:[]}],
+      ]},
     ]
   },
 
@@ -813,6 +836,31 @@ const DATA = [
         ["Put the dirty clothes in the hamper.","把脏衣服放进脏衣篮。"],
         ["Your room is a mess; clean it up.","你房间太乱了，收拾收拾。"],
         ["This doesn't fit anymore.","这个穿不下了。"],
+      ]},
+      { name:"洗衣晾衣一串动作", en:"Laundry from Basket to Closet", sceneWords:[
+        {term:"laundry basket",zh:"脏衣篮",explain:"A basket used to hold dirty clothes.",example:"Put the dirty clothes in the laundry basket.",note:"hamper 也可以，但 laundry basket 更直观。"},
+        {term:"detergent",zh:"洗衣液 / 洗衣粉",explain:"Soap used for washing clothes.",example:"Add a little detergent.",note:"洗衣液和洗衣粉都可以先说 detergent。"},
+        {term:"washing machine",zh:"洗衣机",explain:"A machine used to wash clothes.",example:"Put the clothes in the washing machine.",note:"很日常的家用词。"},
+        {term:"spin cycle",zh:"脱水程序",explain:"The part of washing that spins water out of clothes.",example:"Run the spin cycle again.",note:"衣服太湿时会用到。"},
+        {term:"drying rack",zh:"晾衣架",explain:"A rack used to dry clothes.",example:"Hang the clothes on the drying rack.",note:"中国家里常用，不一定每家都有 dryer。"},
+        {term:"hanger",zh:"衣架",explain:"A tool used to hang clothes.",example:"Put this shirt on a hanger.",note:"挂衬衫、外套、裙子都用。"},
+        {term:"inside out",zh:"反过来；里面朝外",explain:"With the inner side facing out.",example:"Turn the shirt inside out.",note:"深色衣服或印花衣服常会反过来洗。"},
+        {term:"air-dry",zh:"自然晾干",explain:"To dry without a machine.",example:"Let it air-dry.",note:"不烘干，挂着晾就是 air-dry。"},
+      ], items:[
+        ["Put all the dirty clothes in the laundry basket first.","先把脏衣服都放进脏衣篮。",{key:["dirty clothes","laundry basket"],power:["first"],sentence:[]}],
+        ["Separate the whites from the dark clothes.","把白色衣服和深色衣服分开。",{key:["whites","dark clothes"],power:["separate"],sentence:[]}],
+        ["Turn this shirt inside out before you wash it.","洗之前把这件衣服反过来。",{key:["inside out"],power:["before"],sentence:["Turn ... inside out before ..."]}],
+        ["Check the pockets before you put the pants in.","裤子放进去之前先检查口袋。",{key:["pockets","pants"],power:["check"],sentence:["Check ... before you ..."]}],
+        ["Add a little detergent, not too much.","加一点洗衣液，别倒太多。",{key:["detergent"],power:["a little","not too much"],sentence:[]}],
+        ["Put the clothes in the washing machine and close the door.","把衣服放进洗衣机，然后关上门。",{key:["washing machine"],power:["put in","close"],sentence:[]}],
+        ["Choose the quick wash if the clothes are not too dirty.","衣服不是很脏的话，就选快洗。",{key:["quick wash"],power:["if"],sentence:["Choose ... if ..."]}],
+        ["The clothes are still too wet; run the spin cycle again.","衣服还是太湿，再脱水一次。",{key:["spin cycle"],power:["again"],sentence:[]}],
+        ["Shake the clothes out before you hang them.","晾之前把衣服抖开。",{key:["clothes"],power:["shake out"],sentence:["Shake ... out before ..."]}],
+        ["Hang the shirts on hangers so they do not wrinkle too much.","衬衫挂在衣架上，这样不容易皱。",{key:["hangers","wrinkle"],power:["so"],sentence:[]}],
+        ["Put the socks on the small drying rack.","袜子夹在小晾衣架上。",{key:["socks","drying rack"],power:["put on"],sentence:[]}],
+        ["Let the clothes air-dry on the balcony.","把衣服挂阳台自然晾干。",{key:["air-dry","balcony"],power:["let"],sentence:[]}],
+        ["Bring the laundry in before it rains.","下雨前把衣服收进来。",{key:["laundry","rains"],power:["before"],sentence:[]}],
+        ["Fold the dry clothes and put them back in the closet.","干了以后把衣服叠好，放回衣柜。",{key:["dry clothes","closet"],power:["put back"],sentence:[]}],
       ]},
     ]
   },
@@ -2000,6 +2048,28 @@ const DATA = [
         ["Please let me know if anything comes up.","有情况请随时告诉我。"],
         ["How can I support her learning?","我怎么帮她学习？"],
       ]},
+      { name:"孩子学校请假", en:"Asking for Leave from School", sceneWords:[
+        {term:"ask for leave",zh:"请假",explain:"To tell the school or workplace that you need time away.",example:"I need to ask for leave today.",note:"给老师、公司都能用，但原因要说清楚。"},
+        {term:"sick leave",zh:"病假",explain:"Time away because someone is sick.",example:"I need to ask for sick leave for my child.",note:"只说症状和安排，不自己下诊断。"},
+        {term:"personal leave",zh:"事假",explain:"Time away for a personal or family matter.",example:"Could he take personal leave for half a day?",note:"家里有事、办事、临时安排都常用。"},
+        {term:"homeroom teacher",zh:"班主任",explain:"The teacher responsible for a class.",example:"I sent a message to the homeroom teacher.",note:"国外学校不一定一样，但解释中国学校很实用。"},
+        {term:"absence",zh:"缺席",explain:"A time when a student is not at school.",example:"Please mark his absence today.",note:"学校记录里常见。"},
+        {term:"make up homework",zh:"补作业",explain:"To do schoolwork that was missed.",example:"We will make up the homework tonight.",note:"不是化妆 make up，这里是补上。"},
+        {term:"parent group",zh:"家长群",explain:"A chat group for parents and teachers.",example:"I saw your message in the parent group.",note:"解释中国家长群时很好用。"},
+        {term:"school gate",zh:"校门口",explain:"The entrance to a school.",example:"I will pick him up at the school gate.",note:"接送孩子高频词。"},
+      ], items:[
+        ["My child is not feeling well today.","我家孩子今天不太舒服。",{key:["child"],power:["not feeling well"],sentence:[]}],
+        ["I need to ask for sick leave for him today.","我今天要给他请病假。",{key:["sick leave"],power:["ask for"],sentence:["I need to ask for ..."]}],
+        ["He has a fever, so he will stay home and rest.","他发烧了，所以今天在家休息。",{key:["fever"],power:["stay home","rest"],sentence:[]}],
+        ["Could you let me know today's homework?","能不能告诉我今天的作业？",{key:["homework"],power:["let me know"],sentence:["Could you let me know ...?"]}],
+        ["We will make up the homework tonight.","我们今晚会把作业补上。",{key:["homework"],power:["make up"],sentence:[]}],
+        ["We have a family matter tomorrow morning.","我们明天上午家里有点事。",{key:["family matter"],power:["tomorrow morning"],sentence:[]}],
+        ["Could he take personal leave for half a day?","他能请半天事假吗？",{key:["personal leave"],power:["half a day"],sentence:["Could he take ...?"]}],
+        ["I will pick him up at the school gate.","我会在校门口接他。",{key:["school gate"],power:["pick up"],sentence:[]}],
+        ["I saw your message in the parent group.","我在家长群里看到您的消息了。",{key:["parent group","message"],power:["saw"],sentence:[]}],
+        ["Please let me know if I need to sign anything.","如果需要我签字，请告诉我。",{key:["sign"],power:["if"],sentence:["Please let me know if ..."]}],
+        ["Please mark his absence for today.","麻烦您把他今天的缺席登记一下。",{key:["absence"],power:["mark"],sentence:[]}],
+      ]},
       { name:"在家辅导", en:"Help at Home", items:[
         ["Let's review today's lesson.","咱们复习一下今天的内容。"],
         ["Read it one more time.","再读一遍。"],
@@ -2202,6 +2272,30 @@ const DATA = [
         ["How long will it take?","大概要多久？"],
         ["Do I need an appointment?","需要预约吗？"],
       ]},
+      { name:"理发店剪头发细说", en:"Explaining a Haircut", sceneWords:[
+        {term:"trim",zh:"修剪",explain:"A small haircut that keeps the general length.",example:"I just want a trim today.",note:"不是大改发型，只修一修。"},
+        {term:"bangs",zh:"刘海",explain:"Hair cut across the front of the forehead.",example:"I do not want bangs.",note:"美式常用 bangs，英式也有人说 fringe。"},
+        {term:"layers",zh:"层次",explain:"Hair cut at different lengths to add shape.",example:"Could you add some soft layers?",note:"想要自然一点可以说 soft layers。"},
+        {term:"sides",zh:"两边",explain:"The hair on the left and right sides of the head.",example:"Take a little off the sides.",note:"男士剪发非常常用。"},
+        {term:"back",zh:"后面",explain:"The hair at the back of the head.",example:"Let me see the back in the mirror.",note:"剪完看后面就用这个。"},
+        {term:"thin it out",zh:"打薄",explain:"To reduce the thickness of hair.",example:"Could you thin it out a little?",note:"头发厚、热、塌时都能用。"},
+        {term:"wash and blow-dry",zh:"洗头并吹干",explain:"To wash the hair and dry it with a hair dryer.",example:"Could you wash and blow-dry it?",note:"理发店完整服务常见说法。"},
+        {term:"scalp",zh:"头皮",explain:"The skin on the top of your head.",example:"Please be gentle with my scalp.",note:"头皮疼、敏感、掉发都能说。"},
+        {term:"hair loss",zh:"掉发",explain:"Losing hair from the head.",example:"I have noticed some hair loss lately.",note:"说现象就好，不自己判断原因。"},
+      ], items:[
+        ["I just want a trim today.","我今天只想稍微修一修。",{key:["trim"],power:["just"],sentence:[]}],
+        ["Please do not cut it too short.","请别剪得太短。",{key:["short"],power:["do not"],sentence:["Please do not ..."]}],
+        ["Take a little off the sides and the back.","两边和后面稍微剪短一点。",{key:["sides","back"],power:["take off"],sentence:[]}],
+        ["Keep the top a bit longer.","上面留长一点。",{key:["top"],power:["a bit"],sentence:[]}],
+        ["Could you thin it out a little?","能稍微打薄一点吗？",{key:["thin it out"],power:["a little"],sentence:["Could you ... a little?"]}],
+        ["My hair has been falling out lately.","我最近掉头发有点多。",{key:["hair"],power:["falling out","lately"],sentence:[]}],
+        ["Please be gentle with my scalp.","麻烦轻一点，我头皮比较敏感。",{key:["scalp"],power:["gentle"],sentence:["Please be gentle with ..."]}],
+        ["I do not want bangs.","我不想剪刘海。",{key:["bangs"],power:["do not want"],sentence:[]}],
+        ["Could you add some soft layers?","能不能剪一点自然的层次？",{key:["layers"],power:["soft"],sentence:["Could you add ...?"]}],
+        ["Could you wash and blow-dry it?","能帮我洗一下再吹干吗？",{key:["wash and blow-dry"],power:["could you"],sentence:["Could you ...?"]}],
+        ["Let me see the back in the mirror.","让我用镜子看一下后面。",{key:["back","mirror"],power:["let me"],sentence:[]}],
+        ["This length is good.","这个长度可以。",{key:["length"],power:["good"],sentence:[]}],
+      ]},
       { name:"预约与维修", en:"Appointments & Repairs", items:[
         ["I'd like to book an appointment.","我想预约。"],
         ["What times are available?","有哪些时间？"],
@@ -2213,6 +2307,30 @@ const DATA = [
         ["I need to cancel my appointment.","我要取消预约。"],
         ["Can we reschedule for tomorrow?","能改到明天吗？"],
         ["Thanks for coming on short notice.","谢谢你这么快赶来。"],
+      ]},
+      { name:"租房房东沟通", en:"Talking with a Landlord", sceneWords:[
+        {term:"landlord",zh:"房东",explain:"The person who owns the place you rent.",example:"I need to talk to the landlord.",note:"租房沟通里最常用。"},
+        {term:"rent",zh:"房租",explain:"The money you pay to live in a rented home.",example:"Is the rent paid monthly?",note:"租金、房租都可以先说 rent。"},
+        {term:"deposit",zh:"押金",explain:"Money paid before moving in, often returned later if nothing is damaged.",example:"How much is the deposit?",note:"只问金额和规则，不要自己承诺一定退。"},
+        {term:"lease",zh:"租约",explain:"A written rental agreement.",example:"Could you send me the lease before I sign?",note:"合同可以解释为 lease 或 rental agreement。"},
+        {term:"utility bill",zh:"水电燃气账单",explain:"A bill for electricity, water, gas, or similar home services.",example:"Does the rent include utility bills?",note:"水电燃气一起说 utilities 很实用。"},
+        {term:"move in",zh:"搬进去",explain:"To start living in a new place.",example:"When can I move in?",note:"搬进新房子用 move in。"},
+        {term:"move out",zh:"搬走",explain:"To stop living in a place and leave it.",example:"When should I move out?",note:"退租搬走用 move out。"},
+        {term:"furnished",zh:"带家具的",explain:"With basic furniture already inside.",example:"Is the apartment furnished?",note:"床、桌子、衣柜这类都算家具。"},
+        {term:"repair",zh:"维修",explain:"Work done to fix something broken.",example:"Can I report repairs through WeChat?",note:"租房里报修很常见。"},
+      ], items:[
+        ["I found this apartment online.","我是在网上看到这套房子的。",{key:["apartment"],power:["online"],sentence:[]}],
+        ["Is the rent paid monthly?","房租是按月付吗？",{key:["rent"],power:["monthly"],sentence:["Is the ... paid monthly?"]}],
+        ["Does the rent include utility bills?","房租包含水电燃气吗？",{key:["rent","utility bills"],power:["include"],sentence:["Does the ... include ...?"]}],
+        ["How much is the deposit?","押金是多少？",{key:["deposit"],power:["how much"],sentence:["How much is the ...?"]}],
+        ["When can I move in?","我什么时候可以搬进去？",{key:["move in"],power:["when"],sentence:["When can I ...?"]}],
+        ["Is the apartment furnished?","这套房子带家具吗？",{key:["furnished"],power:["apartment"],sentence:["Is the apartment ...?"]}],
+        ["Could you send me the lease before I sign?","我签字前，您能先把租约发给我吗？",{key:["lease"],power:["before","sign"],sentence:["Could you send me ... before I ...?"]}],
+        ["The heater is not working in the bedroom.","卧室里的暖气不能用了。",{key:["heater","bedroom"],power:["not working"],sentence:[]}],
+        ["Can I report repairs through WeChat?","我可以通过微信报修吗？",{key:["repair"],power:["through"],sentence:["Can I report ... through ...?"]}],
+        ["I will pay the rent on time.","我会按时付房租。",{key:["rent"],power:["on time"],sentence:[]}],
+        ["When should I move out and return the keys?","我应该什么时候搬走并归还钥匙？",{key:["move out","keys"],power:["return"],sentence:["When should I ...?"]}],
+        ["Please let me know if anything needs to be fixed before I move in.","搬进去之前如果有什么需要修，请告诉我。",{key:["move in"],power:["fixed","before"],sentence:["Please let me know if ..."]}],
       ]},
       { name:"德国药店求助", en:"At a Pharmacy in Germany", sceneWords:[
         {term:"pharmacy",zh:"药店",explain:"A shop where you can buy medicine and health items.",example:"Is there a pharmacy nearby?",note:"在德国看到 Apotheke，英语里可以解释成 pharmacy。"},
@@ -2552,16 +2670,62 @@ function addWordBank(list,words){
   list.appendChild(bank);
 }
 
+function normalizeTagTerm(value){
+  return String(value||'').trim().toLowerCase().replace(/[^a-z0-9\s'-]/g,'').replace(/\s+/g,' ');
+}
+
+function singularTagTerm(value){
+  const text=normalizeTagTerm(value);
+  return text.endsWith('s')&&text.length>3?text.slice(0,-1):text;
+}
+
+function findSceneWordForTag(value,words){
+  if(!value||!Array.isArray(words))return null;
+  const tag=normalizeTagTerm(value);
+  const single=singularTagTerm(value);
+  return words.find(word=>{
+    const term=normalizeTagTerm(word&&word.term);
+    if(!term)return false;
+    return term===tag||term===single||singularTagTerm(term)===single;
+  })||words.find(word=>{
+    const term=normalizeTagTerm(word&&word.term);
+    return term&&(tag.includes(term)||term.includes(tag));
+  })||null;
+}
+
+function createVocabularyTags(values,words){
+  const seen=new Set();
+  return (Array.isArray(values)?values:[]).reduce((out,value)=>{
+    const word=findSceneWordForTag(value,words);
+    if(!word||!word.zh)return out;
+    const id=normalizeTagTerm(word.term);
+    if(seen.has(id))return out;
+    seen.add(id);
+    out.push({value:String(value).trim(),word});
+    return out;
+  },[]);
+}
+
 function addStudyTags(row,item,words){
   const notes=getSentenceStudyNotesCore(item,words);
+  const vocabulary=createVocabularyTags(notes.key,words);
+  const hasPower=notes.power&&notes.power.length;
+  const hasSentence=notes.sentence&&notes.sentence.length;
+  if(!vocabulary.length&&!hasPower&&!hasSentence)return;
   const groups=[
-    ['key','重点词',notes.key],
     ['power','万能词',notes.power],
     ['sentence','万能句',notes.sentence]
   ].filter(([,label,values])=>values&&values.length);
-  if(!groups.length)return;
   const wrap=document.createElement('div');
   wrap.className='study-tags';
+  vocabulary.forEach(({value,word})=>{
+    const tag=document.createElement('button');
+    tag.type='button';
+    tag.className='study-tag key';
+    tag.textContent=`${value} ${word.zh}`;
+    tag.onclick=e=>{e.stopPropagation();showLocalDictionary(words,word.term);};
+    wrap.appendChild(tag);
+  });
   groups.forEach(([type,label,values])=>{
     values.forEach(value=>{
       const tag=document.createElement('span');
