@@ -398,6 +398,16 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('There is a breakfast stall near the community gate.'));
   assert.ok(html.includes('小区取快递和外卖'));
   assert.ok(html.includes('The pickup code is in the text message.'));
+  assert.ok(html.includes('小区物业报修'));
+  assert.ok(html.includes('I need to call property management.'));
+  assert.ok(html.includes('卫生间堵了和清理'));
+  assert.ok(html.includes('The shower drain is clogged again.'));
+  assert.ok(html.includes('从挂号到看医生'));
+  assert.ok(html.includes('I need to check in for my appointment.'));
+  assert.ok(html.includes('药店买药和问用法'));
+  assert.ok(html.includes('What is the dosage for an adult?'));
+  assert.ok(html.includes('手机没网和付款失败'));
+  assert.ok(html.includes('The payment failed, but the money may have been deducted.'));
 });
 
 test('page stays usable without external font cdn links', () => {
