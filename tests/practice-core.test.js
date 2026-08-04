@@ -287,7 +287,7 @@ test('infers study notes for older plain sentences', () => {
 
   assert.ok(notes.key.includes('remote'));
   assert.ok(notes.power.includes('pass'));
-  assert.ok(notes.sentence.includes('Pass me ...'));
+  assert.deepEqual(notes.sentence, []);
 });
 
 test('uses local scene words as inferred key vocabulary', () => {
@@ -299,6 +299,26 @@ test('uses local scene words as inferred key vocabulary', () => {
   assert.ok(notes.key.includes('receipt'));
   assert.ok(notes.power.includes('could I have'));
   assert.ok(notes.sentence.includes('Could I have ...?'));
+});
+
+test('does not invent a universal sentence when there is no reusable frame', () => {
+  const notes = core.getSentenceStudyNotes([
+    "Dinner's ready.",
+    '饭好了。'
+  ]);
+
+  assert.ok(notes.key.includes('dinner'));
+  assert.deepEqual(notes.sentence, []);
+});
+
+test('keeps a manually written universal sentence when provided', () => {
+  const notes = core.getSentenceStudyNotes([
+    'Pass me the remote.',
+    '把遥控器递给我。',
+    { sentence: ['Pass me ...'] }
+  ]);
+
+  assert.deepEqual(notes.sentence, ['Pass me ...']);
 });
 
 test('includes the second Germany first-week scene batch in the page data', () => {
@@ -372,6 +392,12 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('出门买菜到家收拾'));
   assert.ok(html.includes('Can I scan to pay?'));
   assert.ok(html.includes('QR code'));
+  assert.ok(html.includes('给外国人解释中国家常饭桌'));
+  assert.ok(html.includes('We usually eat family-style at home.'));
+  assert.ok(html.includes('中国早餐摊'));
+  assert.ok(html.includes('There is a breakfast stall near the community gate.'));
+  assert.ok(html.includes('小区取快递和外卖'));
+  assert.ok(html.includes('The pickup code is in the text message.'));
 });
 
 test('page stays usable without external font cdn links', () => {

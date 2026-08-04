@@ -325,24 +325,24 @@
     ['let me', 'Let me ...', 'let me'],
     ["let's", "Let's ...", "let's"],
     ["don't", "Don't ...", "don't"],
-    ['take out', 'Take ... out.', 'take out'],
-    ['put back', 'Put ... back.', 'put back'],
-    ['pick up', 'Pick up ...', 'pick up'],
-    ['throw away', 'Throw away ...', 'throw away'],
-    ['turn off', 'Turn off ...', 'turn off'],
-    ['turn on', 'Turn on ...', 'turn on'],
-    ['pass', 'Pass me ...', 'pass'],
-    ['bring', 'Bring me ...', 'bring'],
-    ['put', 'Put ...', 'put'],
-    ['take', 'Take ...', 'take'],
-    ['get', 'Get ...', 'get'],
-    ['make', 'Make ...', 'make'],
-    ['add', 'Add ...', 'add'],
-    ['pour', 'Pour ...', 'pour'],
-    ['cut', 'Cut ...', 'cut'],
-    ['rinse', 'Rinse ...', 'rinse'],
-    ['wipe', 'Wipe ...', 'wipe'],
-    ['sweep', 'Sweep ...', 'sweep']
+    ['take out', '', 'take out'],
+    ['put back', '', 'put back'],
+    ['pick up', '', 'pick up'],
+    ['throw away', '', 'throw away'],
+    ['turn off', '', 'turn off'],
+    ['turn on', '', 'turn on'],
+    ['pass', '', 'pass'],
+    ['bring', '', 'bring'],
+    ['put', '', 'put'],
+    ['take', '', 'take'],
+    ['get', '', 'get'],
+    ['make', '', 'make'],
+    ['add', '', 'add'],
+    ['pour', '', 'pour'],
+    ['cut', '', 'cut'],
+    ['rinse', '', 'rinse'],
+    ['wipe', '', 'wipe'],
+    ['sweep', '', 'sweep']
   ];
 
   function unique(values) {
@@ -375,13 +375,7 @@
   function inferSentenceFrames(text) {
     const normalized = normalizeAnswer(text);
     const hit = POWER_PATTERNS.find(([pattern]) => normalized.includes(pattern));
-    if (hit) return [hit[1]];
-
-    const clean = String(text || '').trim();
-    if (!clean) return [];
-    const words = clean.split(/\s+/);
-    if (words.length <= 3) return [`${clean.replace(/[.?!]+$/, '')} ...`];
-    return [`${words.slice(0, 3).join(' ')} ...`];
+    return hit && hit[1] ? [hit[1]] : [];
   }
 
   function getSentenceStudyNotes(item, sceneWords) {
