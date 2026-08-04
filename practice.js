@@ -26,6 +26,10 @@
     const mastered = new Set((Array.isArray(masteredIds) ? masteredIds : []).map(value => String(value)));
     return (Array.isArray(pool) ? pool : []).filter(item => item && !mastered.has(String(item.id)));
   });
+  const filterHardPracticePool = core.filterHardPracticePool || ((pool, hardIds) => {
+    const hard = new Set((Array.isArray(hardIds) ? hardIds : []).map(value => String(value)));
+    return (Array.isArray(pool) ? pool : []).filter(item => item && hard.has(String(item.id)));
+  });
   const sizes = [10, 30, 50];
   const practiceSection = document.createElement('section');
   practiceSection.id = 'practicePanel';
@@ -38,7 +42,7 @@
   let submitGuard = core.createSubmitGuard();
   let answerTimer = null;
 
-  const practiceChip = app.chip('复习测试', '#7E7BB5', showPracticeHome);
+  const practiceChip = app.chip('不会专练', '#7E7BB5', showPracticeHome);
   app.chipsBox.insertBefore(practiceChip, app.chipsBox.children[1] || null);
   const practiceLaunch = document.getElementById('practiceLaunch');
   if (practiceLaunch) practiceLaunch.onclick = showPracticeHome;
@@ -219,6 +223,10 @@
     return filterPracticePool(getPool(category), getMasteredIds());
   }
 
+  function getHardPool() {
+    return filterHardPracticePool(sentenceList, getHardIds());
+  }
+
   function startSession(mode, ids, category, count, order) {
     stopPracticeActivity();
     session = {
@@ -249,9 +257,10 @@
     practiceSection.innerHTML = `
       <div class="practice-home">
         <div class="practice-head">
-          <h2>复习测试</h2>
-          <p>默认只练未掌握；答错会进“不会”，全对会自动标掌握。</p>
+          <h2>不会专练</h2>
+          <p>平时看句子，没点“不会”就默认算会；点了“不会”，这里集中反复练。</p>
         </div>
+        <button class="practice-wrong" data-action="hard">${hardIds.length ? `进入不会内容 · ${hardIds.length}句` : '还没有不会的内容'}</button>
         ${hasSession ? `
           <div class="practice-resume">
             <div>
@@ -278,16 +287,15 @@
         <div class="practice-mode-grid">
           <button class="practice-mode" data-mode="speaking">
             <span class="practice-icon">🎤</span>
-            <strong>口语自测</strong>
-            <span>看中文，自己说英文，再查看标准表达。</span>
+            <strong>随机口语抽查</strong>
+            <span>想主动抽查时再用；不会的仍然点“不会”。</span>
           </button>
           <button class="practice-mode" data-mode="typing">
             <span class="practice-icon">⌨️</span>
-            <strong>输入检测</strong>
-            <span>看中文，输入或说出英文，系统检查答案。</span>
+            <strong>随机输入抽查</strong>
+            <span>检查拼写和整句表达，答错会自动进“不会”。</span>
           </button>
         </div>
-        ${hardIds.length ? `<button class="practice-wrong" data-action="hard">专练不会 · ${hardIds.length}句</button>` : ''}
         ${wrongIds.length ? `<button class="practice-wrong" data-action="wrong">专练错题 · ${wrongIds.length}句</button>` : ''}
       </div>`;
 
@@ -365,7 +373,7 @@
     return `
       <div class="practice-card">
         <div class="practice-top">
-          <button class="practice-back" data-action="home">‹ 复习测试</button>
+          <button class="practice-back" data-action="home">‹ 不会专练</button>
           <span>${session.currentIndex + 1} / ${session.sentenceIds.length}</span>
         </div>
         <div class="practice-meta">${item.catName} · ${item.subName}</div>
@@ -608,12 +616,13 @@
 
   function startHardPractice() {
     const hardIds = getHardIds().filter(id => sentenceMap.has(id));
+    const hardPool = getHardPool();
     showPracticeOnly();
-    if (!hardIds.length) {
+    if (!hardPool.length) {
       practiceSection.innerHTML = `
         <div class="practice-complete">
           <h2>还没有不会的句子</h2>
-          <p>在句子旁边点“不会”，这里就会出现专练入口。</p>
+          <p>你平时浏览时，哪句卡住就点“不会”。没点的默认算会，不会强迫你从头考。</p>
           <div class="practice-actions">
             <button class="practice-btn ghost" data-action="home">返回复习测试</button>
           </div>
@@ -621,7 +630,7 @@
       practiceSection.querySelector('[data-action="home"]').onclick = showPracticeHome;
       return;
     }
-    startSession('typing', hardIds, 'hard', hardIds.length, 'ordered');
+    startSession('typing', hardPool.map(item => item.id), 'hard', hardPool.length, 'ordered');
   }
 
   function markIdsMastered(ids) {

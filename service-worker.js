@@ -1,5 +1,5 @@
 /* 改了 index.html 内容后，把下面的版本号 +1，手机就会拉到新内容 */
-const VERSION = 'home-english-v15';
+const VERSION = 'home-english-v17';
 const ASSETS = [
   './',
   './index.html',
@@ -25,15 +25,17 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request).then(cached => {
-      const live = fetch(e.request).then(res => {
-        if (res && res.status === 200 && res.type === 'basic') {
-          const copy = res.clone();
-          caches.open(VERSION).then(c => c.put(e.request, copy));
-        }
-        return res;
-      }).catch(() => cached);
-      return cached || live;
-    })
+    fetch(e.request).then(res => {
+      if (res && res.status === 200 && res.type === 'basic') {
+        const copy = res.clone();
+        caches.open(VERSION).then(c => c.put(e.request, copy));
+      }
+      return res;
+    }).catch(() =>
+      caches.match(e.request).then(cached => {
+        if (cached) return cached;
+        return caches.match('./');
+      })
+    )
   );
 });

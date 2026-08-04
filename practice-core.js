@@ -303,6 +303,20 @@
     return (Array.isArray(pool) ? pool : []).filter(item => item && !mastered.has(String(item.id)));
   }
 
+  function filterHardPracticePool(pool, hardIds) {
+    const hard = new Set((Array.isArray(hardIds) ? hardIds : []).map(value => String(value)));
+    return (Array.isArray(pool) ? pool : []).filter(item => item && hard.has(String(item.id)));
+  }
+
+  function getSentenceStudyNotes(item) {
+    const meta = Array.isArray(item) ? item[2] : item && item.notes;
+    return {
+      key: Array.isArray(meta && meta.key) ? meta.key : [],
+      power: Array.isArray(meta && meta.power) ? meta.power : [],
+      sentence: Array.isArray(meta && meta.sentence) ? meta.sentence : []
+    };
+  }
+
   return {
     normalizeAnswer,
     normalizeContractions,
@@ -323,6 +337,8 @@
     getSentenceStatus,
     createSceneProgress,
     pickRandomUnmasteredScene,
-    filterPracticePool
+    filterPracticePool,
+    filterHardPracticePool,
+    getSentenceStudyNotes
   };
 });

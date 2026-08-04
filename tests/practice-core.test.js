@@ -253,6 +253,32 @@ test('filters mastered sentences from a normal practice pool', () => {
   ]);
 });
 
+test('builds a hard practice pool from only marked-hard sentences', () => {
+  const pool = [
+    { id: 'a', en: 'A' },
+    { id: 'b', en: 'B' },
+    { id: 'c', en: 'C' }
+  ];
+
+  assert.deepEqual(core.filterHardPracticePool(pool, ['c', 'missing', 'a']).map(item => item.id), ['a', 'c']);
+});
+
+test('reads hand-written sentence study notes from array metadata', () => {
+  const notes = core.getSentenceStudyNotes([
+    'Grab the broom and dustpan.',
+    '把扫帚和簸箕拿过来。',
+    {
+      key: ['broom', 'dustpan'],
+      power: ['grab'],
+      sentence: ['Grab the ... and ...']
+    }
+  ]);
+
+  assert.deepEqual(notes.key, ['broom', 'dustpan']);
+  assert.deepEqual(notes.power, ['grab']);
+  assert.deepEqual(notes.sentence, ['Grab the ... and ...']);
+});
+
 test('includes the second Germany first-week scene batch in the page data', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
@@ -304,4 +330,40 @@ test('includes the sixth Germany first-week scene batch in the page data', () =>
   assert.ok(html.includes('make sure I understood'));
   assert.ok(html.includes('booth'));
   assert.ok(html.includes('technical brochure'));
+});
+
+test('includes hand-written daily action chains in the original categories', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('辣椒炒鸡蛋一串动作'));
+  assert.ok(html.includes('Take the peppers out of the fridge.'));
+  assert.ok(html.includes('扫地倒垃圾一串动作'));
+  assert.ok(html.includes('Can you bring me the broom and the dustpan?'));
+  assert.ok(html.includes('厕所和卫生用品'));
+  assert.ok(html.includes('I got my period today.'));
+  assert.ok(html.includes('肚子疼和脱发怎么说'));
+  assert.ok(html.includes('Could it be appendicitis?'));
+  assert.ok(html.includes('请事假请病假'));
+  assert.ok(html.includes('I need to take sick leave today.'));
+  assert.ok(html.includes('小区和环境闲聊'));
+  assert.ok(html.includes('This neighborhood is pretty quiet.'));
+  assert.ok(html.includes('出门买菜到家收拾'));
+  assert.ok(html.includes('Can I scan to pay?'));
+  assert.ok(html.includes('QR code'));
+});
+
+test('page stays usable without external font cdn links', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.equal(html.includes('fonts.googleapis.com'), false);
+  assert.equal(html.includes('fonts.gstatic.com'), false);
+});
+
+test('service worker asks the network before falling back to old cache', () => {
+  const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
+  const fetchIndex = worker.indexOf('fetch(e.request).then');
+  const cacheIndex = worker.indexOf('caches.match(e.request)');
+
+  assert.ok(fetchIndex >= 0);
+  assert.ok(cacheIndex > fetchIndex);
 });

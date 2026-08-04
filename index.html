@@ -10,9 +10,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Home English">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#FBF8F2;
@@ -23,8 +20,8 @@
     --accent:#2E8B6B;        /* 朗读绿 */
     --accent-soft:#E5F1EB;
     --shadow:0 1px 2px rgba(40,30,10,.04), 0 8px 24px rgba(60,45,20,.06);
-    --display:'Fraunces',Georgia,serif;
-    --body:'Inter','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+    --display:Georgia,'Times New Roman','Songti SC','SimSun',serif;
+    --body:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
   html{-webkit-text-size-adjust:100%;}
@@ -147,6 +144,15 @@
   }
   .statusbtn.active-hard{background:#FFF0E8;border-color:#F0CDBE;color:#B0573A;}
   .statusbtn.active-mastered{background:var(--accent-soft);border-color:#CFE6DC;color:var(--accent);}
+  .study-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;}
+  .study-tag{
+    display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 9px;
+    font-size:.72rem;font-weight:800;line-height:1.2;border:1px solid transparent;
+  }
+  .study-tag.key{background:#FFF2D7;border-color:#ECD8A6;color:#6C4A12;}
+  .study-tag.power{background:#E9F2FF;border-color:#CFE0F6;color:#285B8F;}
+  .study-tag.sentence{background:#F3EAFE;border-color:#DDCCF1;color:#6A438F;}
+  .study-tag b{font-size:.68rem;opacity:.76;}
   .scene-training-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px;}
   .scene-card{
     text-align:left;border:1px solid var(--line);background:#FCFAF6;border-radius:12px;
@@ -302,7 +308,7 @@
     <h1>家里每天都在<em>说的话</em></h1>
     <p>厨房、客厅、卧室、盥洗吃喝、和孩子说话——把家里一天用得到的英语整理在一起。点任意一句就能听发音（浏览器免费朗读，不联网 API）。</p>
     <div class="stat">共 <b id="totalCount">0</b> 句 · 点句子听读 · 点「朗读本节」连续播放</div>
-    <button id="practiceLaunch" class="practice-launch" type="button">复习测试 · 检查学习状况</button>
+    <button id="practiceLaunch" class="practice-launch" type="button">不会专练 · 只练卡住的句子</button>
     <button id="installBtn" class="installbtn">📲 安装到手机</button>
     <div id="iosTip" class="iostip">想当 App 用：点 Safari 底部的「分享」<b>↑</b>，再选「<b>添加到主屏幕</b>」。</div>
 
@@ -336,7 +342,7 @@
   <footer>
     <b>怎么用：</b>每天挑一两个场景，点「朗读本节」边听边小声跟读，读熟了用搜索抽查自己。<br>
     <b>关于发音：</b>用的是你设备/浏览器自带的语音（iPhone 上 Safari 效果最稳，第一次需先点一下页面任意处才会出声）。换 en-US / en-GB 口音、调语速都在上面那一栏。<br>
-    <b>想加内容：</b>所有句子都在本文件底部的 <b>DATA</b> 里，照着格式 <code>["English","中文"]</code> 往对应小节里加就行，加完重新 push 即可。
+    <b>想加内容：</b>所有句子都在本文件底部的 <b>DATA</b> 里。普通句子用 <code>["English","中文"]</code>，需要重点词时可以在第三项加 <code>{key, power, sentence}</code>。
   </footer>
 </div>
 
@@ -422,6 +428,37 @@ const DATA = [
         ["Make sure the pork is cooked through.","确保猪肉熟透。"],
         ["Let the broth simmer for an hour.","高汤小火炖一个小时。"],
         ["Boil some water for the noodles.","烧点水下面。"],
+      ]},
+      { name:"辣椒炒鸡蛋一串动作", en:"Pepper and Eggs Step by Step", sceneWords:[
+        {term:"pepper",zh:"辣椒 / 彩椒",explain:"A vegetable that can be mild or spicy.",example:"Take the peppers out of the fridge.",note:"家里说青椒、彩椒、辣椒，日常都可以先用 pepper。"},
+        {term:"seeds",zh:"籽",explain:"The small parts inside a pepper.",example:"Remove the seeds before you slice it.",note:"去籽说 remove the seeds，很好用。"},
+        {term:"cutting board",zh:"砧板",explain:"A board used for cutting food.",example:"Put the cutting board on the counter.",note:"做饭前经常会用到。"},
+        {term:"knife",zh:"刀；菜刀",explain:"A tool used for cutting food.",example:"Be careful with the knife.",note:"厨房里说 knife 就够自然。"},
+        {term:"slice",zh:"切片；切条",explain:"To cut food into thin pieces.",example:"Slice the peppers into strips.",note:"切成条也可以说 slice into strips。"},
+        {term:"bowl",zh:"碗",explain:"A deep dish used for food.",example:"Crack the eggs into a bowl.",note:"打鸡蛋、盛汤、装饭都常用。"},
+        {term:"beat the eggs",zh:"打散鸡蛋",explain:"To stir eggs quickly until the yolks and whites mix.",example:"Beat the eggs until they look smooth.",note:"不是打人，是把鸡蛋搅散。"},
+        {term:"heat the pan",zh:"把锅烧热",explain:"To make the pan hot before cooking.",example:"Heat the pan before you add oil.",note:"先热锅再倒油，很常见。"},
+        {term:"pour",zh:"倒入",explain:"To make liquid flow from one container into another.",example:"Pour the beaten eggs into the pan.",note:"倒油、倒水、倒蛋液都能用。"},
+        {term:"stir-fry",zh:"翻炒",explain:"To cook food quickly in a hot pan while moving it around.",example:"Stir-fry the peppers for a minute.",note:"中餐炒菜最常用的词之一。"},
+      ], items:[
+        ["Take the peppers out of the fridge.","把辣椒从冰箱里拿出来。",{key:["peppers","fridge"],power:["take out"],sentence:["Take ... out of the fridge."]}],
+        ["Rinse the peppers under running water.","把辣椒放在水龙头下面冲一冲。",{key:["rinse","running water"],power:["under"],sentence:["Rinse ... under running water."]}],
+        ["Cut off the stems first.","先把辣椒把儿切掉。",{key:["stems"],power:["cut off"],sentence:["Cut off ... first."]}],
+        ["Open the peppers and remove the seeds.","把辣椒剖开，把籽去掉。",{key:["seeds"],power:["remove"],sentence:["Remove the seeds."]}],
+        ["Put the cutting board flat on the counter.","把砧板平放在台面上。",{key:["cutting board","counter"],power:["put flat"],sentence:["Put ... flat on the counter."]}],
+        ["Hold the knife steady and slice the peppers into strips.","拿稳菜刀，把辣椒切成条。",{key:["knife","strips"],power:["hold steady","slice"],sentence:["Slice ... into strips."]}],
+        ["Put the pepper strips on a plate for now.","先把切好的辣椒条放到盘子里。",{key:["plate"],power:["for now"],sentence:["Put ... on a plate for now."]}],
+        ["Crack three eggs into a bowl.","往碗里打三个鸡蛋。",{key:["eggs","bowl"],power:["crack"],sentence:["Crack ... into a bowl."]}],
+        ["Add a little salt and beat the eggs well.","加一点盐，把鸡蛋搅匀。",{key:["salt"],power:["a little","beat"],sentence:["Beat the eggs well."]}],
+        ["Turn on the heat and let the pan get hot.","开火，把锅烧热。",{key:["heat","pan"],power:["turn on","get hot"],sentence:["Let the pan get hot."]}],
+        ["Pour in a little oil and wait a few seconds.","倒一点油，等几秒钟。",{key:["oil"],power:["pour in","a few seconds"],sentence:["Pour in a little oil."]}],
+        ["Pour the beaten eggs into the pan.","把蛋液倒进锅里。",{key:["beaten eggs","pan"],power:["pour into"],sentence:["Pour ... into the pan."]}],
+        ["Push the eggs around gently until they set.","轻轻推着鸡蛋，等它成形。",{key:["eggs"],power:["gently","set"],sentence:["Push ... around gently."]}],
+        ["Take the eggs out before they get too dry.","鸡蛋别炒太老，先盛出来。",{key:["eggs"],power:["take out","too dry"],sentence:["Take ... out before ..."]}],
+        ["Add the pepper strips and stir-fry them for a minute.","放入辣椒条，翻炒一分钟。",{key:["pepper strips"],power:["stir-fry"],sentence:["Stir-fry ... for a minute."]}],
+        ["Put the eggs back in and toss everything together.","把鸡蛋倒回去，和辣椒翻在一起。",{key:["eggs"],power:["put back","together"],sentence:["Put ... back in."]}],
+        ["Taste it and add a little more salt if needed.","尝一下，不够咸就再加一点盐。",{key:["salt"],power:["if needed"],sentence:["Add ... if needed."]}],
+        ["Turn off the heat and move it onto a plate.","关火，把菜盛到盘子里。",{key:["heat","plate"],power:["turn off","move onto"],sentence:["Move it onto a plate."]}],
       ]},
       { name:"调味与尝味", en:"Seasoning & Taste", items:[
         ["Add a pinch of salt.","加一小撮盐。"],
@@ -622,6 +659,33 @@ const DATA = [
         ["Put things back where they belong.","东西用完放回原处。"],
         ["Don't leave your stuff lying around.","别把东西到处乱放。"],
       ]},
+      { name:"扫地倒垃圾一串动作", en:"Sweeping and Taking Out Trash", sceneWords:[
+        {term:"broom",zh:"扫帚",explain:"A tool used to sweep the floor.",example:"Bring me the broom, please.",note:"拿扫帚过来，可以说 bring me the broom。"},
+        {term:"dustpan",zh:"簸箕",explain:"A flat container used to collect dust and trash.",example:"Hold the dustpan flat on the floor.",note:"簸箕口贴地，说 hold it flat。"},
+        {term:"floor",zh:"地面；地板",explain:"The surface you walk on.",example:"The floor is dirty.",note:"家里地面、地板都可以先用 floor。"},
+        {term:"crumbs",zh:"食物碎屑",explain:"Small dry pieces of food.",example:"There are crumbs under the table.",note:"饼干渣、面包屑、饭粒小碎屑都能用 crumbs。"},
+        {term:"food bits",zh:"掉下来的食物小块",explain:"Small pieces of food that fell somewhere.",example:"There are food bits on the floor.",note:"不确定具体是什么，就说 food bits。"},
+        {term:"trash",zh:"垃圾",explain:"Things that should be thrown away.",example:"Sweep the trash into a pile.",note:"家里垃圾最常用 trash。"},
+        {term:"trash can",zh:"垃圾桶",explain:"A container for trash.",example:"Dump it into the trash can.",note:"倒进垃圾桶说 dump it into the trash can。"},
+        {term:"trash bag",zh:"垃圾袋",explain:"A bag used inside a trash can.",example:"Tie up the trash bag.",note:"打包垃圾袋时很实用。"},
+        {term:"sweep up",zh:"扫起来；扫干净",explain:"To remove something by sweeping.",example:"Sweep up the crumbs.",note:"不是只说 sweep the floor，也可以说 sweep up crumbs。"},
+        {term:"put back",zh:"放回去",explain:"To return something to its place.",example:"Put the broom and dustpan back.",note:"日常万能词，东西用完都能说 put it back。"},
+      ], items:[
+        ["Can you bring me the broom and the dustpan?","你把扫帚和簸箕拿过来一下。",{key:["broom","dustpan"],power:["bring me"],sentence:["Can you bring me ...?"]}],
+        ["Look, the floor is really dirty here.","你看，这块地上挺脏的。",{key:["floor","dirty"],power:["look"],sentence:["Look, ... is really dirty."]}],
+        ["There are crumbs under the table.","桌子下面有好多碎屑。",{key:["crumbs","table"],power:["under"],sentence:["There are ... under ..."]}],
+        ["Some food bits fell on the floor.","有些吃的东西掉到地上了。",{key:["food bits","floor"],power:["fell on"],sentence:["... fell on the floor."]}],
+        ["Sweep everything toward the middle first.","先把这些都往中间扫。",{key:["sweep"],power:["toward","first"],sentence:["Sweep ... toward ... first."]}],
+        ["Hold the dustpan flat, or the crumbs will slide under it.","簸箕按平，不然碎屑会跑到下面去。",{key:["dustpan","crumbs"],power:["hold flat","slide under"],sentence:["Hold ... flat."]}],
+        ["Sweep the crumbs into the dustpan.","把碎屑扫进簸箕里。",{key:["crumbs","dustpan"],power:["sweep into"],sentence:["Sweep ... into ..."]}],
+        ["Check the corner too; there is still some dirt there.","角落也看一下，那边还有点脏。",{key:["corner","dirt"],power:["still"],sentence:["There is still ... there."]}],
+        ["Dump the trash into the trash can.","把垃圾倒进垃圾桶。",{key:["trash","trash can"],power:["dump into"],sentence:["Dump ... into ..."]}],
+        ["If the trash bag is full, tie it up.","如果垃圾袋满了，就把它扎起来。",{key:["trash bag"],power:["tie up"],sentence:["If ... is full, tie it up."]}],
+        ["Take the trash out when you go downstairs.","你下楼的时候顺手把垃圾带下去。",{key:["trash"],power:["take out","when you"],sentence:["Take ... out when you ..."]}],
+        ["Wipe that little water mark near the door.","门口那点水印擦一下。",{key:["water mark","door"],power:["near"],sentence:["Wipe ... near ..."]}],
+        ["Now put the broom and dustpan back where they belong.","现在把扫帚和簸箕放回原处。",{key:["broom","dustpan"],power:["put back","belong"],sentence:["Put ... back where it belongs."]}],
+        ["The room looks much better now.","现在房间看起来舒服多了。",{key:["room"],power:["much better"],sentence:["... looks much better now."]}],
+      ]},
       { name:"待客", en:"Having Guests", items:[
         ["Come in and have a seat.","进来坐。"],
         ["Can I get you something to drink?","喝点什么吗？"],
@@ -738,6 +802,29 @@ const DATA = [
         ["I'm a little constipated.","我有点便秘。"],
         ["I've got an upset stomach.","我拉肚子/肠胃不舒服。"],
       ]},
+      { name:"厕所和卫生用品", en:"Toilets and Personal Care", sceneWords:[
+        {term:"squat toilet",zh:"蹲便；蹲坑",explain:"A toilet you squat over instead of sitting on.",example:"Is this a squat toilet?",note:"在机场、商场、老楼里都可能碰到。"},
+        {term:"sitting toilet",zh:"坐便；马桶",explain:"A toilet you sit on.",example:"Do they have a sitting toilet?",note:"日常也常直接说 toilet。"},
+        {term:"toilet seat",zh:"马桶圈",explain:"The seat part of a sitting toilet.",example:"Please put the toilet seat down.",note:"家里提醒别人很常用。"},
+        {term:"flush",zh:"冲水",explain:"To make water clean the toilet.",example:"Please flush after you use it.",note:"冲厕所就是 flush the toilet。"},
+        {term:"toilet paper",zh:"卫生纸",explain:"Paper used in the bathroom.",example:"We are out of toilet paper.",note:"公共厕所没纸时很有用。"},
+        {term:"pad",zh:"卫生巾",explain:"A sanitary pad used during a period.",example:"I need to buy some pads.",note:"日常说 pad 就够，不必说得很复杂。"},
+        {term:"period",zh:"月经；大姨妈",explain:"The monthly bleeding cycle.",example:"I got my period today.",note:"自然表达，不尴尬。"},
+        {term:"cramps",zh:"痛经；腹部绞痛",explain:"Pain in the lower belly, often during a period.",example:"I have bad cramps today.",note:"痛经很常说 period cramps。"},
+      ], items:[
+        ["Is this a squat toilet or a sitting toilet?","这是蹲便还是坐便？",{key:["squat toilet","sitting toilet"],power:["or"],sentence:["Is this ... or ...?"]}],
+        ["I prefer a sitting toilet if there is one.","如果有坐便的话，我更想用坐便。",{key:["sitting toilet"],power:["prefer","if there is one"],sentence:["I prefer ... if there is one."]}],
+        ["The toilet paper is gone.","卫生纸没有了。",{key:["toilet paper"],power:["gone"],sentence:["... is gone."]}],
+        ["Do you have any toilet paper in your bag?","你包里有卫生纸吗？",{key:["toilet paper","bag"],power:["any"],sentence:["Do you have any ...?"]}],
+        ["Please flush after you use it.","用完以后请冲一下。",{key:["flush"],power:["after"],sentence:["Please ... after you ..."]}],
+        ["The toilet is clogged; don't flush again.","马桶堵了，先别再冲了。",{key:["toilet","clogged"],power:["again"],sentence:["Don't ... again."]}],
+        ["I got my period today.","我今天大姨妈来了。",{key:["period"],power:["got"],sentence:["I got my period today."]}],
+        ["I don't have a pad with me.","我身上没有卫生巾。",{key:["pad"],power:["with me"],sentence:["I don't have ... with me."]}],
+        ["Could you help me buy some pads?","你能帮我买点卫生巾吗？",{key:["pads"],power:["help me buy"],sentence:["Could you help me buy ...?"]}],
+        ["Do you have a spare pad?","你有没有多的卫生巾？",{key:["spare pad"],power:["spare"],sentence:["Do you have a spare ...?"]}],
+        ["I have bad cramps today.","我今天痛经挺厉害。",{key:["cramps"],power:["bad"],sentence:["I have bad ... today."]}],
+        ["I need to sit down for a minute.","我得坐一会儿。",{key:["sit down"],power:["for a minute"],sentence:["I need to ... for a minute."]}],
+      ]},
       { name:"身体小动作", en:"Body Stuff", items:[
         ["Cover your mouth when you cough.","咳嗽时捂住嘴。"],
         ["Excuse me, I just burped.","不好意思，我打了个嗝。"],
@@ -797,6 +884,30 @@ const DATA = [
         ["Is this available without a prescription?","这个不用处方能买吗？"],
         ["Do you have something for a cough?","有止咳的药吗？"],
         ["How long will it take to recover?","大概多久能好？"],
+      ]},
+      { name:"肚子疼和脱发怎么说", en:"Stomach Pain and Hair Loss", sceneWords:[
+        {term:"stomachache",zh:"肚子疼",explain:"Pain in your stomach or belly.",example:"I have a stomachache.",note:"泛泛说肚子疼，先用 stomachache。"},
+        {term:"sharp pain",zh:"刺痛；剧痛",explain:"A strong pain that feels like something sharp.",example:"I have a sharp pain on the right side.",note:"疼得明显、像扎一样，可以这样说。"},
+        {term:"lower right side",zh:"右下腹",explain:"The lower right part of the belly.",example:"The pain is on my lower right side.",note:"描述位置，不等于自己诊断。"},
+        {term:"diarrhea",zh:"腹泻；拉肚子",explain:"Loose or watery poop.",example:"I have diarrhea.",note:"看病、买药都常用。"},
+        {term:"nauseous",zh:"恶心想吐",explain:"Feeling like you may throw up.",example:"I feel nauseous.",note:"比 I want to vomit 更自然一点。"},
+        {term:"stomach flu",zh:"肠胃炎一类的不舒服",explain:"A common phrase for vomiting, diarrhea, or stomach illness.",example:"Could it be a stomach flu?",note:"不是严格诊断，问医生时可以这样问。"},
+        {term:"appendicitis",zh:"阑尾炎",explain:"An illness where the appendix is inflamed.",example:"Could it be appendicitis?",note:"只作为问医生的表达，不自己下结论。"},
+        {term:"hair loss",zh:"脱发",explain:"Losing more hair than usual.",example:"I have been having hair loss lately.",note:"掉头发、发量变少都可以先说 hair loss。"},
+        {term:"bald spot",zh:"斑秃；一块没头发",explain:"A small area on the head with little or no hair.",example:"I found a small bald spot.",note:"头发掉成一块时很有用。"},
+      ], items:[
+        ["My stomach has been hurting since this morning.","我从今天早上开始肚子疼。",{key:["stomach","hurting"],power:["since"],sentence:["... has been hurting since ..."]}],
+        ["The pain comes and goes.","这个疼是一阵一阵的。",{key:["pain"],power:["comes and goes"],sentence:["The pain comes and goes."]}],
+        ["It hurts more when I press here.","我按这里的时候更疼。",{key:["hurts","press"],power:["more when"],sentence:["It hurts more when I ..."]}],
+        ["The pain is on my lower right side.","疼的位置在右下腹。",{key:["lower right side"],power:["on"],sentence:["The pain is on my ..."]}],
+        ["Could it be appendicitis?","会不会是阑尾炎？",{key:["appendicitis"],power:["could it be"],sentence:["Could it be ...?"]}],
+        ["I also have diarrhea and feel nauseous.","我还拉肚子，也有点恶心。",{key:["diarrhea","nauseous"],power:["also"],sentence:["I also have ... and feel ..."]}],
+        ["Could it be a stomach flu or something I ate?","会不会是肠胃炎，或者吃坏东西了？",{key:["stomach flu"],power:["or something"],sentence:["Could it be ... or something I ate?"]}],
+        ["Do I need to go to urgent care?","我需要去急诊/紧急门诊吗？",{key:["urgent care"],power:["need to"],sentence:["Do I need to go to ...?"]}],
+        ["My hair has been falling out a lot lately.","我最近头发掉得很多。",{key:["hair","falling out"],power:["lately"],sentence:["My hair has been ... lately."]}],
+        ["I found a small bald spot here.","我这里发现有一小块没头发。",{key:["bald spot"],power:["found"],sentence:["I found a small ... here."]}],
+        ["Could stress or sleep be causing this?","会不会是压力或者睡眠导致的？",{key:["stress","sleep"],power:["be causing"],sentence:["Could ... be causing this?"]}],
+        ["Should I see a dermatologist?","我需要看皮肤科医生吗？",{key:["dermatologist"],power:["should I"],sentence:["Should I see a ...?"]}],
       ]},
     ]
   },
@@ -974,6 +1085,23 @@ const DATA = [
         ["Same here.","我也是。"],
         ["We should catch up sometime.","咱们有空聚聚。"],
       ]},
+      { name:"小区和环境闲聊", en:"Neighborhood Small Talk", sceneWords:[
+        {term:"neighborhood",zh:"小区；附近一带",explain:"The area around where you live.",example:"This is a quiet neighborhood.",note:"国外说小区，不一定是封闭小区，常用 neighborhood。"},
+        {term:"greenery",zh:"绿化",explain:"Plants, trees, and green areas.",example:"There is a lot of greenery here.",note:"夸绿化好，很自然。"},
+        {term:"environment",zh:"环境",explain:"The surroundings or conditions of a place.",example:"The environment is nice.",note:"夸住处、园区、厂区都能用。"},
+        {term:"quiet",zh:"安静",explain:"Not noisy.",example:"It is quiet at night.",note:"评价居住环境很常用。"},
+        {term:"well kept",zh:"维护得好",explain:"Clean and taken care of.",example:"The garden is well kept.",note:"说小区、花园、公共区域维护得不错。"},
+        {term:"walking path",zh:"步道；散步道",explain:"A path where people walk.",example:"There is a nice walking path.",note:"饭后散步、遛娃、散心都用得到。"},
+      ], items:[
+        ["This neighborhood is pretty quiet.","这个小区挺安静的。",{key:["neighborhood","quiet"],power:["pretty"],sentence:["This neighborhood is pretty ..."]}],
+        ["There is a lot of greenery around here.","这附近绿化挺多的。",{key:["greenery"],power:["around here"],sentence:["There is a lot of ... around here."]}],
+        ["The environment is nice and clean.","环境不错，也挺干净。",{key:["environment"],power:["nice and clean"],sentence:["The environment is ..."]}],
+        ["The garden is well kept.","这个花园维护得挺好。",{key:["garden","well kept"],power:["well"],sentence:["... is well kept."]}],
+        ["There is a small walking path behind the building.","楼后面有一条小步道。",{key:["walking path","building"],power:["behind"],sentence:["There is ... behind ..."]}],
+        ["It feels safe to walk here at night.","晚上在这里走路感觉挺安全。",{key:["safe","night"],power:["feels"],sentence:["It feels ... to ..."]}],
+        ["The only problem is that parking is a bit tight.","唯一的问题是停车有点紧张。",{key:["parking"],power:["the only problem"],sentence:["The only problem is that ..."]}],
+        ["I like this area; it feels comfortable.","我挺喜欢这一片，感觉住着舒服。",{key:["area"],power:["comfortable"],sentence:["I like this area; it feels ..."]}],
+      ]},
       { name:"介绍与认识", en:"Introductions", items:[
         ["Nice to meet you.","很高兴认识你。"],
         ["This is my friend.","这是我朋友。"],
@@ -1037,6 +1165,29 @@ const DATA = [
         ["This is past its expiration date.","这个过期了。"],
         ["Where can I find the rice?","米在哪儿？"],
         ["Do you have any change?","你有零钱吗？"],
+      ]},
+      { name:"出门买菜到家收拾", en:"Grocery Run from Home to Kitchen", sceneWords:[
+        {term:"shopping list",zh:"购物清单",explain:"A list of things you need to buy.",example:"Let's make a shopping list first.",note:"出门前先列清单，很日常。"},
+        {term:"vegetable stall",zh:"菜摊",explain:"A small place that sells vegetables.",example:"Let's stop by the vegetable stall.",note:"中国菜市场、路边摊都可以这样解释给外国人。"},
+        {term:"weigh",zh:"称重",explain:"To measure how heavy something is.",example:"Could you weigh these tomatoes?",note:"买菜称重时很常用。"},
+        {term:"plastic bag",zh:"塑料袋",explain:"A bag made of plastic.",example:"Could I have a plastic bag?",note:"自带袋子则说 I brought my own bag.。"},
+        {term:"scan to pay",zh:"扫码付款",explain:"To pay by scanning a QR code.",example:"Can I scan to pay?",note:"中国生活非常常见，给外国人解释也好用。"},
+        {term:"QR code",zh:"二维码",explain:"A square code you scan with a phone.",example:"Where is the QR code?",note:"二维码就是 QR code。"},
+        {term:"put away",zh:"收起来；放好",explain:"To put things in their proper place.",example:"Put the vegetables away when you get home.",note:"买回家收拾东西的万能词。"},
+      ], items:[
+        ["Let's check the fridge before we go out.","出门前先看一下冰箱。",{key:["fridge"],power:["before"],sentence:["Let's check ... before we ..."]}],
+        ["We still have eggs, but we are out of peppers.","鸡蛋还有，但是辣椒没了。",{key:["eggs","peppers"],power:["still","out of"],sentence:["We still have ..., but we are out of ..."]}],
+        ["Write peppers, tofu, and green onions on the shopping list.","购物清单上写辣椒、豆腐和葱。",{key:["shopping list"],power:["write ... on"],sentence:["Write ... on the shopping list."]}],
+        ["Take a reusable bag before you leave.","出门前拿个可重复使用的袋子。",{key:["reusable bag"],power:["before you leave"],sentence:["Take ... before you leave."]}],
+        ["Let's stop by the vegetable stall first.","先去菜摊看看。",{key:["vegetable stall"],power:["stop by","first"],sentence:["Let's stop by ... first."]}],
+        ["These peppers look fresh; let's get a few.","这些辣椒看着挺新鲜，买几个吧。",{key:["peppers","fresh"],power:["look","a few"],sentence:["... look fresh; let's get a few."]}],
+        ["Could you weigh these for me?","能帮我称一下这些吗？",{key:["weigh"],power:["for me"],sentence:["Could you ... for me?"]}],
+        ["Can I scan to pay?","我可以扫码付款吗？",{key:["scan to pay"],power:["can I"],sentence:["Can I scan to pay?"]}],
+        ["Where is the QR code?","二维码在哪里？",{key:["QR code"],power:["where"],sentence:["Where is the ...?"]}],
+        ["Put the heavy things at the bottom of the bag.","把重的东西放在袋子底下。",{key:["bottom","bag"],power:["at the bottom"],sentence:["Put ... at the bottom of ..."]}],
+        ["When we get home, put the vegetables in the fridge.","到家以后，把蔬菜放进冰箱。",{key:["vegetables","fridge"],power:["when we get home"],sentence:["When we get home, put ... in ..."]}],
+        ["Leave the eggs on the counter for now.","鸡蛋先放台面上。",{key:["eggs","counter"],power:["for now"],sentence:["Leave ... on the counter for now."]}],
+        ["Throw away the bad leaves before you wash the vegetables.","洗菜前先把坏叶子扔掉。",{key:["bad leaves","vegetables"],power:["throw away"],sentence:["Throw away ... before you ..."]}],
       ]},
       { name:"逛街买东西", en:"Shopping for Things", items:[
         ["I'm just looking, thanks.","我随便看看，谢谢。"],
@@ -1330,6 +1481,28 @@ const DATA = [
         ["Have a good weekend.","周末愉快。"],
         ["I'm finally off work.","我终于下班了。"],
         ["I need a vacation.","我需要休个假。"],
+      ]},
+      { name:"请事假请病假", en:"Personal Leave and Sick Leave", sceneWords:[
+        {term:"sick leave",zh:"病假",explain:"Time off because you are sick.",example:"I need to take sick leave today.",note:"生病请假直接说 sick leave。"},
+        {term:"personal leave",zh:"事假",explain:"Time off for a personal matter.",example:"I need to take personal leave tomorrow.",note:"有私事但不想细说，可以用 personal matter。"},
+        {term:"day off",zh:"休一天假",explain:"A day when you do not work.",example:"I'd like to take a day off.",note:"最日常的请假说法。"},
+        {term:"not feeling well",zh:"不舒服",explain:"A simple way to say you are sick or unwell.",example:"I'm not feeling well today.",note:"不想讲太细，先这样说。"},
+        {term:"urgent matter",zh:"急事",explain:"Something important that needs attention quickly.",example:"I have an urgent personal matter.",note:"私事紧急但不方便展开。"},
+        {term:"cover for me",zh:"帮我顶一下；代一下",explain:"To help someone by handling their work for a short time.",example:"Could you cover for me this morning?",note:"同事之间很实用。"},
+        {term:"make up the time",zh:"补时间",explain:"To work later or another time to replace missed time.",example:"I can make up the time tomorrow.",note:"主动补时间，语气负责。"},
+        {term:"doctor's note",zh:"医生证明",explain:"A note from a doctor saying you were sick.",example:"Do you need a doctor's note?",note:"不同公司规则不同，问清楚就好。"},
+      ], items:[
+        ["I'm not feeling well today, so I need to take sick leave.","我今天不太舒服，需要请病假。",{key:["sick leave"],power:["so"],sentence:["I need to take sick leave."]}],
+        ["I have a fever and a sore throat.","我发烧了，嗓子也疼。",{key:["fever","sore throat"],power:["and"],sentence:["I have ... and ..."]}],
+        ["I don't think I can come in today.","我觉得我今天没法去上班。",{key:["come in"],power:["I don't think"],sentence:["I don't think I can ..."]}],
+        ["Do you need a doctor's note from me?","需要我提供医生证明吗？",{key:["doctor's note"],power:["need from me"],sentence:["Do you need ... from me?"]}],
+        ["I have an urgent personal matter to handle.","我有个急事要处理。",{key:["urgent matter"],power:["handle"],sentence:["I have ... to handle."]}],
+        ["I'd like to take personal leave tomorrow morning.","我想明天上午请事假。",{key:["personal leave"],power:["would like to"],sentence:["I'd like to take ..."]}],
+        ["Could I take two hours off this afternoon?","我今天下午能请两个小时假吗？",{key:["two hours off"],power:["could I"],sentence:["Could I take ... off?"]}],
+        ["I can make up the time later this week.","我这周晚点可以把时间补回来。",{key:["make up the time"],power:["later this week"],sentence:["I can make up ... later."]}],
+        ["Could you cover for me during the morning meeting?","早上的会你能帮我顶一下吗？",{key:["cover for me","meeting"],power:["during"],sentence:["Could you cover for me during ...?"]}],
+        ["I'll check my messages if anything urgent comes up.","如果有急事，我会看消息。",{key:["messages","urgent"],power:["comes up"],sentence:["If anything urgent comes up, I'll ..."]}],
+        ["Thank you for understanding.","谢谢理解。",{key:["understanding"],power:["thank you for"],sentence:["Thank you for ..."]}],
       ]},
     ]
   },
@@ -2101,6 +2274,11 @@ const getSentenceStatusCore = dictCore.getSentenceStatus || ((id,hardIds,mastere
   if((Array.isArray(masteredIds)?masteredIds:[]).map(String).includes(cleanId))return 'mastered';
   return 'new';
 });
+const getSentenceStudyNotesCore = dictCore.getSentenceStudyNotes || (item=>({
+  key:Array.isArray(item&&item[2]&&item[2].key)?item[2].key:[],
+  power:Array.isArray(item&&item[2]&&item[2].power)?item[2].power:[],
+  sentence:Array.isArray(item&&item[2]&&item[2].sentence)?item[2].sentence:[]
+}));
 const createSceneProgressCore = dictCore.createSceneProgress || ((itemIds,hardIds,masteredIds)=>{
   const ids=Array.isArray(itemIds)?itemIds.map(String):[];
   const hard=new Set((Array.isArray(hardIds)?hardIds:[]).map(String));
@@ -2218,6 +2396,27 @@ function addWordBank(list,words){
   list.appendChild(bank);
 }
 
+function addStudyTags(row,item){
+  const notes=getSentenceStudyNotesCore(item);
+  const groups=[
+    ['key','重点词',notes.key],
+    ['power','万能词',notes.power],
+    ['sentence','万能句',notes.sentence]
+  ].filter(([,label,values])=>values&&values.length);
+  if(!groups.length)return;
+  const wrap=document.createElement('div');
+  wrap.className='study-tags';
+  groups.forEach(([type,label,values])=>{
+    values.forEach(value=>{
+      const tag=document.createElement('span');
+      tag.className=`study-tag ${type}`;
+      tag.innerHTML=`<b>${label}</b>${value}`;
+      wrap.appendChild(tag);
+    });
+  });
+  row.querySelector('.txt').appendChild(wrap);
+}
+
 // build sections
 DATA.forEach((cat,ci)=>{
   const sec=document.createElement('section');
@@ -2237,13 +2436,15 @@ DATA.forEach((cat,ci)=>{
     const rowEls=[];
     const itemIds=sub.items.map((_,itemIndex)=>`${ci}-${si}-${itemIndex}`);
     if(sub.sceneWords)sceneWordEntries.push({catIndex:ci,subIndex:si,catName:cat.name,subName:sub.name,subEl,words:sub.sceneWords,itemIds});
-    sub.items.forEach(([en,zh],itemIndex)=>{
+    sub.items.forEach((item,itemIndex)=>{
+      const [en,zh]=item;
       const sentenceId=`${ci}-${si}-${itemIndex}`;
       const row=document.createElement('div');row.className='row';
       row.dataset.sentenceId=sentenceId;
-      row.innerHTML=`<div class="spk">${SPK_SVG}</div><div class="txt"><div class="en"></div><div class="zh"></div><div class="statusbar"><button class="statusbtn" data-status="hard" type="button">不会</button><button class="statusbtn" data-status="mastered" type="button">掌握</button></div></div>`;
+      row.innerHTML=`<div class="spk">${SPK_SVG}</div><div class="txt"><div class="en"></div><div class="zh"></div><div class="statusbar"><button class="statusbtn" data-status="hard" type="button">不会</button><button class="statusbtn" data-status="mastered" type="button">会了</button></div></div>`;
       addTextWithDictionary(row.querySelector('.en'),en,sub.sceneWords);
       row.querySelector('.zh').textContent=zh;
+      addStudyTags(row,item);
       row.onclick=()=>{stopAll();speakOne(en,row);};
       row.querySelector('[data-status="hard"]').onclick=e=>{e.stopPropagation();setSentenceStatus(sentenceId,'hard');};
       row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(sentenceId,'mastered');};
