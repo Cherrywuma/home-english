@@ -438,6 +438,16 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('The machine says unexpected item in the bagging area.'));
   assert.ok(html.includes('Wrong Train and Transfer Fixes'));
   assert.ok(html.includes('I think I got on the wrong train.'));
+  assert.ok(html.includes('Shared Laundry Room and Dryer'));
+  assert.ok(html.includes('The laundry room is downstairs.'));
+  assert.ok(html.includes('Trash Sorting in Germany'));
+  assert.ok(html.includes('How does trash sorting work here?'));
+  assert.ok(html.includes('Lost Phone and Blocking Cards'));
+  assert.ok(html.includes('I need to block my card as soon as possible.'));
+  assert.ok(html.includes('Airport Security Step by Step'));
+  assert.ok(html.includes('Do I need to take out my laptop?'));
+  assert.ok(html.includes('ATM and Bank Card Problems'));
+  assert.ok(html.includes('My card is stuck in the ATM.'));
 });
 
 test('page stays usable without external font cdn links', () => {
