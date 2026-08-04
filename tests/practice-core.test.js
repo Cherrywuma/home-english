@@ -279,6 +279,28 @@ test('reads hand-written sentence study notes from array metadata', () => {
   assert.deepEqual(notes.sentence, ['Grab the ... and ...']);
 });
 
+test('infers study notes for older plain sentences', () => {
+  const notes = core.getSentenceStudyNotes([
+    'Pass me the remote.',
+    '把遥控器递给我。'
+  ]);
+
+  assert.ok(notes.key.includes('remote'));
+  assert.ok(notes.power.includes('pass'));
+  assert.ok(notes.sentence.includes('Pass me ...'));
+});
+
+test('uses local scene words as inferred key vocabulary', () => {
+  const notes = core.getSentenceStudyNotes(
+    ['Could I have the receipt, please?', '能给我小票吗？'],
+    [{ term: 'receipt', zh: '小票' }]
+  );
+
+  assert.ok(notes.key.includes('receipt'));
+  assert.ok(notes.power.includes('could I have'));
+  assert.ok(notes.sentence.includes('Could I have ...?'));
+});
+
 test('includes the second Germany first-week scene batch in the page data', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 

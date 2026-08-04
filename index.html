@@ -2274,7 +2274,7 @@ const getSentenceStatusCore = dictCore.getSentenceStatus || ((id,hardIds,mastere
   if((Array.isArray(masteredIds)?masteredIds:[]).map(String).includes(cleanId))return 'mastered';
   return 'new';
 });
-const getSentenceStudyNotesCore = dictCore.getSentenceStudyNotes || (item=>({
+const getSentenceStudyNotesCore = dictCore.getSentenceStudyNotes || ((item,words)=>({
   key:Array.isArray(item&&item[2]&&item[2].key)?item[2].key:[],
   power:Array.isArray(item&&item[2]&&item[2].power)?item[2].power:[],
   sentence:Array.isArray(item&&item[2]&&item[2].sentence)?item[2].sentence:[]
@@ -2396,8 +2396,8 @@ function addWordBank(list,words){
   list.appendChild(bank);
 }
 
-function addStudyTags(row,item){
-  const notes=getSentenceStudyNotesCore(item);
+function addStudyTags(row,item,words){
+  const notes=getSentenceStudyNotesCore(item,words);
   const groups=[
     ['key','重点词',notes.key],
     ['power','万能词',notes.power],
@@ -2444,7 +2444,7 @@ DATA.forEach((cat,ci)=>{
       row.innerHTML=`<div class="spk">${SPK_SVG}</div><div class="txt"><div class="en"></div><div class="zh"></div><div class="statusbar"><button class="statusbtn" data-status="hard" type="button">不会</button><button class="statusbtn" data-status="mastered" type="button">会了</button></div></div>`;
       addTextWithDictionary(row.querySelector('.en'),en,sub.sceneWords);
       row.querySelector('.zh').textContent=zh;
-      addStudyTags(row,item);
+      addStudyTags(row,item,sub.sceneWords);
       row.onclick=()=>{stopAll();speakOne(en,row);};
       row.querySelector('[data-status="hard"]').onclick=e=>{e.stopPropagation();setSentenceStatus(sentenceId,'hard');};
       row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(sentenceId,'mastered');};
