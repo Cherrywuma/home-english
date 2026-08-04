@@ -428,6 +428,16 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('I need to extend my leave by one day.'));
   assert.ok(html.includes('Showing Someone Around the Neighborhood'));
   assert.ok(html.includes('Some people do square dancing here in the evening.'));
+  assert.ok(html.includes('Rice Cooker and Leftover Rice'));
+  assert.ok(html.includes('Rinse the rice twice until the water looks clearer.'));
+  assert.ok(html.includes("Visiting Someone's Home"));
+  assert.ok(html.includes('Should I take off my shoes?'));
+  assert.ok(html.includes('Toothache and Dentist Visit'));
+  assert.ok(html.includes('I need to book a dental appointment.'));
+  assert.ok(html.includes('Self-Checkout Problems in Germany'));
+  assert.ok(html.includes('The machine says unexpected item in the bagging area.'));
+  assert.ok(html.includes('Wrong Train and Transfer Fixes'));
+  assert.ok(html.includes('I think I got on the wrong train.'));
 });
 
 test('page stays usable without external font cdn links', () => {
