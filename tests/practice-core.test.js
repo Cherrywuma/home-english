@@ -418,6 +418,16 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('I need to ask for sick leave for him today.'));
   assert.ok(html.includes('Explaining a Haircut'));
   assert.ok(html.includes('Please do not cut it too short.'));
+  assert.ok(html.includes('Using a Public Restroom'));
+  assert.ok(html.includes('There is no toilet paper in this stall.'));
+  assert.ok(html.includes('Period Supplies in a Hurry'));
+  assert.ok(html.includes('I got my period all of a sudden.'));
+  assert.ok(html.includes('Explaining Stomach Pain to a Doctor'));
+  assert.ok(html.includes('What warning signs should I watch for?'));
+  assert.ok(html.includes('Late Arrival and Extending Leave'));
+  assert.ok(html.includes('I need to extend my leave by one day.'));
+  assert.ok(html.includes('Showing Someone Around the Neighborhood'));
+  assert.ok(html.includes('Some people do square dancing here in the evening.'));
 });
 
 test('page stays usable without external font cdn links', () => {
