@@ -1,5 +1,6 @@
 const ALLOWED_ORIGINS = [
   'https://cherrywuma.github.io',
+  'https://home-english-private.cherryyijiatec.workers.dev',
   'http://127.0.0.1:8010',
   'http://localhost:8010'
 ];
