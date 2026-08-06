@@ -32,6 +32,20 @@
     line-height:1.5;
     padding-bottom:40px;
   }
+  body.public-locked .wrap{display:none;}
+  .public-lock{
+    min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--paper);
+  }
+  .public-lock main{
+    width:min(420px,100%);background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:24px;box-shadow:var(--shadow);
+  }
+  .public-lock h1{font-family:var(--display);font-weight:500;font-size:1.7rem;margin-bottom:8px;}
+  .public-lock p{color:var(--muted);line-height:1.65;margin-bottom:16px;}
+  .public-lock a{
+    display:inline-flex;align-items:center;justify-content:center;border-radius:999px;
+    background:var(--accent);color:#fff;text-decoration:none;font-weight:800;padding:11px 18px;
+  }
   .wrap{max-width:740px;margin:0 auto;padding:0 16px;}
 
   /* ---------- Hero ---------- */
@@ -405,6 +419,12 @@
 </style>
 </head>
 <body class="home-mode">
+<script>
+if(location.hostname==='cherrywuma.github.io'){
+  document.body.classList.add('public-locked');
+  document.body.insertAdjacentHTML('afterbegin','<section class="public-lock"><main><h1>Home English</h1><p>这个学习页面已经改为私人使用。请从密码保护地址进入。</p><a href="https://home-english-private.cherryyijiatec.workers.dev/">进入私人学习页</a></main></section>');
+}
+</script>
 <div class="wrap">
 
   <header class="hero">

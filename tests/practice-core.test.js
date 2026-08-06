@@ -696,6 +696,14 @@ test('includes teacher tts controls and hard-item ear training drawer', () => {
   assert.ok(html.includes('earPlayAll'));
 });
 
+test('public github pages host shows private entry instead of the study app', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes("location.hostname==='cherrywuma.github.io'"));
+  assert.ok(html.includes('public-locked'));
+  assert.ok(html.includes('https://home-english-private.cherryyijiatec.workers.dev/'));
+});
+
 test('opens with a study dashboard instead of only a long list', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
@@ -726,7 +734,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v52'));
+  assert.ok(worker.includes('home-english-v53'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
