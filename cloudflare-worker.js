@@ -1,12 +1,15 @@
 const ALLOWED_ORIGINS = [
-  'https://cherrywuma.github.io',
   'https://home-english-private.cherryyijiatec.workers.dev',
   'http://127.0.0.1:8010',
   'http://localhost:8010'
 ];
 
+function isAllowedOrigin(origin) {
+  return ALLOWED_ORIGINS.includes(origin);
+}
+
 function corsHeaders(origin) {
-  const allowOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  const allowOrigin = isAllowedOrigin(origin) ? origin : 'null';
   return {
     'Access-Control-Allow-Origin': allowOrigin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -30,11 +33,18 @@ export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
     if (request.method === 'OPTIONS') {
+      if (!isAllowedOrigin(origin)) {
+        return new Response(null, { status: 403, headers: corsHeaders(origin) });
+      }
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
     }
 
     if (request.method !== 'POST') {
       return jsonResponse({ error: 'POST only' }, 405, origin);
+    }
+
+    if (!isAllowedOrigin(origin)) {
+      return jsonResponse({ error: 'Origin not allowed' }, 403, origin);
     }
 
     if (!env.OPENAI_API_KEY) {

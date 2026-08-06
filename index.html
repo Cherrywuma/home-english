@@ -6410,7 +6410,8 @@ const saveTeacherEndpoint=document.getElementById('saveTeacherEndpoint');
 const teacherStatus=document.getElementById('teacherStatus');
 const TEACHER_MODE_KEY='he_teacher_tts_enabled';
 const TEACHER_ENDPOINT_KEY='he_teacher_tts_endpoint';
-const DEFAULT_TEACHER_ENDPOINT='https://home-english-teacher-tts.cherryyijiatec.workers.dev';
+const OLD_TEACHER_ENDPOINT='https://home-english-teacher-tts.cherryyijiatec.workers.dev';
+const DEFAULT_TEACHER_ENDPOINT='/tts';
 const TTS_DB_NAME='homeEnglishTeacherAudio';
 const TTS_DB_STORE='audio';
 let currentTeacherAudio=null;
@@ -6446,6 +6447,7 @@ if('speechSynthesis' in window){
 function readTeacherEndpoint(){
   try{
     const saved=localStorage.getItem(TEACHER_ENDPOINT_KEY);
+    if(saved===OLD_TEACHER_ENDPOINT)return DEFAULT_TEACHER_ENDPOINT;
     return String(saved===null?DEFAULT_TEACHER_ENDPOINT:saved).trim();
   }catch(e){return DEFAULT_TEACHER_ENDPOINT;}
 }

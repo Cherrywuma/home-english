@@ -688,7 +688,8 @@ test('includes teacher tts controls and hard-item ear training drawer', () => {
 
   assert.ok(html.includes('teacherMode'));
   assert.ok(html.includes('teacherEndpoint'));
-  assert.ok(html.includes('https://home-english-teacher-tts.cherryyijiatec.workers.dev'));
+  assert.ok(html.includes("const DEFAULT_TEACHER_ENDPOINT='/tts'"));
+  assert.ok(html.includes('OLD_TEACHER_ENDPOINT'));
   assert.ok(html.includes('homeEnglishTeacherAudio'));
   assert.ok(html.includes('earDrawer'));
   assert.ok(html.includes('earPlaySelected'));
@@ -709,18 +710,23 @@ test('opens with a study dashboard instead of only a long list', () => {
 test('cloudflare worker keeps the openai key off the static page', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   const worker = fs.readFileSync(path.join(__dirname, '..', 'cloudflare-worker.js'), 'utf8');
+  const protectedWorker = fs.readFileSync(path.join(__dirname, '..', 'protected-site-worker.js'), 'utf8');
 
   assert.equal(html.includes('OPENAI_API_KEY'), false);
   assert.ok(worker.includes('OPENAI_API_KEY'));
   assert.ok(worker.includes('https://api.openai.com/v1/audio/speech'));
   assert.ok(worker.includes('gpt-4o-mini-tts'));
   assert.ok(worker.includes('Access-Control-Allow-Origin'));
+  assert.equal(worker.includes('https://cherrywuma.github.io'), false);
+  assert.ok(worker.includes("return jsonResponse({ error: 'Origin not allowed' }, 403, origin);"));
+  assert.ok(protectedWorker.includes("if (url.pathname === '/tts') return proxyTts(request);"));
+  assert.ok(protectedWorker.includes("'Origin': 'https://home-english-private.cherryyijiatec.workers.dev'"));
 });
 
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v51'));
+  assert.ok(worker.includes('home-english-v52'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

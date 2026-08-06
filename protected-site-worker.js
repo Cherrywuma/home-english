@@ -1,5 +1,6 @@
 const SITE_ORIGIN = 'https://cherrywuma.github.io';
 const SITE_BASE = '/home-english';
+const TTS_UPSTREAM = 'https://home-english-teacher-tts.cherryyijiatec.workers.dev';
 const COOKIE_NAME = 'home_english_session';
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 14;
 
@@ -119,6 +120,35 @@ async function proxySite(request) {
   });
 }
 
+async function proxyTts(request) {
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { status: 204 });
+  }
+  if (request.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'POST only' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
+    });
+  }
+
+  const upstream = await fetch(TTS_UPSTREAM, {
+    method: 'POST',
+    headers: {
+      'Content-Type': request.headers.get('Content-Type') || 'application/json',
+      'Origin': 'https://home-english-private.cherryyijiatec.workers.dev'
+    },
+    body: request.body
+  });
+
+  const headers = new Headers();
+  headers.set('Content-Type', upstream.headers.get('Content-Type') || 'application/octet-stream');
+  headers.set('Cache-Control', 'no-store');
+  return new Response(upstream.body, {
+    status: upstream.status,
+    headers
+  });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -130,6 +160,7 @@ export default {
     }
     if (!env.SITE_PASSWORD) return loginPage('还没有配置网站密码。');
     if (!(await isValidSession(request, env.SITE_PASSWORD))) return loginPage();
+    if (url.pathname === '/tts') return proxyTts(request);
     return proxySite(request);
   }
 };
