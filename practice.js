@@ -163,6 +163,7 @@
   }
 
   function showPracticeOnly() {
+    if (app.enterListMode) app.enterListMode();
     stopPracticeActivity();
     clearTimeout(answerTimer);
     answerTimer = null;

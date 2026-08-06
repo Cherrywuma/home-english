@@ -70,6 +70,50 @@
   .voicebar input[type=range]{accent-color:var(--accent);width:104px;}
   .rateval{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600;min-width:2.4em;}
 
+  /* ---------- Study dashboard ---------- */
+  body.home-mode .chips,
+  body.home-mode #content,
+  body.home-mode footer{display:none;}
+  .study-dashboard{
+    margin:18px 0 0;background:var(--card);border:1px solid var(--line);border-radius:16px;
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+  .dash-head{padding:17px 18px 14px;border-bottom:1px solid var(--line);}
+  .dash-eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:900;}
+  .dash-head h2{font-family:var(--display);font-size:1.55rem;font-weight:500;line-height:1.18;margin-top:4px;}
+  .dash-head p{color:var(--muted);font-size:.92rem;line-height:1.55;margin-top:5px;max-width:56ch;}
+  .dash-stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line);background:#FCFAF6;}
+  .dash-stat{padding:12px 14px;border-left:1px solid var(--line);}
+  .dash-stat:first-child{border-left:none;}
+  .dash-stat b{display:block;font-size:1.2rem;line-height:1.1;color:var(--ink);}
+  .dash-stat span{display:block;margin-top:3px;color:var(--muted);font-size:.74rem;font-weight:800;}
+  .dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px;}
+  .dash-action{
+    text-align:left;border:1px solid var(--line);background:#FCFAF6;color:var(--ink);border-radius:12px;
+    padding:13px;font-family:var(--body);cursor:pointer;min-height:116px;
+  }
+  .dash-action:active,.dash-scene:active{transform:scale(.98);}
+  .dash-action.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .dash-action.purple{background:#F3EAFE;border-color:#DDCCF1;}
+  .dash-action.orange{background:#FFF2D7;border-color:#ECD8A6;}
+  .dash-action strong{display:block;font-size:.98rem;line-height:1.25;}
+  .dash-action span{display:block;margin-top:6px;color:var(--muted);font-size:.78rem;line-height:1.42;}
+  .dash-action.primary span{color:rgba(255,255,255,.82);}
+  .dash-scenes{border-top:1px solid var(--line);padding:14px;background:#FFFDF8;}
+  .dash-scenes h3{font-size:.92rem;margin-bottom:9px;}
+  .dash-scene-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+  .dash-scene{
+    text-align:left;border:1px solid var(--line);background:var(--card);border-radius:10px;
+    padding:10px 11px;font-family:var(--body);cursor:pointer;color:var(--ink);
+  }
+  .dash-scene b{display:block;font-size:.88rem;}
+  .dash-scene span{display:block;margin-top:2px;color:var(--muted);font-size:.72rem;line-height:1.35;}
+  .dash-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px;}
+  .dash-tools button{
+    border:1px solid #CFE6DC;background:var(--accent-soft);color:var(--accent);border-radius:999px;
+    padding:7px 12px;font-family:var(--body);font-size:.78rem;font-weight:800;cursor:pointer;
+  }
+
   /* ---------- Search ---------- */
   .search{position:relative;margin:14px 0 8px;}
   .search input{
@@ -241,6 +285,54 @@
     width:100%;margin-top:12px;font-family:var(--body);font-weight:700;color:var(--accent);
     border:1px solid #CFE6DC;background:var(--accent-soft);border-radius:12px;padding:12px;cursor:pointer;
   }
+  .teacherbar{
+    margin-top:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:11px 14px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr auto auto;
+    gap:10px;align-items:center;
+  }
+  .teacherbar label{display:flex;align-items:center;gap:7px;font-size:.82rem;font-weight:800;color:var(--ink);white-space:nowrap;}
+  .teacherbar input[type=checkbox]{accent-color:var(--accent);}
+  .teacherbar input[type=url]{
+    min-width:0;width:100%;font-family:var(--body);font-size:.82rem;color:var(--ink);
+    border:1px solid var(--line);background:#FCFAF6;border-radius:10px;padding:8px 10px;
+  }
+  .teacherbar button,.ear-actions button,.ear-item button{
+    font-family:var(--body);font-size:.78rem;font-weight:800;border:none;border-radius:999px;
+    padding:8px 12px;cursor:pointer;
+  }
+  .teacherbar button,.ear-actions button.primary{background:var(--accent);color:#fff;}
+  .teacherbar .teacher-status{font-size:.74rem;color:var(--muted);white-space:nowrap;}
+  .ear-float{
+    position:fixed;right:18px;bottom:18px;z-index:60;border:none;border-radius:999px;
+    background:#6A438F;color:#fff;font-family:var(--body);font-size:.86rem;font-weight:900;
+    padding:12px 15px;box-shadow:0 10px 28px rgba(40,20,60,.28);cursor:pointer;
+  }
+  .ear-float b{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;margin-left:6px;
+    border-radius:999px;background:rgba(255,255,255,.22);font-size:.72rem;}
+  .ear-drawer{
+    position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:var(--card);z-index:70;
+    transform:translateX(105%);transition:transform .22s ease;box-shadow:-18px 0 40px rgba(30,20,10,.16);
+    border-left:1px solid var(--line);display:flex;flex-direction:column;
+  }
+  .ear-drawer.open{transform:translateX(0);}
+  .ear-head{padding:16px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+  .ear-head h2{font-family:var(--display);font-weight:500;font-size:1.45rem;}
+  .ear-head p{color:var(--muted);font-size:.82rem;margin-top:2px;line-height:1.45;}
+  .ear-close{border:none;background:var(--accent-soft);color:var(--accent);border-radius:999px;width:34px;height:34px;font-weight:900;cursor:pointer;}
+  .ear-actions{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;}
+  .ear-actions button.ghost,.ear-item button{background:var(--accent-soft);color:var(--accent);}
+  .ear-list{overflow:auto;padding:0 0 16px;flex:1;}
+  .ear-empty{padding:26px 18px;color:var(--muted);line-height:1.55;}
+  .ear-item{
+    display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:13px 16px;
+    border-bottom:1px solid var(--line);cursor:pointer;
+  }
+  .ear-item.current{background:var(--accent-soft);}
+  .ear-item input{margin-top:4px;accent-color:var(--accent);}
+  .ear-item .ear-en{font-weight:800;line-height:1.35;}
+  .ear-item .ear-zh{font-size:.82rem;color:var(--muted);margin-top:3px;line-height:1.35;}
+  .ear-item .ear-meta{font-size:.72rem;color:#A89F90;margin-top:5px;}
+  .ear-now{padding:10px 16px;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);background:#FCFAF6;}
   .practice-top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--muted);font-size:.84rem;font-weight:700;}
   .practice-back{font-family:var(--body);border:none;background:none;color:var(--accent);font-weight:700;cursor:pointer;padding:4px 0;}
   .practice-meta{font-size:.78rem;color:var(--muted);margin-top:12px;}
@@ -287,6 +379,13 @@
   #stopbar.show{transform:translateX(-50%) translateY(0);}
   #stopbar svg{width:13px;height:13px;fill:#fff;}
 
+  @media (max-width:640px){
+    .dash-stats{grid-template-columns:repeat(2,1fr);}
+    .dash-stat:nth-child(3){border-left:none;border-top:1px solid var(--line);}
+    .dash-stat:nth-child(4){border-top:1px solid var(--line);}
+    .dash-grid,.dash-scene-grid{grid-template-columns:1fr;}
+  }
+
   @media (max-width:480px){
     .hero h1{font-size:1.8rem;}
     .voicebar select{max-width:140px;}
@@ -299,10 +398,13 @@
     .practice-nav{flex-direction:column;}
     .practice-nav .practice-btn{width:100%;}
     .scene-training-grid{grid-template-columns:1fr;}
+    .teacherbar{grid-template-columns:1fr;}
+    .teacherbar label,.teacherbar .teacher-status{white-space:normal;}
+    .ear-float{right:12px;bottom:76px;}
   }
 </style>
 </head>
-<body>
+<body class="home-mode">
 <div class="wrap">
 
   <header class="hero">
@@ -323,6 +425,12 @@
         <span class="rateval" id="rateVal">0.85×</span>
       </label>
     </div>
+    <div class="teacherbar">
+      <label><input id="teacherMode" type="checkbox"> 老师级朗读</label>
+      <input id="teacherEndpoint" type="url" inputmode="url" placeholder="Cloudflare Worker 地址，例如 https://你的-worker.workers.dev">
+      <button id="saveTeacherEndpoint" type="button">保存接口</button>
+      <span id="teacherStatus" class="teacher-status">未配置时使用免费朗读</span>
+    </div>
 
     <div class="search">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg>
@@ -337,6 +445,55 @@
     <div id="lookup" class="lookup"></div>
   </header>
 
+  <section id="studyDashboard" class="study-dashboard" aria-label="学习首页">
+    <div class="dash-head">
+      <div class="dash-eyebrow">Today</div>
+      <h2>今天先练能用上的，不从头翻。</h2>
+      <p>先选一个入口：不会的反复练，会的默认放过；要查词就搜，要磨耳朵就只循环卡住的内容。</p>
+    </div>
+    <div class="dash-stats">
+      <div class="dash-stat"><b id="dashTotal">0</b><span>全部句子</span></div>
+      <div class="dash-stat"><b id="dashHard">0</b><span>不会内容</span></div>
+      <div class="dash-stat"><b id="dashMastered">0</b><span>已掌握</span></div>
+      <div class="dash-stat"><b id="dashToday">10</b><span>今日十句</span></div>
+    </div>
+    <div class="dash-grid">
+      <button class="dash-action primary" type="button" data-dash-action="today">
+        <strong>今日十句</strong>
+        <span>每天换一组未掌握句子，少量多次，不硬啃长列表。</span>
+      </button>
+      <button class="dash-action orange" type="button" data-dash-action="hard">
+        <strong>不会专练</strong>
+        <span id="dashHardText">点过不会的句子，会集中在这里。</span>
+      </button>
+      <button class="dash-action purple" type="button" data-dash-action="ear">
+        <strong>磨耳朵</strong>
+        <span>选择不会内容循环听。接 API 后可英文一遍、中文一遍。</span>
+      </button>
+      <button class="dash-action" type="button" data-dash-action="continue">
+        <strong>继续上次场景</strong>
+        <span id="dashContinueText">还没有上次场景时，会随机找一个未掌握场景。</span>
+      </button>
+      <button class="dash-action" type="button" data-dash-action="scenes">
+        <strong>按场景学</strong>
+        <span>德国出行、厨房、卫生间、上班这些动作链都从这里进。</span>
+      </button>
+      <button class="dash-action" type="button" data-dash-action="library">
+        <strong>全部内容</strong>
+        <span>打开原来的完整分类列表，适合慢慢翻和批量检查。</span>
+      </button>
+    </div>
+    <div class="dash-scenes">
+      <h3>常用分类</h3>
+      <div id="dashSceneGrid" class="dash-scene-grid"></div>
+      <div class="dash-tools">
+        <button type="button" data-dash-action="searchFocus">直接搜索</button>
+        <button type="button" data-dash-action="voiceSettings">老师声音设置</button>
+        <button type="button" data-dash-action="homeRefresh">刷新统计</button>
+      </div>
+    </div>
+  </section>
+
   <nav class="chips" id="chips"></nav>
 
   <main id="content"></main>
@@ -347,6 +504,24 @@
     <b>想加内容：</b>所有句子都在本文件底部的 <b>DATA</b> 里。普通句子用 <code>["English","中文"]</code>；需要显示词汇时，先在本场景 <code>sceneWords</code> 写好英文和中文意思，再在第三项加 <code>{key, power, sentence}</code>。
   </footer>
 </div>
+
+<button id="earDrawerBtn" class="ear-float" type="button">磨耳朵 <b id="earCount">0</b></button>
+<aside id="earDrawer" class="ear-drawer" aria-label="不会内容磨耳朵">
+  <div class="ear-head">
+    <div>
+      <h2>不会内容</h2>
+      <p>点句子里的「不会」会进入这里。选中后循环：英文，再中文。</p>
+    </div>
+    <button id="earClose" class="ear-close" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="ear-actions">
+    <button id="earPlaySelected" class="primary" type="button">播放选中</button>
+    <button id="earPlayAll" class="ghost" type="button">播放全部</button>
+    <button id="earStop" class="ghost" type="button">停止</button>
+  </div>
+  <div id="earList" class="ear-list"></div>
+  <div id="earNow" class="ear-now">老师级接口配置后，会优先播放缓存音频。</div>
+</aside>
 
 <button id="stopbar"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg> 停止朗读</button>
 
@@ -5536,9 +5711,18 @@ const DATA = [
 const SPK_SVG = '<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M16 9a4 4 0 0 1 0 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 const content = document.getElementById('content');
 const chipsBox = document.getElementById('chips');
+const studyDashboard = document.getElementById('studyDashboard');
+const dashTotal = document.getElementById('dashTotal');
+const dashHard = document.getElementById('dashHard');
+const dashMastered = document.getElementById('dashMastered');
+const dashToday = document.getElementById('dashToday');
+const dashHardText = document.getElementById('dashHardText');
+const dashContinueText = document.getElementById('dashContinueText');
+const dashSceneGrid = document.getElementById('dashSceneGrid');
 const dictCore = window.HomeEnglishPracticeCore;
 const HARD_IDS_KEY = 'homeEnglishHardIds';
 const MASTERED_IDS_KEY = 'homeEnglishMasteredIds';
+const LAST_SCENE_KEY = 'homeEnglishLastSceneIndex';
 const sceneWordsMatchQuery = dictCore.sceneWordsMatchQuery || ((words,query)=>{
   const text=String(query||'').trim().toLowerCase();
   if(!text)return false;
@@ -5578,6 +5762,7 @@ const pickRandomUnmasteredSceneCore = dictCore.pickRandomUnmasteredScene || ((sc
 });
 let allRows = [];
 let sceneWordEntries = [];
+const sentenceLookup = new Map();
 
 function readIdList(key){
   try{return JSON.parse(localStorage.getItem(key)||'[]');}catch(e){return [];}
@@ -5590,9 +5775,9 @@ function getMasteredIds(){return readIdList(MASTERED_IDS_KEY);}
 function setSentenceStatus(id,status){
   let hard=getHardIds();
   let mastered=getMasteredIds();
+  const wasHard=hard.map(String).includes(String(id));
   if(status==='hard'){
-    const isHard=hard.map(String).includes(String(id));
-    hard=setSentenceMembershipCore(hard,id,!isHard);
+    hard=setSentenceMembershipCore(hard,id,!wasHard);
     mastered=setSentenceMembershipCore(mastered,id,false);
   }else if(status==='mastered'){
     const isMastered=mastered.map(String).includes(String(id));
@@ -5605,6 +5790,9 @@ function setSentenceStatus(id,status){
   writeIdList(HARD_IDS_KEY,hard);
   writeIdList(MASTERED_IDS_KEY,mastered);
   refreshAllSentenceStatus();
+  renderEarDrawer();
+  updateDashboard();
+  if(status==='hard'&&!wasHard&&hard.map(String).includes(String(id)))openEarDrawer();
 }
 function refreshSentenceStatus(row){
   if(!row||!row.dataset.sentenceId)return;
@@ -5769,6 +5957,7 @@ DATA.forEach((cat,ci)=>{
     sub.items.forEach((item,itemIndex)=>{
       const [en,zh]=item;
       const sentenceId=`${ci}-${si}-${itemIndex}`;
+      sentenceLookup.set(sentenceId,{id:sentenceId,en,zh,catName:cat.name,subName:sub.name});
       const row=document.createElement('div');row.className='row';
       row.dataset.sentenceId=sentenceId;
       row.innerHTML=`<div class="spk">${SPK_SVG}</div><div class="txt"><div class="en"></div><div class="zh"></div><div class="statusbar"><button class="statusbtn" data-status="hard" type="button">不会</button><button class="statusbtn" data-status="mastered" type="button">会了</button></div></div>`;
@@ -5793,10 +5982,139 @@ DATA.forEach((cat,ci)=>{
   content.appendChild(sec);
 });
 
+/* ---------- 学习首页 ---------- */
+function enterListMode(){
+  document.body.classList.remove('home-mode');
+  if(studyDashboard)studyDashboard.hidden=true;
+}
+function showHomeDashboard(){
+  stopAll();
+  if(studyDashboard)studyDashboard.hidden=false;
+  document.body.classList.add('home-mode');
+  document.getElementById('lookup').style.display='none';
+  updateDashboard();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function sentenceArray(){
+  return Array.from(sentenceLookup.values());
+}
+function todaySeed(){
+  const d=new Date();
+  return Number(`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`);
+}
+function seededShuffle(items,seed){
+  const arr=items.slice();
+  let s=seed||1;
+  const next=()=>{
+    s=(s*1664525+1013904223)>>>0;
+    return s/4294967296;
+  };
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(next()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+function getTodayIds(){
+  const mastered=new Set(getMasteredIds().map(String));
+  const pool=sentenceArray().filter(item=>!mastered.has(String(item.id)));
+  return seededShuffle(pool.length?pool:sentenceArray(),todaySeed()).slice(0,10).map(item=>item.id);
+}
+function rememberScene(scene){
+  const index=sceneWordEntries.indexOf(scene);
+  if(index>=0){
+    try{localStorage.setItem(LAST_SCENE_KEY,String(index));}catch(e){}
+  }
+}
+function getLastScene(){
+  try{
+    const index=Number(localStorage.getItem(LAST_SCENE_KEY));
+    return Number.isFinite(index)?sceneWordEntries[index]:null;
+  }catch(e){return null;}
+}
+function sceneCount(catIndex){
+  return DATA[catIndex].subs.reduce((sum,sub)=>sum+sub.items.length,0);
+}
+function categoryProgress(catIndex){
+  const prefix=`${catIndex}-`;
+  const hard=new Set(getHardIds().map(String));
+  const mastered=new Set(getMasteredIds().map(String));
+  let hardCount=0,masteredCount=0;
+  sentenceArray().forEach(item=>{
+    if(!String(item.id).startsWith(prefix))return;
+    if(hard.has(String(item.id)))hardCount++;
+    if(mastered.has(String(item.id)))masteredCount++;
+  });
+  return {hard:hardCount,mastered:masteredCount,total:sceneCount(catIndex)};
+}
+function updateDashboard(){
+  if(dashTotal)dashTotal.textContent=total;
+  const hardIds=getHardIds();
+  const masteredIds=getMasteredIds();
+  const todayIds=getTodayIds();
+  if(dashHard)dashHard.textContent=hardIds.length;
+  if(dashMastered)dashMastered.textContent=masteredIds.length;
+  if(dashToday)dashToday.textContent=todayIds.length;
+  if(dashHardText)dashHardText.textContent=hardIds.length?`${hardIds.length}句卡住的内容，点进去反复练。`:'还没有不会内容，浏览时点“不会”就会进来。';
+  const last=getLastScene();
+  if(dashContinueText)dashContinueText.textContent=last?`上次在：${last.catName} · ${last.subName}`:'还没有上次场景时，会随机找一个未掌握场景。';
+  if(dashSceneGrid){
+    dashSceneGrid.innerHTML=DATA.map((cat,index)=>{
+      const p=categoryProgress(index);
+      return `<button class="dash-scene" type="button" data-cat-index="${index}">
+        <b>${cat.name}</b><span>${p.total}句 · 不会${p.hard} · 掌握${p.mastered}</span>
+      </button>`;
+    }).join('');
+    dashSceneGrid.querySelectorAll('[data-cat-index]').forEach(btn=>{
+      btn.onclick=()=>filterCat(Number(btn.dataset.catIndex));
+    });
+  }
+}
+function bindDashboard(){
+  if(!studyDashboard)return;
+  studyDashboard.querySelectorAll('[data-dash-action]').forEach(btn=>{
+    btn.onclick=()=>{
+      const action=btn.dataset.dashAction;
+      if(action==='today'){showRowsByIds(getTodayIds());return;}
+      if(action==='hard'){
+        if(window.HomeEnglishPractice&&window.HomeEnglishPractice.startHardPractice)window.HomeEnglishPractice.startHardPractice();
+        else showRowsByIds(getHardIds());
+        return;
+      }
+      if(action==='ear'){openEarDrawer();return;}
+      if(action==='continue'){
+        const scene=getLastScene()||pickRandomUnmasteredSceneCore(sceneWordEntries,getMasteredIds());
+        if(scene)showScene(scene);
+        else filterCat(null);
+        return;
+      }
+      if(action==='scenes'){showSceneTrainingPanel();return;}
+      if(action==='library'){filterCat(null);return;}
+      if(action==='searchFocus'){q.focus();return;}
+      if(action==='voiceSettings'){
+        document.querySelector('.teacherbar').scrollIntoView({behavior:'smooth',block:'center'});
+        return;
+      }
+      if(action==='homeRefresh'){updateDashboard();return;}
+    };
+  });
+}
+
 /* ---------- 语音 ---------- */
 let voices=[],chosen=null;
 const voiceSel=document.getElementById('voiceSel');
 const rate=document.getElementById('rate'),rateVal=document.getElementById('rateVal');
+const teacherMode=document.getElementById('teacherMode');
+const teacherEndpoint=document.getElementById('teacherEndpoint');
+const saveTeacherEndpoint=document.getElementById('saveTeacherEndpoint');
+const teacherStatus=document.getElementById('teacherStatus');
+const TEACHER_MODE_KEY='he_teacher_tts_enabled';
+const TEACHER_ENDPOINT_KEY='he_teacher_tts_endpoint';
+const TTS_DB_NAME='homeEnglishTeacherAudio';
+const TTS_DB_STORE='audio';
+let currentTeacherAudio=null;
+let currentTeacherUrl='';
+let currentTeacherDone=null;
 rate.oninput=()=>rateVal.textContent=(+rate.value).toFixed(2)+'×';
 
 function loadVoices(){
@@ -5824,6 +6142,129 @@ if('speechSynthesis' in window){
   voiceSel.innerHTML='<option>此浏览器不支持朗读</option>';
 }
 
+function readTeacherEndpoint(){
+  try{return String(localStorage.getItem(TEACHER_ENDPOINT_KEY)||'').trim();}catch(e){return '';}
+}
+function teacherEnabled(){
+  return !!(teacherMode&&teacherMode.checked&&readTeacherEndpoint());
+}
+function refreshTeacherStatus(){
+  const endpoint=readTeacherEndpoint();
+  if(teacherEndpoint)teacherEndpoint.value=endpoint;
+  if(teacherMode){
+    try{teacherMode.checked=localStorage.getItem(TEACHER_MODE_KEY)==='1';}catch(e){}
+  }
+  if(teacherStatus){
+    teacherStatus.textContent=endpoint ? (teacherMode&&teacherMode.checked?'老师级朗读已开启，优先用本机缓存':'接口已保存，开启后使用老师级声音') : '未配置时使用免费朗读';
+  }
+}
+if(saveTeacherEndpoint){
+  saveTeacherEndpoint.onclick=()=>{
+    const value=String(teacherEndpoint.value||'').trim().replace(/\/+$/,'');
+    try{localStorage.setItem(TEACHER_ENDPOINT_KEY,value);}catch(e){}
+    refreshTeacherStatus();
+  };
+}
+if(teacherMode){
+  teacherMode.onchange=()=>{
+    try{localStorage.setItem(TEACHER_MODE_KEY,teacherMode.checked?'1':'0');}catch(e){}
+    refreshTeacherStatus();
+  };
+}
+refreshTeacherStatus();
+
+function openTtsDb(){
+  return new Promise((resolve,reject)=>{
+    const request=indexedDB.open(TTS_DB_NAME,1);
+    request.onupgradeneeded=()=>request.result.createObjectStore(TTS_DB_STORE);
+    request.onsuccess=()=>resolve(request.result);
+    request.onerror=()=>reject(request.error);
+  });
+}
+async function cacheGetAudio(key){
+  if(!('indexedDB' in window))return null;
+  const db=await openTtsDb();
+  return new Promise(resolve=>{
+    const tx=db.transaction(TTS_DB_STORE,'readonly');
+    const req=tx.objectStore(TTS_DB_STORE).get(key);
+    req.onsuccess=()=>resolve(req.result||null);
+    req.onerror=()=>resolve(null);
+  });
+}
+async function cachePutAudio(key,blob){
+  if(!('indexedDB' in window))return;
+  const db=await openTtsDb();
+  await new Promise(resolve=>{
+    const tx=db.transaction(TTS_DB_STORE,'readwrite');
+    tx.objectStore(TTS_DB_STORE).put(blob,key);
+    tx.oncomplete=tx.onerror=()=>resolve();
+  });
+}
+async function sha256Text(text){
+  if(window.crypto&&crypto.subtle){
+    const data=new TextEncoder().encode(text);
+    const hash=await crypto.subtle.digest('SHA-256',data);
+    return [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  let h=0;
+  for(let i=0;i<text.length;i++)h=(Math.imul(31,h)+text.charCodeAt(i))|0;
+  return String(h>>>0);
+}
+function stopTeacherAudio(){
+  if(currentTeacherDone){
+    currentTeacherDone();
+    currentTeacherDone=null;
+  }
+  if(currentTeacherAudio){
+    currentTeacherAudio.pause();
+    currentTeacherAudio.src='';
+    currentTeacherAudio=null;
+  }
+  if(currentTeacherUrl){
+    URL.revokeObjectURL(currentTeacherUrl);
+    currentTeacherUrl='';
+  }
+}
+async function getTeacherAudio(text,lang){
+  const endpoint=readTeacherEndpoint();
+  if(!endpoint)throw new Error('missing-endpoint');
+  const cleanText=String(text||'').trim();
+  const cleanLang=lang==='zh'?'zh':'en';
+  const key=await sha256Text([endpoint,cleanLang,cleanText,'mp3','v1'].join('|'));
+  const cached=await cacheGetAudio(key);
+  if(cached)return {blob:cached,cached:true};
+  const res=await fetch(endpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({text:cleanText,language:cleanLang,format:'mp3'})
+  });
+  if(!res.ok)throw new Error(`tts-${res.status}`);
+  const blob=await res.blob();
+  await cachePutAudio(key,blob);
+  return {blob,cached:false};
+}
+async function speakTeacher(text,lang,row){
+  const cleanText=String(text||'').trim();
+  if(!cleanText)return;
+  stopTeacherAudio();
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  if(row)row.classList.add('speaking');
+  const {blob,cached}=await getTeacherAudio(cleanText,lang);
+  if(teacherStatus)teacherStatus.textContent=cached?'播放本机缓存音频':'已生成并缓存本句音频';
+  currentTeacherUrl=URL.createObjectURL(blob);
+  currentTeacherAudio=new Audio(currentTeacherUrl);
+  await new Promise((resolve,reject)=>{
+    currentTeacherDone=resolve;
+    currentTeacherAudio.onended=resolve;
+    currentTeacherAudio.onerror=reject;
+    currentTeacherAudio.play().catch(reject);
+  }).catch(err=>{throw err;}).finally(()=>{
+    currentTeacherDone=null;
+    if(row)row.classList.remove('speaking');
+    stopTeacherAudio();
+  });
+}
+
 function makeUtter(text){
   const u=new SpeechSynthesisUtterance(text);
   if(chosen){u.voice=chosen;u.lang=chosen.lang;}else{u.lang='en-US';}
@@ -5833,6 +6274,16 @@ function makeUtter(text){
 
 /* ---------- 单句 ---------- */
 function speakOne(text,row){
+  if(teacherEnabled()){
+    speakTeacher(text,'en',row).catch(()=>{
+      if(teacherStatus)teacherStatus.textContent='老师级朗读失败，已改用免费朗读';
+      speakOneFree(text,row);
+    });
+    return;
+  }
+  speakOneFree(text,row);
+}
+function speakOneFree(text,row){
   if(!('speechSynthesis' in window))return;
   speechSynthesis.cancel();
   row.classList.add('speaking');
@@ -5845,6 +6296,7 @@ function speakOne(text,row){
 const stopbar=document.getElementById('stopbar');
 let seqActive=false,curBtn=null;
 function playSeq(items,rowEls,btn){
+  if(teacherEnabled()){playSeqTeacher(items,rowEls,btn);return;}
   if(!('speechSynthesis' in window))return;
   seqActive=true;curBtn=btn;btn.classList.add('playing');
   btn.innerHTML='<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>停止';
@@ -5862,13 +6314,157 @@ function playSeq(items,rowEls,btn){
   };
   next();
 }
+async function playSeqTeacher(items,rowEls,btn){
+  seqActive=true;curBtn=btn;btn.classList.add('playing');
+  btn.innerHTML='<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>停止';
+  stopbar.classList.add('show');
+  for(let i=0;seqActive&&i<items.length;i++){
+    rowEls.forEach(r=>r.classList.remove('speaking'));
+    const row=rowEls[i];row.classList.add('speaking');
+    row.scrollIntoView({behavior:'smooth',block:'center'});
+    try{await speakTeacher(items[i][0],'en',row);}
+    catch(e){
+      if(teacherStatus)teacherStatus.textContent='老师级朗读失败，已停止';
+      break;
+    }
+    await new Promise(resolve=>setTimeout(resolve,260));
+  }
+  finishSeq();
+}
 function finishSeq(){
   seqActive=false;stopbar.classList.remove('show');
   document.querySelectorAll('.row.speaking').forEach(r=>r.classList.remove('speaking'));
   if(curBtn){curBtn.classList.remove('playing');curBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>朗读本节';curBtn=null;}
 }
-function stopAll(){speechSynthesis.cancel();finishSeq();}
+function stopAll(){
+  stopTeacherAudio();
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  stopEarLoop();
+  finishSeq();
+}
 stopbar.onclick=stopAll;
+
+/* ---------- 不会内容磨耳朵 ---------- */
+const earDrawer=document.getElementById('earDrawer');
+const earDrawerBtn=document.getElementById('earDrawerBtn');
+const earClose=document.getElementById('earClose');
+const earCount=document.getElementById('earCount');
+const earList=document.getElementById('earList');
+const earNow=document.getElementById('earNow');
+const earPlaySelected=document.getElementById('earPlaySelected');
+const earPlayAll=document.getElementById('earPlayAll');
+const earStop=document.getElementById('earStop');
+const EAR_SELECTED_KEY='homeEnglishEarSelectedIds';
+let earLoopActive=false;
+let earCurrentId='';
+
+function getHardItems(){
+  return getHardIds().map(id=>sentenceLookup.get(String(id))).filter(Boolean);
+}
+function getEarSelected(){
+  try{return JSON.parse(localStorage.getItem(EAR_SELECTED_KEY)||'[]').map(String);}catch(e){return [];}
+}
+function setEarSelected(ids){
+  try{localStorage.setItem(EAR_SELECTED_KEY,JSON.stringify(ids.map(String)));}catch(e){}
+}
+function openEarDrawer(){
+  renderEarDrawer();
+  if(earDrawer)earDrawer.classList.add('open');
+}
+function closeEarDrawer(){
+  if(earDrawer)earDrawer.classList.remove('open');
+}
+function selectedEarItems(useAll){
+  const items=getHardItems();
+  if(useAll)return items;
+  const selected=new Set(getEarSelected());
+  if(!selected.size)return items;
+  return items.filter(item=>selected.has(String(item.id)));
+}
+function renderEarDrawer(){
+  if(!earList)return;
+  const items=getHardItems();
+  if(earCount)earCount.textContent=items.length;
+  const savedSelected=new Set(getEarSelected());
+  const selected=savedSelected.size?savedSelected:new Set(items.map(item=>String(item.id)));
+  if(!items.length){
+    earList.innerHTML='<div class="ear-empty">还没有不会内容。你点任意句子的「不会」，它就会出现在这里。</div>';
+    if(earNow)earNow.textContent='等待你标记不会的句子。';
+    return;
+  }
+  earList.innerHTML=items.map(item=>`
+    <div class="ear-item${String(item.id)===String(earCurrentId)?' current':''}" data-id="${item.id}">
+      <input type="checkbox" ${selected.has(String(item.id))?'checked':''} aria-label="选择">
+      <div>
+        <div class="ear-en">${item.en}</div>
+        <div class="ear-zh">${item.zh}</div>
+        <div class="ear-meta">${item.catName} · ${item.subName}</div>
+      </div>
+      <button type="button" data-action="mastered">会了</button>
+    </div>`).join('');
+  const syncSelected=()=>{
+    const ids=[...earList.querySelectorAll('.ear-item input:checked')].map(input=>input.closest('.ear-item').dataset.id);
+    setEarSelected(ids);
+    if(earNow)earNow.textContent=ids.length?`已选择 ${ids.length} 句。`:'没有选中句子。';
+  };
+  earList.querySelectorAll('.ear-item').forEach(itemEl=>{
+    const input=itemEl.querySelector('input');
+    input.onchange=e=>{e.stopPropagation();syncSelected();};
+    itemEl.onclick=e=>{
+      if(e.target.closest('button'))return;
+      if(e.target!==input)input.checked=!input.checked;
+      syncSelected();
+    };
+    itemEl.querySelector('[data-action="mastered"]').onclick=e=>{
+      e.stopPropagation();
+      setSentenceStatus(itemEl.dataset.id,'mastered');
+    };
+  });
+}
+function stopEarLoop(){
+  earLoopActive=false;
+  earCurrentId='';
+  if(earNow&&earNow.textContent.includes('正在'))earNow.textContent='已停止磨耳朵。';
+  renderEarDrawer();
+}
+async function playEarLoop(items){
+  if(!items.length){if(earNow)earNow.textContent='没有可播放的不会内容。';return;}
+  if(!readTeacherEndpoint()){
+    openEarDrawer();
+    if(earNow)earNow.textContent='先配置 Cloudflare Worker 接口，才能英文后中文循环朗读。';
+    return;
+  }
+  if(teacherMode&&!teacherMode.checked){
+    teacherMode.checked=true;
+    try{localStorage.setItem(TEACHER_MODE_KEY,'1');}catch(e){}
+    refreshTeacherStatus();
+  }
+  stopTeacherAudio();
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  earLoopActive=true;
+  openEarDrawer();
+  while(earLoopActive){
+    for(const item of items){
+      if(!earLoopActive)break;
+      earCurrentId=item.id;renderEarDrawer();
+      if(earNow)earNow.textContent=`正在读英文：${item.en}`;
+      try{await speakTeacher(item.en,'en',document.querySelector(`.row[data-sentence-id="${item.id}"]`));}
+      catch(e){if(earNow)earNow.textContent='老师级朗读失败，请检查接口地址或 API Key。';earLoopActive=false;break;}
+      if(!earLoopActive)break;
+      await new Promise(resolve=>setTimeout(resolve,550));
+      if(earNow)earNow.textContent=`正在读中文：${item.zh}`;
+      try{await speakTeacher(item.zh,'zh',document.querySelector(`.row[data-sentence-id="${item.id}"]`));}
+      catch(e){if(earNow)earNow.textContent='中文朗读失败，请检查接口。';earLoopActive=false;break;}
+      await new Promise(resolve=>setTimeout(resolve,850));
+    }
+  }
+  stopEarLoop();
+}
+if(earDrawerBtn)earDrawerBtn.onclick=openEarDrawer;
+if(earClose)earClose.onclick=closeEarDrawer;
+if(earStop)earStop.onclick=stopAll;
+if(earPlaySelected)earPlaySelected.onclick=()=>playEarLoop(selectedEarItems(false));
+if(earPlayAll)earPlayAll.onclick=()=>playEarLoop(selectedEarItems(true));
 
 /* ---------- 收集所有行（含收藏区），供搜索/筛选用 ---------- */
 function collectRows(){
@@ -5950,6 +6546,8 @@ function sceneProgressText(scene){
 }
 function showScene(scene){
   if(!scene)return;
+  enterListMode();
+  rememberScene(scene);
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   document.querySelectorAll('.cat').forEach(sec=>{sec.style.display=(String(sec.dataset.cat)===String(scene.catIndex))?'':'none';});
   allRows.forEach(r=>{r.row.style.display='';if(r.sub)r.sub.style.display='';});
@@ -5958,6 +6556,7 @@ function showScene(scene){
 }
 
 function showRowsByIds(ids){
+  enterListMode();
   const wanted=new Set(ids.map(String));
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   document.getElementById('lookup').style.display='none';
@@ -6080,6 +6679,7 @@ q.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();translat
 
 /* ---------- 分类筛选 ---------- */
 function filterCat(ci){
+  enterListMode();
   document.getElementById('q').value='';
   document.getElementById('lookup').style.display='none';
   document.querySelectorAll('.cat').forEach(sec=>{
@@ -6095,6 +6695,7 @@ q.oninput=()=>{
   const t=q.value.trim().toLowerCase();
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   if(!t){allChip.classList.add('active');filterCat(null);return;}
+  enterListMode();
   document.querySelectorAll('.cat').forEach(s=>s.style.display='');
   const sceneHits=new Map();
   sceneWordEntries.forEach(scene=>{
@@ -6117,8 +6718,11 @@ q.oninput=()=>{
 
 /* ---------- 初始化：渲染收藏 + 收集所有行 ---------- */
 renderSaved();
+renderEarDrawer();
 refreshAllSentenceStatus();
-window.HomeEnglishApp = {DATA, content, chipsBox, chip, stopAll, speakOne, makeUtter, getHardIds, getMasteredIds, setSentenceStatus, refreshAllSentenceStatus};
+bindDashboard();
+updateDashboard();
+window.HomeEnglishApp = {DATA, content, chipsBox, chip, stopAll, speakOne, makeUtter, getHardIds, getMasteredIds, setSentenceStatus, refreshAllSentenceStatus, enterListMode, showHomeDashboard, updateDashboard, openEarDrawer};
 </script>
 <script src="practice.js"></script>
 <script>

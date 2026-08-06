@@ -659,6 +659,45 @@ test('page stays usable without external font cdn links', () => {
   assert.equal(html.includes('fonts.gstatic.com'), false);
 });
 
+test('includes teacher tts controls and hard-item ear training drawer', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('teacherMode'));
+  assert.ok(html.includes('teacherEndpoint'));
+  assert.ok(html.includes('homeEnglishTeacherAudio'));
+  assert.ok(html.includes('earDrawer'));
+  assert.ok(html.includes('earPlaySelected'));
+  assert.ok(html.includes('earPlayAll'));
+});
+
+test('opens with a study dashboard instead of only a long list', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('class="home-mode"'));
+  assert.ok(html.includes('studyDashboard'));
+  assert.ok(html.includes('今日十句'));
+  assert.ok(html.includes('继续上次场景'));
+  assert.ok(html.includes('按场景学'));
+  assert.ok(html.includes('enterListMode'));
+});
+
+test('cloudflare worker keeps the openai key off the static page', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  const worker = fs.readFileSync(path.join(__dirname, '..', 'cloudflare-worker.js'), 'utf8');
+
+  assert.equal(html.includes('OPENAI_API_KEY'), false);
+  assert.ok(worker.includes('OPENAI_API_KEY'));
+  assert.ok(worker.includes('https://api.openai.com/v1/audio/speech'));
+  assert.ok(worker.includes('gpt-4o-mini-tts'));
+  assert.ok(worker.includes('Access-Control-Allow-Origin'));
+});
+
+test('service worker version is bumped after teacher tts changes', () => {
+  const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
+
+  assert.ok(worker.includes('home-english-v47'));
+});
+
 test('service worker asks the network before falling back to old cache', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
   const fetchIndex = worker.indexOf('fetch(e.request).then');
