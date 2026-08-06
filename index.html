@@ -6467,8 +6467,10 @@ if('speechSynthesis' in window){
 function readTeacherEndpoint(){
   try{
     const saved=localStorage.getItem(TEACHER_ENDPOINT_KEY);
-    if(saved===OLD_TEACHER_ENDPOINT)return DEFAULT_TEACHER_ENDPOINT;
-    return String(saved===null?DEFAULT_TEACHER_ENDPOINT:saved).trim();
+    const normalized=String(saved===null?DEFAULT_TEACHER_ENDPOINT:saved).trim().replace(/\/+$/,'');
+    if(!normalized)return DEFAULT_TEACHER_ENDPOINT;
+    if(normalized===OLD_TEACHER_ENDPOINT)return DEFAULT_TEACHER_ENDPOINT;
+    return normalized;
   }catch(e){return DEFAULT_TEACHER_ENDPOINT;}
 }
 function teacherEnabled(){
@@ -6490,7 +6492,10 @@ function refreshTeacherStatus(){
 if(saveTeacherEndpoint){
   saveTeacherEndpoint.onclick=()=>{
     const value=String(teacherEndpoint.value||'').trim().replace(/\/+$/,'');
-    try{localStorage.setItem(TEACHER_ENDPOINT_KEY,value);}catch(e){}
+    try{
+      if(!value||value===OLD_TEACHER_ENDPOINT)localStorage.removeItem(TEACHER_ENDPOINT_KEY);
+      else localStorage.setItem(TEACHER_ENDPOINT_KEY,value);
+    }catch(e){}
     refreshTeacherStatus();
   };
 }

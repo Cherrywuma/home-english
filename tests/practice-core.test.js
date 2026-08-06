@@ -690,6 +690,8 @@ test('includes teacher tts controls and hard-item ear training drawer', () => {
   assert.ok(html.includes('teacherEndpoint'));
   assert.ok(html.includes("const DEFAULT_TEACHER_ENDPOINT='/tts'"));
   assert.ok(html.includes('OLD_TEACHER_ENDPOINT'));
+  assert.ok(html.includes('if(!normalized)return DEFAULT_TEACHER_ENDPOINT'));
+  assert.ok(html.includes('localStorage.removeItem(TEACHER_ENDPOINT_KEY)'));
   assert.ok(html.includes('homeEnglishTeacherAudio'));
   assert.ok(html.includes('earDrawer'));
   assert.ok(html.includes('earPlaySelected'));
@@ -734,7 +736,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v53'));
+  assert.ok(worker.includes('home-english-v54'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
