@@ -664,6 +664,7 @@ test('includes teacher tts controls and hard-item ear training drawer', () => {
 
   assert.ok(html.includes('teacherMode'));
   assert.ok(html.includes('teacherEndpoint'));
+  assert.ok(html.includes('https://home-english-teacher-tts.cherryyijiatec.workers.dev'));
   assert.ok(html.includes('homeEnglishTeacherAudio'));
   assert.ok(html.includes('earDrawer'));
   assert.ok(html.includes('earPlaySelected'));
@@ -695,7 +696,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v47'));
+  assert.ok(worker.includes('home-english-v48'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

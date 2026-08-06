@@ -6110,6 +6110,7 @@ const saveTeacherEndpoint=document.getElementById('saveTeacherEndpoint');
 const teacherStatus=document.getElementById('teacherStatus');
 const TEACHER_MODE_KEY='he_teacher_tts_enabled';
 const TEACHER_ENDPOINT_KEY='he_teacher_tts_endpoint';
+const DEFAULT_TEACHER_ENDPOINT='https://home-english-teacher-tts.cherryyijiatec.workers.dev';
 const TTS_DB_NAME='homeEnglishTeacherAudio';
 const TTS_DB_STORE='audio';
 let currentTeacherAudio=null;
@@ -6143,7 +6144,10 @@ if('speechSynthesis' in window){
 }
 
 function readTeacherEndpoint(){
-  try{return String(localStorage.getItem(TEACHER_ENDPOINT_KEY)||'').trim();}catch(e){return '';}
+  try{
+    const saved=localStorage.getItem(TEACHER_ENDPOINT_KEY);
+    return String(saved===null?DEFAULT_TEACHER_ENDPOINT:saved).trim();
+  }catch(e){return DEFAULT_TEACHER_ENDPOINT;}
 }
 function teacherEnabled(){
   return !!(teacherMode&&teacherMode.checked&&readTeacherEndpoint());
@@ -6152,7 +6156,10 @@ function refreshTeacherStatus(){
   const endpoint=readTeacherEndpoint();
   if(teacherEndpoint)teacherEndpoint.value=endpoint;
   if(teacherMode){
-    try{teacherMode.checked=localStorage.getItem(TEACHER_MODE_KEY)==='1';}catch(e){}
+    try{
+      const savedMode=localStorage.getItem(TEACHER_MODE_KEY);
+      teacherMode.checked=savedMode===null?!!endpoint:savedMode==='1';
+    }catch(e){teacherMode.checked=!!endpoint;}
   }
   if(teacherStatus){
     teacherStatus.textContent=endpoint ? (teacherMode&&teacherMode.checked?'老师级朗读已开启，优先用本机缓存':'接口已保存，开启后使用老师级声音') : '未配置时使用免费朗读';
