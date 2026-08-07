@@ -913,6 +913,16 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('My hair is falling out.'));
   assert.ok(html.includes('There is a lot of greenery here.'));
   assert.ok(html.includes('Could you speak a little slower?'));
+  assert.ok(html.includes('The soup is bland.'));
+  assert.ok(html.includes('The laundry is still damp.'));
+  assert.ok(html.includes('The light bulb is out.'));
+  assert.ok(html.includes('My package has not arrived yet.'));
+  assert.ok(html.includes('Which platform should I go to?'));
+  assert.ok(html.includes('My card was declined.'));
+  assert.ok(html.includes('Are there any side effects?'));
+  assert.ok(html.includes('We will figure it out.'));
+  assert.ok(html.includes('Could you do me a quick favor?'));
+  assert.ok(html.includes('Can we reschedule?'));
   assert.ok(html.includes('data-dash-action="idioms"'));
   assert.ok(html.includes('showIdiomLibrary'));
 });
@@ -991,7 +1001,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v81'));
+  assert.ok(worker.includes('home-english-v82'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
