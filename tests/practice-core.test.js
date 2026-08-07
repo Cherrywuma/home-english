@@ -950,6 +950,12 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('Just checking if this is still needed.'));
   assert.ok(html.includes('data-dash-action="idioms"'));
   assert.ok(html.includes('showIdiomLibrary'));
+  assert.ok(html.includes('IDIOM_CATEGORY_OPTIONS'));
+  assert.ok(html.includes("id:'work-customer',label:'工作客户'"));
+  assert.ok(html.includes('id="idiomCategorySelect"'));
+  assert.ok(html.includes('id="idiomTopicSelect"'));
+  assert.ok(html.includes('idiomTopicsForCategory'));
+  assert.ok(html.includes('先选大类，再选具体主题'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1026,7 +1032,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v84'));
+  assert.ok(worker.includes('home-english-v85'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

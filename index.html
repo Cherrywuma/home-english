@@ -267,13 +267,11 @@
     flex:1 1 190px;min-width:0;font-family:var(--body);font-size:.9rem;color:var(--ink);
     border:1px solid var(--line);background:#FCFAF6;border-radius:10px;padding:9px 11px;
   }
-  .idiom-topics{display:flex;gap:8px;overflow-x:auto;margin-top:12px;padding-bottom:2px;scrollbar-width:none;}
-  .idiom-topics::-webkit-scrollbar{display:none;}
-  .idiom-topic{
-    flex:0 0 auto;border:1px solid var(--line);background:#FCFAF6;color:var(--ink);
-    border-radius:999px;padding:7px 11px;font-family:var(--body);font-size:.78rem;font-weight:800;cursor:pointer;
+  .idiom-tools select{
+    flex:0 1 210px;min-width:150px;font-family:var(--body);font-size:.88rem;font-weight:750;color:var(--ink);
+    border:1px solid var(--line);background:#FCFAF6;border-radius:10px;padding:9px 10px;
   }
-  .idiom-topic.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .idiom-tools .idiom-topic-select{flex:1 1 230px;}
   .idiom-list{margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);}
   .idiom-row{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px;border-top:1px solid var(--line);cursor:pointer;}
   .idiom-row:first-child{border-top:none;}
@@ -9177,6 +9175,36 @@ let allRows = [];
 let sceneWordEntries = [];
 const sentenceLookup = new Map();
 let currentIdiomTopic = 0;
+let currentIdiomCategory = 'daily-feel';
+
+const IDIOM_CATEGORY_OPTIONS = [
+  {id:'daily-feel',label:'日常感觉'},
+  {id:'body-health',label:'身体健康'},
+  {id:'home-travel',label:'居家出行'},
+  {id:'work-customer',label:'工作客户'},
+  {id:'all',label:'全部主题'}
+];
+function idiomCategoryIdForGroup(group){
+  const topic=String(group&&group.topic||'');
+  const entries=Array.isArray(group&&group.entries)?group.entries:[];
+  if(entries.some(entry=>String(entry&&entry.id||'').startsWith('work-')))return 'work-customer';
+  if(/疼|肚子|胃|拉肚子|感冒|发烧|咳嗽|大姨妈|卫生巾|头发|皮肤|护肤|药店|买药|过敏|挂号|看医生|预约/.test(topic))return 'body-health';
+  if(/厕所|马桶|冲水|味道|咸淡|熟没熟|洗衣|晾晒|衣服状态|家里坏了|维修|快递|外卖|地址|坐车|问路|找地方|付款|银行卡|找零|小区|邻居|环境|酒店|入住|房间问题|租房|房租|水电|理发|发型|修一下|化妆|护肤步骤|买衣服|试穿|退换|家务|分工|收拾/.test(topic))return 'home-travel';
+  return 'daily-feel';
+}
+function idiomCategoryLabel(categoryId){
+  const found=IDIOM_CATEGORY_OPTIONS.find(item=>item.id===categoryId);
+  return found?found.label:'日常感觉';
+}
+function idiomTopicsForCategory(categoryId){
+  return IDIOM_LIBRARY.map((group,index)=>({group,index})).filter(item=>categoryId==='all'||idiomCategoryIdForGroup(item.group)===categoryId);
+}
+function ensureCurrentIdiomTopic(){
+  const topics=idiomTopicsForCategory(currentIdiomCategory);
+  if(!topics.length){currentIdiomCategory='daily-feel';return ensureCurrentIdiomTopic();}
+  if(!topics.some(item=>item.index===currentIdiomTopic))currentIdiomTopic=topics[0].index;
+  return topics;
+}
 
 IDIOM_LIBRARY.forEach(group=>{
   group.entries.forEach(entry=>{
@@ -10189,6 +10217,7 @@ function renderIdiomEntries(){
   const search=lookup.querySelector('#idiomSearch');
   if(!panel)return;
   const qText=search?search.value:'';
+  ensureCurrentIdiomTopic();
   const group=IDIOM_LIBRARY[currentIdiomTopic]||IDIOM_LIBRARY[0];
   const entries=group.entries.filter(entry=>idiomMatches(entry,qText));
   panel.innerHTML=entries.length
@@ -10203,28 +10232,39 @@ function renderIdiomEntries(){
   });
 }
 
-function showIdiomLibrary(topicIndex){
+function showIdiomLibrary(topicIndex,preserveCategory){
   if(Number.isFinite(topicIndex))currentIdiomTopic=topicIndex;
+  if(Number.isFinite(topicIndex)&&!preserveCategory)currentIdiomCategory=idiomCategoryIdForGroup(IDIOM_LIBRARY[currentIdiomTopic]||IDIOM_LIBRARY[0]);
+  const topics=ensureCurrentIdiomTopic();
   const group=IDIOM_LIBRARY[currentIdiomTopic]||IDIOM_LIBRARY[0];
   lookup.style.display='block';
   lookup.innerHTML=`<div class="lk-card">
     <div class="lk-en">地道说法库</div>
-    <div class="lk-zh">同一个中文意思，在不同场合换自然说法。每条都可以朗读，也可以标记不会。</div>
+    <div class="lk-zh">先选大类，再选具体主题。每条都可以朗读，也可以标记不会。</div>
     <div class="idiom-tools">
       <input id="idiomSearch" type="search" placeholder="搜中文、英文或用法，例如：臭、人多、贵、awkward">
+      <select id="idiomCategorySelect" aria-label="地道说法大类">
+        ${IDIOM_CATEGORY_OPTIONS.map(item=>`<option value="${item.id}" ${item.id===currentIdiomCategory?'selected':''}>${item.label}</option>`).join('')}
+      </select>
+      <select id="idiomTopicSelect" class="idiom-topic-select" aria-label="地道说法主题">
+        ${topics.map(item=>`<option value="${item.index}" ${item.index===currentIdiomTopic?'selected':''}>${item.group.topic}</option>`).join('')}
+      </select>
     </div>
-    <div class="idiom-topics">
-      ${IDIOM_LIBRARY.map((item,index)=>`<button class="idiom-topic ${index===currentIdiomTopic?'active':''}" type="button" data-topic-index="${index}">${item.topic}</button>`).join('')}
-    </div>
-    <div class="lk-note">当前：${group.topic} · ${group.en}。这些是人工整理的日常说法，不是机器同义词表。</div>
+    <div class="lk-note">当前：${idiomCategoryLabel(currentIdiomCategory)} / ${group.topic} · ${group.en}。这个大类有 ${topics.length} 个主题。</div>
     <div id="idiomPanel"></div>
   </div>`;
-  lookup.querySelectorAll('[data-topic-index]').forEach(btn=>{
-    btn.onclick=()=>{
-      currentIdiomTopic=Number(btn.dataset.topicIndex);
-      showIdiomLibrary(currentIdiomTopic);
-    };
-  });
+  const categorySelect=lookup.querySelector('#idiomCategorySelect');
+  const topicSelect=lookup.querySelector('#idiomTopicSelect');
+  categorySelect.onchange=()=>{
+    currentIdiomCategory=categorySelect.value;
+    const nextTopics=ensureCurrentIdiomTopic();
+    currentIdiomTopic=nextTopics[0].index;
+    showIdiomLibrary(currentIdiomTopic,true);
+  };
+  topicSelect.onchange=()=>{
+    currentIdiomTopic=Number(topicSelect.value);
+    showIdiomLibrary(currentIdiomTopic,true);
+  };
   const input=lookup.querySelector('#idiomSearch');
   input.oninput=renderIdiomEntries;
   renderIdiomEntries();
