@@ -933,6 +933,21 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('My mascara smudged.'));
   assert.ok(html.includes('Can I try this on?'));
   assert.ok(html.includes('The floor needs sweeping.'));
+  assert.ok(html.includes('Good to hear from you.'));
+  assert.ok(html.includes('What problem are you trying to solve?'));
+  assert.ok(html.includes('Could you send me the drawing?'));
+  assert.ok(html.includes('The price depends on the final configuration.'));
+  assert.ok(html.includes('The lead time is about three weeks after confirmation.'));
+  assert.ok(html.includes('You can test it first before placing a bigger order.'));
+  assert.ok(html.includes('Please confirm the order details before payment.'));
+  assert.ok(html.includes('I will share the tracking number once it is available.'));
+  assert.ok(html.includes('We need your confirmation before we move forward.'));
+  assert.ok(html.includes('Could you send a short video of the problem?'));
+  assert.ok(html.includes('Let me check with our engineer.'));
+  assert.ok(html.includes('We cannot guarantee that without testing.'));
+  assert.ok(html.includes('There is not much room on the price.'));
+  assert.ok(html.includes('I want to make sure we are on the same page.'));
+  assert.ok(html.includes('Just checking if this is still needed.'));
   assert.ok(html.includes('data-dash-action="idioms"'));
   assert.ok(html.includes('showIdiomLibrary'));
 });
@@ -1011,7 +1026,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v83'));
+  assert.ok(worker.includes('home-english-v84'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
