@@ -6432,6 +6432,7 @@ const TEACHER_MODE_KEY='he_teacher_tts_enabled';
 const TEACHER_ENDPOINT_KEY='he_teacher_tts_endpoint';
 const OLD_TEACHER_ENDPOINT='https://home-english-teacher-tts.cherryyijiatec.workers.dev';
 const DEFAULT_TEACHER_ENDPOINT='/tts';
+const PRIVATE_SITE_HOST='home-english-private.cherryyijiatec.workers.dev';
 const TTS_DB_NAME='homeEnglishTeacherAudio';
 const TTS_DB_STORE='audio';
 let currentTeacherAudio=null;
@@ -6464,7 +6465,11 @@ if('speechSynthesis' in window){
   voiceSel.innerHTML='<option>此浏览器不支持朗读</option>';
 }
 
+function isPrivateSite(){
+  return location.hostname===PRIVATE_SITE_HOST;
+}
 function readTeacherEndpoint(){
+  if(isPrivateSite())return DEFAULT_TEACHER_ENDPOINT;
   try{
     const saved=localStorage.getItem(TEACHER_ENDPOINT_KEY);
     const normalized=String(saved===null?DEFAULT_TEACHER_ENDPOINT:saved).trim().replace(/\/+$/,'');
@@ -6478,7 +6483,13 @@ function teacherEnabled(){
 }
 function refreshTeacherStatus(){
   const endpoint=readTeacherEndpoint();
-  if(teacherEndpoint)teacherEndpoint.value=endpoint;
+  if(teacherEndpoint){
+    teacherEndpoint.value=endpoint;
+    if(isPrivateSite()){
+      teacherEndpoint.readOnly=true;
+      teacherEndpoint.title='私密站固定使用 /tts';
+    }
+  }
   if(teacherMode){
     try{
       const savedMode=localStorage.getItem(TEACHER_MODE_KEY);
@@ -6486,14 +6497,17 @@ function refreshTeacherStatus(){
     }catch(e){teacherMode.checked=!!endpoint;}
   }
   if(teacherStatus){
-    teacherStatus.textContent=endpoint ? (teacherMode&&teacherMode.checked?'老师级朗读已开启，优先用本机缓存':'接口已保存，开启后使用老师级声音') : '未配置时使用免费朗读';
+    teacherStatus.textContent=isPrivateSite()
+      ? (teacherMode&&teacherMode.checked?'老师级朗读已开启，固定使用私密 /tts':'私密站已固定使用 /tts，开启后使用老师级声音')
+      : (endpoint ? (teacherMode&&teacherMode.checked?'老师级朗读已开启，优先用本机缓存':'接口已保存，开启后使用老师级声音') : '未配置时使用免费朗读');
   }
 }
 if(saveTeacherEndpoint){
   saveTeacherEndpoint.onclick=()=>{
     const value=String(teacherEndpoint.value||'').trim().replace(/\/+$/,'');
     try{
-      if(!value||value===OLD_TEACHER_ENDPOINT)localStorage.removeItem(TEACHER_ENDPOINT_KEY);
+      if(isPrivateSite())localStorage.removeItem(TEACHER_ENDPOINT_KEY);
+      else if(!value||value===OLD_TEACHER_ENDPOINT)localStorage.removeItem(TEACHER_ENDPOINT_KEY);
       else localStorage.setItem(TEACHER_ENDPOINT_KEY,value);
     }catch(e){}
     refreshTeacherStatus();
