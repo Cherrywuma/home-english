@@ -796,6 +796,18 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('The zipper is stuck. Do not pull it too hard.'));
   assert.ok(html.includes('Trying on Clothes in More Detail'));
   assert.ok(html.includes('Can I try this on in two sizes?'));
+  assert.ok(html.includes('Packing the Baby Bag Before Going Out'));
+  assert.ok(html.includes('Put three extra diapers in the bag.'));
+  assert.ok(html.includes('Stroller and Public Places'));
+  assert.ok(html.includes('Could you make a little room for the stroller?'));
+  assert.ok(html.includes('Messy Meals With Kids'));
+  assert.ok(html.includes('There are crumbs all over the floor.'));
+  assert.ok(html.includes('Diapers and Dirty Clothes'));
+  assert.ok(html.includes('We had a diaper blowout in the stroller.'));
+  assert.ok(html.includes('Crying, Overtired, and Soothing'));
+  assert.ok(html.includes('She is overtired and cannot fall asleep.'));
+  assert.ok(html.includes('Falls, Bumps, and Comforting'));
+  assert.ok(html.includes('Did you fall down? Let me check your knees.'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -872,7 +884,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v71'));
+  assert.ok(worker.includes('home-english-v72'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
