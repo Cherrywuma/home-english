@@ -733,14 +733,17 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(worker.includes('Access-Control-Allow-Origin'));
   assert.equal(worker.includes('https://cherrywuma.github.io'), false);
   assert.ok(worker.includes("return jsonResponse({ error: 'Origin not allowed' }, 403, origin);"));
+  assert.ok(html.includes("throw new Error('tts-not-audio')"));
+  assert.ok(html.includes("err&&err.message==='tts-401'"));
   assert.ok(protectedWorker.includes("if (url.pathname === '/tts') return proxyTts(request);"));
+  assert.ok(protectedWorker.includes("if (url.pathname === '/tts') return jsonResponse({ error: 'login-required' }, 401);"));
   assert.ok(protectedWorker.includes("'Origin': 'https://home-english-private.cherryyijiatec.workers.dev'"));
 });
 
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v55'));
+  assert.ok(worker.includes('home-english-v56'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

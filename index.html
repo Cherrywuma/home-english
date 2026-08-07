@@ -6587,6 +6587,8 @@ async function getTeacherAudio(text,lang){
     body:JSON.stringify({text:cleanText,language:cleanLang,format:'mp3'})
   });
   if(!res.ok)throw new Error(`tts-${res.status}`);
+  const contentType=res.headers.get('Content-Type')||'';
+  if(!/audio\//i.test(contentType))throw new Error('tts-not-audio');
   const blob=await res.blob();
   await cachePutAudio(key,blob);
   return {blob,cached:false};
@@ -6623,8 +6625,8 @@ function makeUtter(text){
 /* ---------- 单句 ---------- */
 function speakOne(text,row){
   if(teacherEnabled()){
-    speakTeacher(text,'en',row).catch(()=>{
-      if(teacherStatus)teacherStatus.textContent='老师级朗读失败，已改用免费朗读';
+    speakTeacher(text,'en',row).catch(err=>{
+      if(teacherStatus)teacherStatus.textContent=err&&err.message==='tts-401'?'登录已过期，请刷新后重新输入密码':'老师级朗读失败，已改用免费朗读';
       speakOneFree(text,row);
     });
     return;
@@ -6672,7 +6674,7 @@ async function playSeqTeacher(items,rowEls,btn){
     row.scrollIntoView({behavior:'smooth',block:'center'});
     try{await speakTeacher(items[i][0],'en',row);}
     catch(e){
-      if(teacherStatus)teacherStatus.textContent='老师级朗读失败，已停止';
+      if(teacherStatus)teacherStatus.textContent=e&&e.message==='tts-401'?'登录已过期，请刷新后重新输入密码':'老师级朗读失败，已停止';
       break;
     }
     await new Promise(resolve=>setTimeout(resolve,260));

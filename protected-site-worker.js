@@ -26,6 +26,16 @@ function redirect(location, headers = {}) {
   });
 }
 
+function jsonResponse(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store'
+    }
+  });
+}
+
 function loginPage(message = '') {
   return htmlResponse(`<!doctype html>
 <html lang="zh-CN">
@@ -125,10 +135,7 @@ async function proxyTts(request) {
     return new Response(null, { status: 204 });
   }
   if (request.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'POST only' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
-    });
+    return jsonResponse({ error: 'POST only' }, 405);
   }
 
   const upstream = await fetch(TTS_UPSTREAM, {
@@ -159,7 +166,10 @@ export default {
       });
     }
     if (!env.SITE_PASSWORD) return loginPage('还没有配置网站密码。');
-    if (!(await isValidSession(request, env.SITE_PASSWORD))) return loginPage();
+    if (!(await isValidSession(request, env.SITE_PASSWORD))) {
+      if (url.pathname === '/tts') return jsonResponse({ error: 'login-required' }, 401);
+      return loginPage();
+    }
     if (url.pathname === '/tts') return proxyTts(request);
     return proxySite(request);
   }
