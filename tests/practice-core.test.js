@@ -784,6 +784,18 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('Should I stop using this product for now?'));
   assert.ok(html.includes('Touching Up Makeup and Sunscreen Outside'));
   assert.ok(html.includes('I need to reapply sunscreen before we go back outside.'));
+  assert.ok(html.includes('Choosing What to Wear Every Day'));
+  assert.ok(html.includes('This jacket goes with jeans.'));
+  assert.ok(html.includes('Dressing for the Weather'));
+  assert.ok(html.includes('Layer up today because it gets cold in the evening.'));
+  assert.ok(html.includes('Shoes, Socks, and Foot Comfort'));
+  assert.ok(html.includes('These shoes gave me a blister on my heel.'));
+  assert.ok(html.includes('Closet Storage and Seasonal Clothes'));
+  assert.ok(html.includes('Use a vacuum bag for bulky coats.'));
+  assert.ok(html.includes('Small Clothing Problems and Quick Fixes'));
+  assert.ok(html.includes('The zipper is stuck. Do not pull it too hard.'));
+  assert.ok(html.includes('Trying on Clothes in More Detail'));
+  assert.ok(html.includes('Can I try this on in two sizes?'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -860,7 +872,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v70'));
+  assert.ok(worker.includes('home-english-v71'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
