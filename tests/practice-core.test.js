@@ -686,6 +686,12 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('Do you have a spare pad I can use?'));
   assert.ok(html.includes('Texting a Manager When Sick'));
   assert.ok(html.includes('I will send a handover note before noon.'));
+  assert.ok(html.includes('Viewing a Place and Talking About the Area'));
+  assert.ok(html.includes('The greenery in this community is really nice.'));
+  assert.ok(html.includes('Neighbor Noise and Quiet Hours'));
+  assert.ok(html.includes('Could you keep it down a little after ten?'));
+  assert.ok(html.includes('Parking, Bike Storage, and Basement Storage'));
+  assert.ok(html.includes('Is basement storage included?'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -762,7 +768,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v60'));
+  assert.ok(worker.includes('home-english-v61'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
