@@ -6621,6 +6621,23 @@ async function playTeacherBlobWithContext(blob){
     }
   });
 }
+async function requestTeacherAudio(endpoint,payload){
+  const res=await fetch(endpoint,{
+    method:'POST',
+    credentials:'same-origin',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  });
+  if(res.status===404&&isPrivateSite()&&endpoint===DEFAULT_TEACHER_ENDPOINT){
+    return fetch(OLD_TEACHER_ENDPOINT,{
+      method:'POST',
+      credentials:'same-origin',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+  }
+  return res;
+}
 async function getTeacherAudio(text,lang){
   const endpoint=readTeacherEndpoint();
   if(!endpoint)throw new Error('missing-endpoint');
@@ -6629,12 +6646,7 @@ async function getTeacherAudio(text,lang){
   const key=await sha256Text([endpoint,cleanLang,cleanText,'mp3','v1'].join('|'));
   const cached=await cacheGetAudio(key);
   if(cached)return {blob:cached,cached:true};
-  const res=await fetch(endpoint,{
-    method:'POST',
-    credentials:'same-origin',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({text:cleanText,language:cleanLang,format:'mp3'})
-  });
+  const res=await requestTeacherAudio(endpoint,{text:cleanText,language:cleanLang,format:'mp3'});
   if(!res.ok)throw new Error(`tts-${res.status}`);
   const contentType=res.headers.get('Content-Type')||'';
   if(!/audio\//i.test(contentType))throw new Error('tts-not-audio');
@@ -6670,6 +6682,7 @@ async function speakTeacher(text,lang,row){
 function teacherErrorText(err,fallback){
   const msg=err&&err.message?err.message:'';
   if(msg==='tts-401')return '登录已过期，请刷新后重新输入密码';
+  if(msg==='tts-404')return '私密 /tts 没命中，已尝试备用线路，请再点一次朗读';
   if(msg==='tts-not-audio')return '接口返回的不是音频，请重新登录后再试';
   if(msg==='NotAllowedError')return '手机浏览器拦截声音，请点一次页面后再朗读';
   return msg?`${fallback}（${msg}）`:fallback;
