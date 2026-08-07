@@ -880,6 +880,22 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('Split the meat into two portions.'));
   assert.ok(html.includes('Buying Large Items and Home Delivery'));
   assert.ok(html.includes('I need to measure the doorway before I buy it.'));
+  assert.ok(html.includes('id="idiomBtn"'));
+  assert.ok(html.includes('const IDIOM_LIBRARY'));
+  assert.ok(html.includes('地道说法库'));
+  assert.ok(html.includes('臭 / 难闻'));
+  assert.ok(html.includes('It smells off.'));
+  assert.ok(html.includes('闻起来不太对，好像坏了。'));
+  assert.ok(html.includes('人多 / 拥挤'));
+  assert.ok(html.includes('This place is packed.'));
+  assert.ok(html.includes('累 / 累坏了'));
+  assert.ok(html.includes('I feel drained.'));
+  assert.ok(html.includes('贵 / 不划算'));
+  assert.ok(html.includes('It is not worth it.'));
+  assert.ok(html.includes('麻烦 / 不方便'));
+  assert.ok(html.includes('Do we have a workaround?'));
+  assert.ok(html.includes('data-dash-action="idioms"'));
+  assert.ok(html.includes('showIdiomLibrary'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -956,7 +972,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v78'));
+  assert.ok(worker.includes('home-english-v79'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

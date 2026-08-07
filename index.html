@@ -244,9 +244,9 @@
 
   /* 查词 */
   .lookupbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;}
-  #lookupBtn,#randomSceneBtn,#randomWordBtn{flex:0 0 auto;font-family:var(--body);font-size:.84rem;font-weight:600;color:var(--accent);
+  #lookupBtn,#randomSceneBtn,#randomWordBtn,#idiomBtn{flex:0 0 auto;font-family:var(--body);font-size:.84rem;font-weight:600;color:var(--accent);
     background:var(--accent-soft);border:1px solid #CFE6DC;border-radius:999px;padding:8px 14px;cursor:pointer;}
-  #lookupBtn:active,#randomSceneBtn:active,#randomWordBtn:active{transform:scale(.97);}
+  #lookupBtn:active,#randomSceneBtn:active,#randomWordBtn:active,#idiomBtn:active{transform:scale(.97);}
   .lk-hint{font-size:.76rem;color:var(--muted);}
   .lookup{display:none;margin-top:10px;}
   .lk-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;box-shadow:var(--shadow);}
@@ -262,6 +262,31 @@
   .lk-source{margin-top:8px;font-size:.74rem;color:var(--muted);}
   .lk-load{color:var(--muted);font-size:.9rem;padding:6px 2px;}
   .lk-err{color:#B0573A;font-size:.9rem;}
+  .idiom-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+  .idiom-tools input{
+    flex:1 1 190px;min-width:0;font-family:var(--body);font-size:.9rem;color:var(--ink);
+    border:1px solid var(--line);background:#FCFAF6;border-radius:10px;padding:9px 11px;
+  }
+  .idiom-topics{display:flex;gap:8px;overflow-x:auto;margin-top:12px;padding-bottom:2px;scrollbar-width:none;}
+  .idiom-topics::-webkit-scrollbar{display:none;}
+  .idiom-topic{
+    flex:0 0 auto;border:1px solid var(--line);background:#FCFAF6;color:var(--ink);
+    border-radius:999px;padding:7px 11px;font-family:var(--body);font-size:.78rem;font-weight:800;cursor:pointer;
+  }
+  .idiom-topic.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .idiom-list{margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);}
+  .idiom-row{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px;border-top:1px solid var(--line);cursor:pointer;}
+  .idiom-row:first-child{border-top:none;}
+  .idiom-row.hard{background:#FFF9F1;}
+  .idiom-row.mastered{opacity:.68;}
+  .idiom-row .spk{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;}
+  .idiom-row .spk svg{width:15px;height:15px;fill:var(--accent);}
+  .idiom-row.speaking .spk{background:var(--accent);}
+  .idiom-row.speaking .spk svg{fill:#fff;}
+  .idiom-en{font-size:1.03rem;font-weight:850;line-height:1.35;}
+  .idiom-zh{font-size:.9rem;color:var(--muted);margin-top:2px;}
+  .idiom-use{font-size:.78rem;color:#8F7F6A;background:#FFF8E8;border:1px solid #ECD8A6;border-radius:9px;padding:7px 8px;margin-top:7px;line-height:1.45;}
+  .idiom-empty{padding:18px;color:var(--muted);font-size:.88rem;}
   .row .del{flex:0 0 auto;align-self:center;border:none;background:none;color:#C4BBAE;font-size:1rem;cursor:pointer;padding:4px 6px;}
   .row .del:active{color:#B0573A;}
 
@@ -460,6 +485,7 @@ if(location.hostname==='cherrywuma.github.io'){
       <button id="lookupBtn">🔎 联网查词 / 翻译</button>
       <button id="randomSceneBtn" type="button">🧭 场景训练</button>
       <button id="randomWordBtn" type="button">🎯 随机单词</button>
+      <button id="idiomBtn" type="button">🗣️ 地道说法</button>
       <span class="lk-hint">本地没有的词点这里查，中↔英都行（如「粽子」）</span>
     </div>
     <div id="lookup" class="lookup"></div>
@@ -497,6 +523,10 @@ if(location.hostname==='cherrywuma.github.io'){
       <button class="dash-action" type="button" data-dash-action="scenes">
         <strong>按场景学</strong>
         <span>德国出行、厨房、卫生间、上班这些动作链都从这里进。</span>
+      </button>
+      <button class="dash-action" type="button" data-dash-action="idioms">
+        <strong>地道说法</strong>
+        <span>同一个中文意思，按不同场合换自然说法。</span>
       </button>
       <button class="dash-action" type="button" data-dash-action="library">
         <strong>全部内容</strong>
@@ -8311,6 +8341,97 @@ const DATA = [
   },
 ];
 
+const IDIOM_LIBRARY = [
+  {
+    topic:"臭 / 难闻", en:"Smell Bad", color:"#8A6A3D",
+    entries:[
+      {id:"smell-bad",en:"It smells bad.",zh:"有点难闻。",usage:"普通说法，房间、厕所、衣服、垃圾都能用，语气不算太冲。"},
+      {id:"it-stinks",en:"It stinks.",zh:"臭死了；味道很冲。",usage:"很直接，垃圾桶、臭袜子、坏掉的东西可以说，别直接对人说。"},
+      {id:"smells-off",en:"It smells off.",zh:"闻起来不太对，好像坏了。",usage:"常说食物、牛奶、肉、剩菜；不是骂臭，是怀疑不新鲜。"},
+      {id:"smells-musty",en:"It smells musty.",zh:"有股霉味、潮味。",usage:"衣柜、地下室、旧房间、潮湿毛巾那种味道。"},
+      {id:"smells-sour",en:"It smells sour.",zh:"有酸味；酸臭。",usage:"汗湿衣服、坏奶、发酵过头的东西都可能这样说。"},
+      {id:"weird-smell",en:"There is a weird smell in here.",zh:"这里有股怪味。",usage:"不知道是什么味时最稳，比直接说臭更礼貌。"}
+    ]
+  },
+  {
+    topic:"人多 / 拥挤", en:"Crowded", color:"#6A438F",
+    entries:[
+      {id:"so-many-people",en:"There are so many people here.",zh:"这里人好多。",usage:"最普通的说法，商场、车站、景点都能用。"},
+      {id:"really-crowded",en:"It is really crowded.",zh:"真的很挤。",usage:"强调空间挤，不只是人数多。公交、超市、电梯都常用。"},
+      {id:"packed",en:"This place is packed.",zh:"这里挤满了人。",usage:"口语地道，餐厅、酒吧、车厢、活动现场都能用。"},
+      {id:"long-line",en:"The line is huge.",zh:"队伍特别长。",usage:"排队人多时用；也可以说 The line is long. 更普通。"},
+      {id:"barely-move",en:"I can barely move.",zh:"我几乎动不了。",usage:"人挤到走不动、车厢里挤住时用。"},
+      {id:"avoid-crowd",en:"Let's avoid the crowd.",zh:"我们避开人群吧。",usage:"不想挤、不想排队、不想带孩子钻人堆时很自然。"}
+    ]
+  },
+  {
+    topic:"累 / 累坏了", en:"Tired", color:"#556B7A",
+    entries:[
+      {id:"tired",en:"I am tired.",zh:"我累了。",usage:"最基础，普通疲劳。"},
+      {id:"exhausted",en:"I am exhausted.",zh:"我累坏了。",usage:"比 tired 重很多，身体和精神都撑不住的感觉。"},
+      {id:"worn-out",en:"I am worn out.",zh:"我被折腾累了；耗尽了。",usage:"一天跑来跑去、带娃、上班后很适合。"},
+      {id:"beat",en:"I am beat.",zh:"我累趴了。",usage:"很口语，和熟人说自然。"},
+      {id:"drained",en:"I feel drained.",zh:"我感觉被掏空了。",usage:"更偏精神累、情绪累、社交后没电。"},
+      {id:"need-break",en:"I need a breather.",zh:"我得喘口气。",usage:"不是正式休假，是现在需要停一下、缓一下。"}
+    ]
+  },
+  {
+    topic:"贵 / 不划算", en:"Expensive", color:"#B07A2E",
+    entries:[
+      {id:"expensive",en:"It is expensive.",zh:"这个贵。",usage:"普通说法，安全不冒犯。"},
+      {id:"pricey",en:"It is a bit pricey.",zh:"有点小贵。",usage:"比 expensive 柔和，买衣服、餐厅、日用品都好用。"},
+      {id:"too-much",en:"That is too much for me.",zh:"对我来说太贵了。",usage:"拒绝购买时自然，不像在骂店家。"},
+      {id:"not-worth-it",en:"It is not worth it.",zh:"不值这个价。",usage:"质量、分量、体验和价格不匹配时用。"},
+      {id:"overpriced",en:"It is overpriced.",zh:"价格虚高。",usage:"语气较直接，评价商品可以，对店员少用。"},
+      {id:"better-deal",en:"Can we find a better deal?",zh:"能不能找个更划算的？",usage:"购物、订票、买家具时很好用。"}
+    ]
+  },
+  {
+    topic:"脏 / 乱 / 油腻", en:"Dirty and Messy", color:"#7A8B3C",
+    entries:[
+      {id:"dirty",en:"It is dirty.",zh:"它脏了。",usage:"最普通，衣服、地面、桌子都能用。"},
+      {id:"messy",en:"It is messy.",zh:"很乱。",usage:"东西乱、房间乱、桌面乱，不一定是脏。"},
+      {id:"filthy",en:"It is filthy.",zh:"脏得很厉害。",usage:"比 dirty 重，厕所、地板、垃圾桶很脏时用。"},
+      {id:"greasy",en:"It is greasy.",zh:"油腻腻的。",usage:"锅、盘子、桌面、手上都是油时用。"},
+      {id:"sticky",en:"It is sticky.",zh:"黏黏的。",usage:"饮料洒了、糖水、油污混在桌面上。"},
+      {id:"cluttered",en:"The counter is cluttered.",zh:"台面堆得很乱。",usage:"强调东西太多、堆在一起，不一定脏。"}
+    ]
+  },
+  {
+    topic:"冷 / 热 / 闷", en:"Temperature", color:"#4E79A8",
+    entries:[
+      {id:"cold",en:"It is cold in here.",zh:"这里有点冷。",usage:"室内冷，空调、暖气不够都能用。"},
+      {id:"freezing",en:"I am freezing.",zh:"我冷死了。",usage:"很冷时说，语气夸张但常见。"},
+      {id:"hot",en:"It is hot in here.",zh:"这里很热。",usage:"普通说法，室内室外都可以。"},
+      {id:"boiling",en:"It is boiling in here.",zh:"这里热得要命。",usage:"夸张口语，房间闷热、车里很热。"},
+      {id:"stuffy",en:"It is stuffy in here.",zh:"这里很闷、不通风。",usage:"不是热，是空气不流通。车厢、房间、会议室常用。"},
+      {id:"air-out",en:"Let's air it out.",zh:"我们通通风吧。",usage:"开窗换气、散味、散潮气时用。"}
+    ]
+  },
+  {
+    topic:"尴尬 / 不好意思", en:"Awkward", color:"#D46A6A",
+    entries:[
+      {id:"awkward",en:"That was awkward.",zh:"刚才有点尴尬。",usage:"场面尴尬、话题冷掉、误会时用。"},
+      {id:"embarrassed",en:"I am embarrassed.",zh:"我有点不好意思。",usage:"自己觉得丢脸或难为情。"},
+      {id:"sorry-about-that",en:"Sorry about that.",zh:"刚才不好意思。",usage:"小失误、小打扰、小尴尬后万能。"},
+      {id:"my-bad",en:"My bad.",zh:"我的错。",usage:"很口语，熟人之间承认小错误。正式场合用 Sorry。"},
+      {id:"dont-know-what-to-say",en:"I do not know what to say.",zh:"我都不知道说什么了。",usage:"惊讶、尴尬、无语，但不想太冲。"},
+      {id:"pretend-didnt-happen",en:"Let's pretend that did not happen.",zh:"就当刚才没发生吧。",usage:"熟人之间化解尴尬，语气轻松。"}
+    ]
+  },
+  {
+    topic:"麻烦 / 不方便", en:"Trouble and Inconvenient", color:"#2A9D9A",
+    entries:[
+      {id:"trouble",en:"It is a lot of trouble.",zh:"这挺麻烦的。",usage:"步骤多、来回跑、处理起来费劲。"},
+      {id:"inconvenient",en:"It is inconvenient.",zh:"不太方便。",usage:"比较礼貌，时间、地点、方式不合适都能用。"},
+      {id:"hassle",en:"It is a hassle.",zh:"很折腾。",usage:"口语，办手续、退货、搬东西、改票都适合。"},
+      {id:"not-great-timing",en:"The timing is not great.",zh:"这个时间不太合适。",usage:"比 I am busy 更委婉。"},
+      {id:"workaround",en:"Do we have a workaround?",zh:"有没有临时办法？",usage:"软件、出行、生活卡住时都能问。"},
+      {id:"make-it-easier",en:"Can we make this easier?",zh:"能不能把这事弄简单点？",usage:"流程太复杂、沟通太绕时很实用。"}
+    ]
+  }
+];
+
 /* ============================================================
    渲染 + 朗读逻辑
    ============================================================ */
@@ -8369,6 +8490,14 @@ const pickRandomUnmasteredSceneCore = dictCore.pickRandomUnmasteredScene || ((sc
 let allRows = [];
 let sceneWordEntries = [];
 const sentenceLookup = new Map();
+let currentIdiomTopic = 0;
+
+IDIOM_LIBRARY.forEach(group=>{
+  group.entries.forEach(entry=>{
+    const id=`idiom-${entry.id}`;
+    sentenceLookup.set(id,{id,en:entry.en,zh:entry.zh,catName:'地道说法',subName:group.topic});
+  });
+});
 
 function readIdList(key){
   try{return JSON.parse(localStorage.getItem(key)||'[]');}catch(e){return [];}
@@ -8695,6 +8824,7 @@ function bindDashboard(){
         return;
       }
       if(action==='scenes'){showSceneTrainingPanel();return;}
+      if(action==='idioms'){showIdiomLibrary();return;}
       if(action==='library'){filterCat(null);return;}
       if(action==='searchFocus'){q.focus();return;}
       if(action==='voiceSettings'){
@@ -9222,6 +9352,7 @@ const lookup=document.getElementById('lookup');
 const lookupBtn=document.getElementById('lookupBtn');
 const randomSceneBtn=document.getElementById('randomSceneBtn');
 const randomWordBtn=document.getElementById('randomWordBtn');
+const idiomBtn=document.getElementById('idiomBtn');
 
 function showLocalDictionary(words,term){
   const word=dictCore.findDictionaryEntry(words,term);
@@ -9345,6 +9476,75 @@ function showRandomWord(){
   showLocalDictionary(allWords,word.term);
 }
 
+function idiomMatches(entry,query){
+  const t=String(query||'').trim().toLowerCase();
+  if(!t)return true;
+  return [entry.en,entry.zh,entry.usage].some(value=>String(value||'').toLowerCase().includes(t));
+}
+
+function idiomRowHtml(entry,group){
+  const id=`idiom-${entry.id}`;
+  return `<div class="idiom-row row" data-sentence-id="${id}" data-idiom-id="${entry.id}">
+    <div class="spk">${SPK_SVG}</div>
+    <div class="txt">
+      <div class="idiom-en en">${entry.en}</div>
+      <div class="idiom-zh zh">${entry.zh}</div>
+      <div class="idiom-use">用法：${entry.usage}</div>
+      <div class="statusbar">
+        <button class="statusbtn" data-status="hard" type="button">不会</button>
+        <button class="statusbtn" data-status="mastered" type="button">会了</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderIdiomEntries(){
+  const panel=lookup.querySelector('#idiomPanel');
+  const search=lookup.querySelector('#idiomSearch');
+  if(!panel)return;
+  const qText=search?search.value:'';
+  const group=IDIOM_LIBRARY[currentIdiomTopic]||IDIOM_LIBRARY[0];
+  const entries=group.entries.filter(entry=>idiomMatches(entry,qText));
+  panel.innerHTML=entries.length
+    ? `<div class="idiom-list">${entries.map(entry=>idiomRowHtml(entry,group)).join('')}</div>`
+    : '<div class="idiom-list"><div class="idiom-empty">这一组没搜到，换个中文或英文试试。</div></div>';
+  panel.querySelectorAll('.idiom-row[data-sentence-id]').forEach(row=>{
+    const item=sentenceLookup.get(row.dataset.sentenceId);
+    row.onclick=()=>{stopAll();speakOne(item.en,row);};
+    row.querySelector('[data-status="hard"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'hard');};
+    row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'mastered');};
+    refreshSentenceStatus(row);
+  });
+}
+
+function showIdiomLibrary(topicIndex){
+  if(Number.isFinite(topicIndex))currentIdiomTopic=topicIndex;
+  const group=IDIOM_LIBRARY[currentIdiomTopic]||IDIOM_LIBRARY[0];
+  lookup.style.display='block';
+  lookup.innerHTML=`<div class="lk-card">
+    <div class="lk-en">地道说法库</div>
+    <div class="lk-zh">同一个中文意思，在不同场合换自然说法。每条都可以朗读，也可以标记不会。</div>
+    <div class="idiom-tools">
+      <input id="idiomSearch" type="search" placeholder="搜中文、英文或用法，例如：臭、人多、贵、awkward">
+    </div>
+    <div class="idiom-topics">
+      ${IDIOM_LIBRARY.map((item,index)=>`<button class="idiom-topic ${index===currentIdiomTopic?'active':''}" type="button" data-topic-index="${index}">${item.topic}</button>`).join('')}
+    </div>
+    <div class="lk-note">当前：${group.topic} · ${group.en}。这些是人工整理的日常说法，不是机器同义词表。</div>
+    <div id="idiomPanel"></div>
+  </div>`;
+  lookup.querySelectorAll('[data-topic-index]').forEach(btn=>{
+    btn.onclick=()=>{
+      currentIdiomTopic=Number(btn.dataset.topicIndex);
+      showIdiomLibrary(currentIdiomTopic);
+    };
+  });
+  const input=lookup.querySelector('#idiomSearch');
+  input.oninput=renderIdiomEntries;
+  renderIdiomEntries();
+  window.scrollTo({top:lookup.offsetTop-12,behavior:'smooth'});
+}
+
 async function translate(){
   const text=q.value.trim();
   if(!text)return;
@@ -9384,6 +9584,7 @@ async function translate(){
 lookupBtn.onclick=translate;
 randomSceneBtn.onclick=showSceneTrainingPanel;
 randomWordBtn.onclick=showRandomWord;
+idiomBtn.onclick=showIdiomLibrary;
 q.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();translate();}});
 
 /* ---------- 分类筛选 ---------- */
