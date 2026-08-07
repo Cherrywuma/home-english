@@ -894,6 +894,14 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('It is not worth it.'));
   assert.ok(html.includes('麻烦 / 不方便'));
   assert.ok(html.includes('Do we have a workaround?'));
+  assert.ok(html.includes('I am in a rush.'));
+  assert.ok(html.includes('It drives me crazy.'));
+  assert.ok(html.includes('It works like a charm.'));
+  assert.ok(html.includes('It does not fit right.'));
+  assert.ok(html.includes('It hurts when I move.'));
+  assert.ok(html.includes('I am starving.'));
+  assert.ok(html.includes('I get cold easily.'));
+  assert.ok(html.includes('That is a bargain.'));
   assert.ok(html.includes('data-dash-action="idioms"'));
   assert.ok(html.includes('showIdiomLibrary'));
 });
@@ -972,7 +980,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v79'));
+  assert.ok(worker.includes('home-english-v80'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
