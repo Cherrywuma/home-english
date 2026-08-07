@@ -9113,6 +9113,123 @@ const IDIOM_LIBRARY = [
       {id:"work-close-file",en:"Should we close this file for now?",zh:"这个项目我们先暂时归档吗？",usage:"客户长期不回时，体面收尾。"},
       {id:"work-here-when-ready",en:"I am here when you are ready to continue.",zh:"你准备继续时，我随时在。",usage:"不逼客户，也保留关系。"}
     ]
+  },
+  {
+    topic:"报价后追单 / 客户不回", en:"Following Up After a Quote", color:"#A45B64",
+    entries:[
+      {id:"work-quote-chance-review",en:"Just checking if you had a chance to review the quote.",zh:"我想确认一下，你有没有时间看过报价。",usage:"报价后第一次追踪，语气轻，不像催命。"},
+      {id:"work-quote-any-questions",en:"Do you have any questions about the quote?",zh:"关于报价，你这边有什么问题吗？",usage:"比直接问下不下单更容易让客户回复。"},
+      {id:"work-quote-need-adjust",en:"If the quote needs any adjustment, please let me know.",zh:"如果报价哪里需要调整，请告诉我。",usage:"给客户开口谈价格或配置的入口。"},
+      {id:"work-quote-still-under-review",en:"Is this quote still under review on your side?",zh:"这个报价你们那边还在评估吗？",usage:"客户内部流程慢时很好用。"},
+      {id:"work-quote-decision-time",en:"When do you think you may have a decision?",zh:"你大概什么时候会有决定？",usage:"问时间，不逼客户马上定。"},
+      {id:"work-quote-hold-price",en:"Should I keep this price on hold for you?",zh:"这个价格需要我先帮你保留吗？",usage:"适合价格可能变、客户还没决定时。"},
+      {id:"work-quote-not-right",en:"If this is not the right option, I can suggest another one.",zh:"如果这个方案不合适，我可以再给你推荐别的。",usage:"客户沉默可能是方案不对，用这句打开话题。"},
+      {id:"work-quote-next-step",en:"If everything looks okay, the next step is to confirm the order details.",zh:"如果都没问题，下一步就是确认订单细节。",usage:"客户已经认可报价时，轻轻往订单推进。"}
+    ]
+  },
+  {
+    topic:"客户拿资料不回 / 温和提醒", en:"After Sending Information", color:"#7B6C9E",
+    entries:[
+      {id:"work-info-did-help",en:"Did the information help?",zh:"这些资料对你有帮助吗？",usage:"客户拿到资料不回时，比问 why no reply 好很多。"},
+      {id:"work-info-anything-missing",en:"Is there anything missing from the information I sent?",zh:"我发的资料里有没有缺什么？",usage:"让客户指出缺口，方便继续沟通。"},
+      {id:"work-info-need-more-detail",en:"Would you like me to explain any part in more detail?",zh:"有没有哪一部分需要我再详细解释？",usage:"资料复杂时很好用。"},
+      {id:"work-info-for-your-team",en:"Do you need this in a format that is easier to share with your team?",zh:"你需要我整理成更方便发给团队的格式吗？",usage:"客户可能要内部汇报，用这句很贴心。"},
+      {id:"work-info-send-summary",en:"I can send a short summary if that helps.",zh:"如果方便，我可以发一个简短总结。",usage:"客户没时间看长资料时。"},
+      {id:"work-info-still-useful",en:"Is this information still useful for your project?",zh:"这些资料对你这个项目还用得上吗？",usage:"项目可能暂停时。"},
+      {id:"work-info-wrong-person",en:"If I should speak with someone else, please feel free to let me know.",zh:"如果我应该对接其他同事，也请告诉我。",usage:"客户不是决策人时，体面转联系人。"},
+      {id:"work-info-no-problem-if-paused",en:"No problem if the project is paused; I just wanted to check.",zh:"如果项目暂停也没关系，我只是确认一下。",usage:"长期不回时降低压力。"}
+    ]
+  },
+  {
+    topic:"WhatsApp / 微信短句跟进", en:"Short Follow-ups on WhatsApp", color:"#4F8A73",
+    entries:[
+      {id:"work-wa-hi-follow-up",en:"Hi, just a quick follow-up.",zh:"你好，我简单跟进一下。",usage:"WhatsApp/微信开头，很短很自然。"},
+      {id:"work-wa-any-update",en:"Any update on this?",zh:"这个有进展吗？",usage:"熟悉客户或聊过几次后可用。"},
+      {id:"work-wa-still-needed",en:"Is this still needed?",zh:"这个还需要吗？",usage:"非常短，适合聊天软件。"},
+      {id:"work-wa-need-anything",en:"Do you need anything else from my side?",zh:"你这边还需要我补充什么吗？",usage:"客户不回时给对方一个简单回复点。"},
+      {id:"work-wa-no-rush",en:"No rush, just checking.",zh:"不着急，我只是确认一下。",usage:"不想显得太催时。"},
+      {id:"work-wa-when-free",en:"Please reply when you are free.",zh:"你有空时回复就行。",usage:"礼貌，适合有时差的客户。"},
+      {id:"work-wa-can-send-again",en:"I can send it again if you did not receive it.",zh:"如果你没收到，我可以再发一次。",usage:"客户可能没看到附件或消息。"},
+      {id:"work-wa-thumb",en:"A quick yes or no is fine.",zh:"简单回复可以或不可以就行。",usage:"对熟悉客户用，降低回复成本。"}
+    ]
+  },
+  {
+    topic:"下班 / 时差 / 明天回复", en:"After Hours and Time Difference", color:"#5D6FA3",
+    entries:[
+      {id:"work-off-now",en:"I am off work now, but I will check this tomorrow morning.",zh:"我现在下班了，明天早上看这个。",usage:"清楚但不冷淡。"},
+      {id:"work-reply-tomorrow",en:"I will reply to you tomorrow.",zh:"我明天回复你。",usage:"最简单直接。"},
+      {id:"work-team-off",en:"Our team is off for the day.",zh:"我们团队今天已经下班了。",usage:"客户问技术或生产时解释原因。"},
+      {id:"work-time-difference",en:"Because of the time difference, I may reply a little later.",zh:"因为有时差，我可能会晚一点回复。",usage:"跨国客户常用。"},
+      {id:"work-check-first-thing",en:"I will check it first thing tomorrow.",zh:"我明天一上班就确认。",usage:"first thing tomorrow 很地道。"},
+      {id:"work-urgent-message",en:"If it is urgent, please leave me a message here.",zh:"如果很急，请直接在这里留言。",usage:"让客户知道急事可以先说。"},
+      {id:"work-not-ignore",en:"I am not ignoring your message; I just need to confirm it properly.",zh:"我不是不回复你，只是需要认真确认。",usage:"客户着急时安抚一下。"},
+      {id:"work-thanks-patience",en:"Thanks for your patience. I will update you as soon as I can.",zh:"谢谢你耐心等，我会尽快更新你。",usage:"适合晚回复或内部确认中。"}
+    ]
+  },
+  {
+    topic:"请知悉 / 请确认 / 请注意", en:"Please Note and Confirm", color:"#6C6FA3",
+    entries:[
+      {id:"work-please-note",en:"Please note that the price is based on the current information.",zh:"请知悉，此价格是基于目前信息。",usage:"报价前提不完整时，避免误会。"},
+      {id:"work-kindly-confirm",en:"Kindly confirm the model and quantity.",zh:"请确认型号和数量。",usage:"邮件里可以用，聊天里也不生硬。"},
+      {id:"work-please-check",en:"Please check if everything is correct.",zh:"请检查一下是否都正确。",usage:"PI、地址、图纸、订单明细都能用。"},
+      {id:"work-for-reference",en:"This is for your reference.",zh:"这个给你参考。",usage:"发参考图、参考价、参考视频。"},
+      {id:"work-based-on-your-request",en:"Based on your request, we suggest this option.",zh:"根据你的需求，我们建议这个方案。",usage:"说明建议来源，不是随便推荐。"},
+      {id:"work-before-production",en:"Please confirm this before production.",zh:"请在生产前确认这个。",usage:"重要节点，避免后面返工。"},
+      {id:"work-once-confirmed",en:"Once confirmed, we can move to the next step.",zh:"确认后，我们可以进入下一步。",usage:"推进流程。"},
+      {id:"work-please-be-aware",en:"Please be aware that changes may affect the lead time.",zh:"请注意，变更可能会影响交期。",usage:"讲风险，不吓客户。"}
+    ]
+  },
+  {
+    topic:"催订单 / 推进成交", en:"Pushing the Order Forward", color:"#A0703E",
+    entries:[
+      {id:"work-order-update",en:"Do you have any update on the order?",zh:"订单这边有进展吗？",usage:"直接问订单，但语气正常。"},
+      {id:"work-ready-place-order",en:"Are you ready to place the order?",zh:"你这边准备下单了吗？",usage:"客户已经谈得差不多时。"},
+      {id:"work-need-pi",en:"Would you like me to prepare the PI?",zh:"需要我准备 PI 吗？",usage:"成交前推进很自然。"},
+      {id:"work-confirm-before-pi",en:"Before I prepare the PI, please confirm these details.",zh:"我准备 PI 前，请先确认这些细节。",usage:"防止 PI 做错。"},
+      {id:"work-production-slot",en:"We can arrange the production slot after order confirmation.",zh:"订单确认后，我们可以安排生产排期。",usage:"让客户明白确认订单的重要性。"},
+      {id:"work-avoid-delay",en:"To avoid delay, it would be better to confirm this earlier.",zh:"为了避免延误，最好早点确认。",usage:"催单但有理由。"},
+      {id:"work-if-plan-order",en:"If you plan to order this month, I suggest confirming the details this week.",zh:"如果你计划这个月下单，我建议这周确认细节。",usage:"把时间点说清楚。"},
+      {id:"work-can-proceed",en:"Can we proceed with this order?",zh:"这个订单可以继续推进了吗？",usage:"明确问下一步，适合成熟客户。"}
+    ]
+  },
+  {
+    topic:"催付款 / PI 后跟进", en:"Payment Follow-up", color:"#7A7242",
+    entries:[
+      {id:"work-pi-received",en:"Did you receive the PI?",zh:"你收到 PI 了吗？",usage:"发 PI 后第一句跟进。"},
+      {id:"work-pi-any-issue",en:"Is there any issue with the PI?",zh:"PI 有没有哪里有问题？",usage:"客户没付款时先确认是否 PI 有问题。"},
+      {id:"work-payment-schedule",en:"May I know your payment schedule?",zh:"方便问一下你们的付款安排吗？",usage:"比 when will you pay 更体面。"},
+      {id:"work-payment-before-production",en:"We can start production after the payment is confirmed.",zh:"付款确认后我们可以开始生产。",usage:"提醒付款和生产启动的关系。"},
+      {id:"work-bank-slip",en:"Please send the bank slip after payment.",zh:"付款后请发一下水单。",usage:"外贸收款跟进常用。"},
+      {id:"work-account-check",en:"I will ask our finance team to check the account.",zh:"我让财务查一下到账情况。",usage:"客户说已付但你还没看到。"},
+      {id:"work-payment-not-received",en:"We have not received the payment yet.",zh:"我们还没有收到付款。",usage:"直接但不要带责备。"},
+      {id:"work-confirm-once-received",en:"I will confirm with you once we receive it.",zh:"收到后我会和你确认。",usage:"收款未到账时收尾。"}
+    ]
+  },
+  {
+    topic:"客户犹豫 / 价格异议", en:"Handling Hesitation and Price Concerns", color:"#9A5D79",
+    entries:[
+      {id:"work-understand-price",en:"I understand price is important.",zh:"我理解价格很重要。",usage:"客户嫌贵时先接住，不要立刻反驳。"},
+      {id:"work-compare-scope",en:"Can we compare the scope first?",zh:"我们能先对比一下包含范围吗？",usage:"客户拿别家价格比时。"},
+      {id:"work-not-same-configuration",en:"It may not be the same configuration.",zh:"这个配置可能不一样。",usage:"解释价格差异，不攻击同行。"},
+      {id:"work-remove-nonessential",en:"We can remove some non-essential parts if you need a lower price.",zh:"如果需要更低价格，我们可以去掉一些非必要部分。",usage:"帮客户降预算，但不牺牲关键质量。"},
+      {id:"work-keep-critical",en:"I suggest keeping the critical parts unchanged.",zh:"关键部分我建议不要改。",usage:"讲专业判断。"},
+      {id:"work-budget-range",en:"What budget range are you working with?",zh:"你这边预算大概在哪个范围？",usage:"问预算，不要让客户只砍价。"},
+      {id:"work-best-balance",en:"This option is a better balance between cost and reliability.",zh:"这个方案在成本和可靠性之间更平衡。",usage:"比 best quality 更可信。"},
+      {id:"work-can-adjust-package",en:"We can adjust the package based on your budget.",zh:"我们可以根据你的预算调整方案。",usage:"保留成交可能。"}
+    ]
+  },
+  {
+    topic:"结束对话 / 体面收尾", en:"Closing the Conversation", color:"#4F7D6D",
+    entries:[
+      {id:"work-let-me-know-anytime",en:"Let me know anytime if you need more information.",zh:"如果还需要资料，随时告诉我。",usage:"聊天结束时自然收尾。"},
+      {id:"work-wait-your-feedback",en:"I will wait for your feedback.",zh:"我等你的反馈。",usage:"常用但不要每次只发这一句。"},
+      {id:"work-talk-tomorrow",en:"Let us continue tomorrow.",zh:"我们明天继续沟通。",usage:"下班或客户也忙时。"},
+      {id:"work-have-good-evening",en:"Have a good evening.",zh:"祝你晚上愉快。",usage:"客户当地晚上时可用。"},
+      {id:"work-have-good-weekend",en:"Have a good weekend.",zh:"周末愉快。",usage:"周五或周末前。"},
+      {id:"work-i-will-keep-ready",en:"I will keep the information ready for you.",zh:"我会把资料先准备好。",usage:"客户还没决定，但你保持跟进。"},
+      {id:"work-no-problem-come-back",en:"No problem, you can come back to me when you are ready.",zh:"没问题，你准备好时再找我。",usage:"客户说稍后再看时。"},
+      {id:"work-thanks-for-update",en:"Thanks for the update.",zh:"谢谢你告诉我进展。",usage:"客户回复你项目延后、内部讨论中时。"}
+    ]
   }
 ];
 
