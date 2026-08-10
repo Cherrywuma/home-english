@@ -365,6 +365,18 @@
   .ear-check input{accent-color:var(--accent);}
   .ear-actions{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;}
   .ear-actions button.ghost,.ear-item button{background:var(--accent-soft);color:var(--accent);}
+  .ear-drawer.dictation .ear-list{display:none;}
+  .dictation-panel{padding:14px 16px;border-bottom:1px solid var(--line);background:#FCFAF6;}
+  .dictation-panel[hidden]{display:none;}
+  .dictation-top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--muted);font-size:.78rem;font-weight:800;}
+  .dictation-timer{display:inline-flex;align-items:center;justify-content:center;min-width:54px;height:32px;border-radius:999px;background:var(--accent);color:#fff;font-weight:900;}
+  .dictation-zh{font-size:1.2rem;font-weight:800;line-height:1.45;color:var(--ink);margin-top:12px;}
+  .dictation-hint{font-size:.82rem;color:var(--muted);line-height:1.5;margin-top:8px;}
+  .dictation-answer,.dictation-last{font-size:.92rem;line-height:1.45;margin-top:10px;padding:10px 12px;border-radius:10px;background:#fff;border:1px solid var(--line);}
+  .dictation-answer b,.dictation-last b{color:var(--muted);}
+  .dictation-answer[hidden],.dictation-last[hidden]{display:none;}
+  .dictation-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+  .dictation-actions button{font-family:var(--body);font-size:.78rem;font-weight:800;border:none;border-radius:999px;padding:8px 12px;cursor:pointer;background:var(--accent-soft);color:var(--accent);}
   .ear-list{overflow:auto;padding:0 0 16px;flex:1;}
   .ear-empty{padding:26px 18px;color:var(--muted);line-height:1.55;}
   .ear-item{
@@ -586,8 +598,23 @@ if(location.hostname==='cherrywuma.github.io'){
   <div class="ear-actions">
     <button id="earPlaySelected" class="primary" type="button">播放选中</button>
     <button id="earPlayAll" class="ghost" type="button">播放本组</button>
+    <button id="earDictation" class="ghost" type="button">听写本组</button>
     <button id="earClearRead" class="ghost" type="button">清空已读</button>
     <button id="earStop" class="ghost" type="button">停止</button>
+  </div>
+  <div id="dictationPanel" class="dictation-panel" hidden>
+    <div class="dictation-top">
+      <span id="dictationProgress">听写 0 / 0</span>
+      <span id="dictationTimer" class="dictation-timer">60秒</span>
+    </div>
+    <div id="dictationZh" class="dictation-zh"></div>
+    <div class="dictation-hint">听中文，在纸上或草稿里写英文。60 秒后自动下一句。</div>
+    <div id="dictationAnswer" class="dictation-answer" hidden></div>
+    <div id="dictationLast" class="dictation-last" hidden></div>
+    <div class="dictation-actions">
+      <button id="dictationReveal" type="button">显示答案</button>
+      <button id="dictationNext" type="button">下一句</button>
+    </div>
   </div>
   <div id="earList" class="ear-list"></div>
   <div id="earNow" class="ear-now">建议用老师级朗读；手机锁屏能否持续播放取决于浏览器后台音频限制。</div>
@@ -10031,6 +10058,7 @@ function finishSeq(){
 function stopAll(){
   stopTeacherAudio();
   if('speechSynthesis' in window)speechSynthesis.cancel();
+  stopDictation();
   stopEarLoop();
   finishSeq();
 }
@@ -10045,11 +10073,20 @@ const earList=document.getElementById('earList');
 const earNow=document.getElementById('earNow');
 const earPlaySelected=document.getElementById('earPlaySelected');
 const earPlayAll=document.getElementById('earPlayAll');
+const earDictation=document.getElementById('earDictation');
 const earStop=document.getElementById('earStop');
 const earSource=document.getElementById('earSource');
 const earCategory=document.getElementById('earCategory');
 const earSkipRead=document.getElementById('earSkipRead');
 const earClearRead=document.getElementById('earClearRead');
+const dictationPanel=document.getElementById('dictationPanel');
+const dictationProgress=document.getElementById('dictationProgress');
+const dictationTimer=document.getElementById('dictationTimer');
+const dictationZh=document.getElementById('dictationZh');
+const dictationAnswer=document.getElementById('dictationAnswer');
+const dictationLast=document.getElementById('dictationLast');
+const dictationReveal=document.getElementById('dictationReveal');
+const dictationNext=document.getElementById('dictationNext');
 const EAR_SELECTED_KEY='homeEnglishEarSelectedIds';
 const EAR_READ_KEY='homeEnglishEarReadIds';
 const EAR_SOURCE_KEY='homeEnglishEarSource';
@@ -10057,6 +10094,20 @@ const EAR_CATEGORY_KEY='homeEnglishEarCategory';
 const EAR_SKIP_READ_KEY='homeEnglishEarSkipRead';
 let earLoopActive=false;
 let earCurrentId='';
+let dictationActive=false;
+let dictationItems=[];
+let dictationIndex=0;
+let dictationCountdown=null;
+let dictationSecondsLeft=60;
+let dictationLastAnswer='';
+function setLabelText(el,label,text){
+  if(!el)return;
+  el.innerHTML='';
+  const b=document.createElement('b');
+  b.textContent=label;
+  el.appendChild(b);
+  el.appendChild(document.createTextNode(text||''));
+}
 
 function getAllEarItems(){
   return Array.from(sentenceLookup.values()).filter(item=>item&&item.id&&item.en&&item.zh);
@@ -10242,9 +10293,10 @@ function stopEarLoop(){
 }
 async function playEarLoop(items){
   if(!items.length){if(earNow)earNow.textContent='没有可播放的不会内容。';return;}
+  stopDictation();
   if(!readTeacherEndpoint()){
     openEarDrawer();
-    if(earNow)earNow.textContent='先配置 Cloudflare Worker 接口，才能英文后中文循环朗读。';
+    if(earNow)earNow.textContent='先配置 Cloudflare Worker 接口，才能中文后英文循环朗读。';
     return;
   }
   if(teacherMode&&!teacherMode.checked){
@@ -10280,15 +10332,123 @@ async function playEarLoop(items){
   }
   stopEarLoop();
 }
+function clearDictationCountdown(){
+  if(dictationCountdown)clearInterval(dictationCountdown);
+  dictationCountdown=null;
+}
+function renderDictationItem(item){
+  if(!dictationPanel)return;
+  dictationPanel.hidden=false;
+  if(earDrawer)earDrawer.classList.add('dictation');
+  if(dictationProgress)dictationProgress.textContent=`听写 ${Math.min(dictationIndex+1,dictationItems.length)} / ${dictationItems.length}`;
+  if(dictationTimer)dictationTimer.textContent=`${dictationSecondsLeft}秒`;
+  if(dictationZh)dictationZh.textContent=item?item.zh:'';
+  if(dictationAnswer){dictationAnswer.hidden=true;dictationAnswer.textContent='';}
+  if(dictationLast){
+    dictationLast.hidden=!dictationLastAnswer;
+    if(dictationLastAnswer)setLabelText(dictationLast,'上一句答案：',dictationLastAnswer);
+    else dictationLast.textContent='';
+  }
+  if(earNow)earNow.textContent=`听写模式：${earGroupLabel()}。先听中文，再把英文写在草稿上。`;
+}
+function stopDictation(){
+  dictationActive=false;
+  clearDictationCountdown();
+  dictationItems=[];
+  dictationIndex=0;
+  dictationLastAnswer='';
+  if(dictationPanel)dictationPanel.hidden=true;
+  if(earDrawer)earDrawer.classList.remove('dictation');
+}
+function finishDictation(){
+  dictationActive=false;
+  clearDictationCountdown();
+  earCurrentId='';
+  if(dictationPanel)dictationPanel.hidden=true;
+  if(earDrawer)earDrawer.classList.remove('dictation');
+  if(earNow)earNow.textContent='本组听写完成。不会的句子可以点“不会”，再进不会内容专练。';
+  renderEarDrawer();
+}
+function revealDictationAnswer(){
+  if(!dictationActive||!dictationAnswer)return;
+  const item=dictationItems[dictationIndex];
+  if(!item)return;
+  dictationAnswer.hidden=false;
+  setLabelText(dictationAnswer,'本句答案：',item.en);
+}
+function goNextDictationItem(){
+  if(!dictationActive)return;
+  const item=dictationItems[dictationIndex];
+  if(item){
+    markEarRead(item.id);
+    dictationLastAnswer=item.en;
+  }
+  dictationIndex++;
+  runDictationItem();
+}
+function startDictationCountdown(){
+  clearDictationCountdown();
+  dictationSecondsLeft=60;
+  if(dictationTimer)dictationTimer.textContent='60秒';
+  dictationCountdown=setInterval(()=>{
+    if(!dictationActive){clearDictationCountdown();return;}
+    dictationSecondsLeft--;
+    if(dictationTimer)dictationTimer.textContent=`${Math.max(0,dictationSecondsLeft)}秒`;
+    if(dictationSecondsLeft<=0){
+      clearDictationCountdown();
+      goNextDictationItem();
+    }
+  },1000);
+}
+async function runDictationItem(){
+  if(!dictationActive)return;
+  if(dictationIndex>=dictationItems.length){finishDictation();return;}
+  const item=dictationItems[dictationIndex];
+  earCurrentId=item.id;
+  renderEarDrawer();
+  dictationSecondsLeft=60;
+  renderDictationItem(item);
+  if(earNow)earNow.textContent=`正在报中文：${item.zh}`;
+  try{await speakTeacher(item.zh,'zh',document.querySelector(`.row[data-sentence-id="${item.id}"]`));}
+  catch(e){if(earNow)earNow.textContent='中文报读失败，请检查接口。';stopDictation();return;}
+  if(!dictationActive)return;
+  if(earNow)earNow.textContent='开始写英文：60 秒后自动下一句。';
+  startDictationCountdown();
+}
+async function startDictation(items){
+  if(!items.length){openEarDrawer();if(earNow)earNow.textContent='这一组没有可听写内容。';return;}
+  if(!readTeacherEndpoint()){
+    openEarDrawer();
+    if(earNow)earNow.textContent='先配置 Cloudflare Worker 接口，才能听写中文。';
+    return;
+  }
+  if(teacherMode&&!teacherMode.checked){
+    teacherMode.checked=true;
+    try{localStorage.setItem(TEACHER_MODE_KEY,'1');}catch(e){}
+    refreshTeacherStatus();
+  }
+  stopEarLoop();
+  stopTeacherAudio();
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  dictationActive=true;
+  dictationItems=items;
+  dictationIndex=0;
+  dictationLastAnswer='';
+  openEarDrawer();
+  runDictationItem();
+}
 if(earDrawerBtn)earDrawerBtn.onclick=openEarDrawer;
-if(earClose)earClose.onclick=closeEarDrawer;
+if(earClose)earClose.onclick=()=>{stopDictation();closeEarDrawer();};
 if(earStop)earStop.onclick=stopAll;
 if(earPlaySelected)earPlaySelected.onclick=()=>playEarLoop(selectedEarItems(false));
 if(earPlayAll)earPlayAll.onclick=()=>playEarLoop(selectedEarItems(true));
-if(earSource)earSource.onchange=()=>{setEarSource(earSource.value);setEarSelected([]);renderEarDrawer();};
-if(earCategory)earCategory.onchange=()=>{setEarCategory(earCategory.value);setEarSelected([]);renderEarDrawer();};
-if(earSkipRead)earSkipRead.onchange=()=>{setEarSkipRead(earSkipRead.checked);renderEarDrawer();};
+if(earDictation)earDictation.onclick=()=>startDictation(selectedEarItems(true));
+if(earSource)earSource.onchange=()=>{stopDictation();setEarSource(earSource.value);setEarSelected([]);renderEarDrawer();};
+if(earCategory)earCategory.onchange=()=>{stopDictation();setEarCategory(earCategory.value);setEarSelected([]);renderEarDrawer();};
+if(earSkipRead)earSkipRead.onchange=()=>{stopDictation();setEarSkipRead(earSkipRead.checked);renderEarDrawer();};
 if(earClearRead)earClearRead.onclick=()=>{setEarReadIds([]);renderEarDrawer();if(earNow)earNow.textContent='已清空读过记录。';};
+if(dictationReveal)dictationReveal.onclick=revealDictationAnswer;
+if(dictationNext)dictationNext.onclick=()=>{clearDictationCountdown();goNextDictationItem();};
 
 /* ---------- 收集所有行（含收藏区），供搜索/筛选用 ---------- */
 function collectRows(){
