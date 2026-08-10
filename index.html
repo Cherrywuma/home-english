@@ -9990,6 +9990,32 @@ function makeUtter(text){
   u.rate=+rate.value;u.pitch=1;
   return u;
 }
+function makeLangUtter(text,lang){
+  const u=new SpeechSynthesisUtterance(text);
+  const allVoices=('speechSynthesis' in window)?speechSynthesis.getVoices():[];
+  if(lang==='zh'){
+    const zhVoice=allVoices.find(v=>/^zh[-_]?CN/i.test(v.lang))||allVoices.find(v=>/^zh/i.test(v.lang));
+    if(zhVoice)u.voice=zhVoice;
+    u.lang='zh-CN';
+    u.rate=Math.min(1,+rate.value||0.85);
+  }else{
+    if(chosen){u.voice=chosen;u.lang=chosen.lang;}else{u.lang='en-US';}
+    u.rate=+rate.value;
+  }
+  u.pitch=1;
+  return u;
+}
+function speakFreeLang(text,lang,row){
+  return new Promise((resolve,reject)=>{
+    if(!('speechSynthesis' in window)){reject(new Error('speechSynthesis-missing'));return;}
+    speechSynthesis.cancel();
+    if(row)row.classList.add('speaking');
+    const u=makeLangUtter(text,lang);
+    u.onend=()=>{if(row)row.classList.remove('speaking');resolve();};
+    u.onerror=e=>{if(row)row.classList.remove('speaking');reject(e&&e.error?new Error(e.error):new Error('speechSynthesis-error'));};
+    speechSynthesis.speak(u);
+  });
+}
 
 /* ---------- 单句 ---------- */
 function speakOne(text,row){
@@ -10408,20 +10434,25 @@ async function runDictationItem(){
   renderEarDrawer();
   dictationSecondsLeft=60;
   renderDictationItem(item);
+  const row=document.querySelector(`.row[data-sentence-id="${item.id}"]`);
   if(earNow)earNow.textContent=`正在报中文：${item.zh}`;
-  try{await speakTeacher(item.zh,'zh',document.querySelector(`.row[data-sentence-id="${item.id}"]`));}
-  catch(e){if(earNow)earNow.textContent='中文报读失败，请检查接口。';stopDictation();return;}
+  try{await speakFreeLang(item.zh,'zh',row);}
+  catch(e){
+    if(earNow)earNow.textContent='本机中文没播出来，正在改用老师级中文朗读。';
+    try{await speakTeacher(item.zh,'zh',row);}
+    catch(teacherErr){
+      if(teacherStatus)teacherStatus.textContent=teacherErrorText(teacherErr,'听写中文朗读失败');
+      if(earNow)earNow.textContent='中文仍然没有播出来，请点一下页面后再点“听写本组”。';
+      stopDictation();
+      return;
+    }
+  }
   if(!dictationActive)return;
   if(earNow)earNow.textContent='开始写英文：60 秒后自动下一句。';
   startDictationCountdown();
 }
 async function startDictation(items){
   if(!items.length){openEarDrawer();if(earNow)earNow.textContent='这一组没有可听写内容。';return;}
-  if(!readTeacherEndpoint()){
-    openEarDrawer();
-    if(earNow)earNow.textContent='先配置 Cloudflare Worker 接口，才能听写中文。';
-    return;
-  }
   if(teacherMode&&!teacherMode.checked){
     teacherMode.checked=true;
     try{localStorage.setItem(TEACHER_MODE_KEY,'1');}catch(e){}

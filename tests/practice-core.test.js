@@ -1008,6 +1008,9 @@ test('includes teacher tts controls and hard-item ear training drawer', () => {
   assert.ok(html.includes('dictationPanel'));
   assert.ok(html.includes('dictationSecondsLeft=60'));
   assert.ok(html.includes('正在报中文'));
+  assert.ok(html.includes('makeLangUtter'));
+  assert.ok(html.includes('speakFreeLang(item.zh'));
+  assert.ok(html.includes('正在改用老师级中文朗读'));
   assert.ok(html.includes('显示答案'));
   assert.ok(html.includes('goNextDictationItem'));
   assert.ok(html.includes('跳过已读'));
@@ -1061,7 +1064,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v90'));
+  assert.ok(worker.includes('home-english-v91'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
