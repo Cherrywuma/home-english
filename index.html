@@ -356,19 +356,28 @@
   .ear-head h2{font-family:var(--display);font-weight:500;font-size:1.45rem;}
   .ear-head p{color:var(--muted);font-size:.82rem;margin-top:2px;line-height:1.45;}
   .ear-close{border:none;background:var(--accent-soft);color:var(--accent);border-radius:999px;width:34px;height:34px;font-weight:900;cursor:pointer;}
+  .ear-controls{padding:12px 16px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .ear-controls select{
+    min-width:0;font-family:var(--body);font-size:.84rem;font-weight:750;color:var(--ink);
+    border:1px solid var(--line);background:#FCFAF6;border-radius:10px;padding:9px 10px;
+  }
+  .ear-check{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:750;color:var(--muted);}
+  .ear-check input{accent-color:var(--accent);}
   .ear-actions{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;}
   .ear-actions button.ghost,.ear-item button{background:var(--accent-soft);color:var(--accent);}
   .ear-list{overflow:auto;padding:0 0 16px;flex:1;}
   .ear-empty{padding:26px 18px;color:var(--muted);line-height:1.55;}
   .ear-item{
-    display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:13px 16px;
+    display:grid;grid-template-columns:auto 1fr auto auto;gap:8px;align-items:start;padding:13px 16px;
     border-bottom:1px solid var(--line);cursor:pointer;
   }
   .ear-item.current{background:var(--accent-soft);}
+  .ear-item.read{opacity:.58;}
   .ear-item input{margin-top:4px;accent-color:var(--accent);}
   .ear-item .ear-en{font-weight:800;line-height:1.35;}
   .ear-item .ear-zh{font-size:.82rem;color:var(--muted);margin-top:3px;line-height:1.35;}
   .ear-item .ear-meta{font-size:.72rem;color:#A89F90;margin-top:5px;}
+  .ear-item .ear-read{color:var(--accent);font-weight:800;}
   .ear-now{padding:10px 16px;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);background:#FCFAF6;}
   .practice-top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--muted);font-size:.84rem;font-weight:700;}
   .practice-back{font-family:var(--body);border:none;background:none;color:var(--accent);font-weight:700;cursor:pointer;padding:4px 0;}
@@ -554,21 +563,31 @@ if(location.hostname==='cherrywuma.github.io'){
 </div>
 
 <button id="earDrawerBtn" class="ear-float" type="button">磨耳朵 <b id="earCount">0</b></button>
-<aside id="earDrawer" class="ear-drawer" aria-label="不会内容磨耳朵">
+<aside id="earDrawer" class="ear-drawer" aria-label="磨耳朵连续播放器">
   <div class="ear-head">
     <div>
-      <h2>不会内容</h2>
-      <p>点句子里的「不会」会进入这里。选中后循环：英文，再中文。</p>
+      <h2>磨耳朵播放器</h2>
+      <p>选择一批内容后连续读：英文，再中文。读过的会自动记录，可以跳过。</p>
     </div>
     <button id="earClose" class="ear-close" type="button" aria-label="关闭">×</button>
   </div>
+  <div class="ear-controls">
+    <select id="earSource" aria-label="播放范围">
+      <option value="hard">不会内容</option>
+      <option value="current">当前页面可见内容</option>
+      <option value="all" selected>全部内容</option>
+      <option value="unread">未读内容</option>
+    </select>
+    <label class="ear-check"><input id="earSkipRead" type="checkbox" checked> 跳过已读</label>
+  </div>
   <div class="ear-actions">
     <button id="earPlaySelected" class="primary" type="button">播放选中</button>
-    <button id="earPlayAll" class="ghost" type="button">播放全部</button>
+    <button id="earPlayAll" class="ghost" type="button">播放本组</button>
+    <button id="earClearRead" class="ghost" type="button">清空已读</button>
     <button id="earStop" class="ghost" type="button">停止</button>
   </div>
   <div id="earList" class="ear-list"></div>
-  <div id="earNow" class="ear-now">老师级接口配置后，会优先播放缓存音频。</div>
+  <div id="earNow" class="ear-now">建议用老师级朗读；手机锁屏能否持续播放取决于浏览器后台音频限制。</div>
 </aside>
 
 <button id="stopbar"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg> 停止朗读</button>
@@ -10024,18 +10043,93 @@ const earNow=document.getElementById('earNow');
 const earPlaySelected=document.getElementById('earPlaySelected');
 const earPlayAll=document.getElementById('earPlayAll');
 const earStop=document.getElementById('earStop');
+const earSource=document.getElementById('earSource');
+const earSkipRead=document.getElementById('earSkipRead');
+const earClearRead=document.getElementById('earClearRead');
 const EAR_SELECTED_KEY='homeEnglishEarSelectedIds';
+const EAR_READ_KEY='homeEnglishEarReadIds';
+const EAR_SOURCE_KEY='homeEnglishEarSource';
+const EAR_SKIP_READ_KEY='homeEnglishEarSkipRead';
 let earLoopActive=false;
 let earCurrentId='';
 
+function getAllEarItems(){
+  return Array.from(sentenceLookup.values()).filter(item=>item&&item.id&&item.en&&item.zh);
+}
 function getHardItems(){
   return getHardIds().map(id=>sentenceLookup.get(String(id))).filter(Boolean);
+}
+function isVisibleSentenceRow(row){
+  if(!row||!row.dataset.sentenceId)return false;
+  if(row.style.display==='none')return false;
+  const sub=row.closest('.sub');
+  const cat=row.closest('.cat');
+  if(sub&&sub.style.display==='none')return false;
+  if(cat&&cat.style.display==='none')return false;
+  return true;
+}
+function getCurrentVisibleItems(){
+  const ids=[...document.querySelectorAll('.row[data-sentence-id]')]
+    .filter(isVisibleSentenceRow)
+    .map(row=>row.dataset.sentenceId);
+  const unique=[...new Set(ids)];
+  return unique.map(id=>sentenceLookup.get(String(id))).filter(Boolean);
 }
 function getEarSelected(){
   try{return JSON.parse(localStorage.getItem(EAR_SELECTED_KEY)||'[]').map(String);}catch(e){return [];}
 }
 function setEarSelected(ids){
   try{localStorage.setItem(EAR_SELECTED_KEY,JSON.stringify(ids.map(String)));}catch(e){}
+}
+function getEarReadIds(){
+  try{return JSON.parse(localStorage.getItem(EAR_READ_KEY)||'[]').map(String);}catch(e){return [];}
+}
+function setEarReadIds(ids){
+  try{localStorage.setItem(EAR_READ_KEY,JSON.stringify([...new Set(ids.map(String))]));}catch(e){}
+}
+function markEarRead(id){
+  if(!id)return;
+  const read=new Set(getEarReadIds());
+  read.add(String(id));
+  setEarReadIds([...read]);
+}
+function isEarRead(id){
+  return getEarReadIds().includes(String(id));
+}
+function getEarSource(){
+  try{return localStorage.getItem(EAR_SOURCE_KEY)||'all';}catch(e){return 'all';}
+}
+function setEarSource(value){
+  try{localStorage.setItem(EAR_SOURCE_KEY,value);}catch(e){}
+}
+function getEarSkipRead(){
+  try{return localStorage.getItem(EAR_SKIP_READ_KEY)!=='0';}catch(e){return true;}
+}
+function setEarSkipRead(value){
+  try{localStorage.setItem(EAR_SKIP_READ_KEY,value?'1':'0');}catch(e){}
+}
+function baseEarItems(){
+  const source=earSource?earSource.value:getEarSource();
+  if(source==='all')return getAllEarItems();
+  if(source==='current')return getCurrentVisibleItems();
+  if(source==='unread'){
+    const read=new Set(getEarReadIds());
+    return getAllEarItems().filter(item=>!read.has(String(item.id)));
+  }
+  return getHardItems();
+}
+function currentEarItems(){
+  const items=baseEarItems();
+  const source=earSource?earSource.value:getEarSource();
+  const skip=earSkipRead?earSkipRead.checked:getEarSkipRead();
+  if(source==='unread'||!skip)return items;
+  const read=new Set(getEarReadIds());
+  return items.filter(item=>!read.has(String(item.id)));
+}
+function earSourceLabel(){
+  const source=earSource?earSource.value:getEarSource();
+  const labels={hard:'不会内容',current:'当前页面可见内容',all:'全部内容',unread:'未读内容'};
+  return labels[source]||labels.hard;
 }
 function openEarDrawer(){
   renderEarDrawer();
@@ -10045,7 +10139,7 @@ function closeEarDrawer(){
   if(earDrawer)earDrawer.classList.remove('open');
 }
 function selectedEarItems(useAll){
-  const items=getHardItems();
+  const items=currentEarItems();
   if(useAll)return items;
   const selected=new Set(getEarSelected());
   if(!selected.size)return items;
@@ -10053,25 +10147,30 @@ function selectedEarItems(useAll){
 }
 function renderEarDrawer(){
   if(!earList)return;
-  const items=getHardItems();
+  if(earSource)earSource.value=getEarSource();
+  if(earSkipRead)earSkipRead.checked=getEarSkipRead();
+  const items=currentEarItems();
+  const readCount=getEarReadIds().length;
   if(earCount)earCount.textContent=items.length;
   const savedSelected=new Set(getEarSelected());
   const selected=savedSelected.size?savedSelected:new Set(items.map(item=>String(item.id)));
   if(!items.length){
-    earList.innerHTML='<div class="ear-empty">还没有不会内容。你点任意句子的「不会」，它就会出现在这里。</div>';
-    if(earNow)earNow.textContent='等待你标记不会的句子。';
+    earList.innerHTML='<div class="ear-empty">这一组暂时没有可播放内容。可以换播放范围，或关闭「跳过已读」。</div>';
+    if(earNow)earNow.textContent=`${earSourceLabel()}：0 句可播；已读记录 ${readCount} 句。`;
     return;
   }
   earList.innerHTML=items.map(item=>`
-    <div class="ear-item${String(item.id)===String(earCurrentId)?' current':''}" data-id="${item.id}">
+    <div class="ear-item${String(item.id)===String(earCurrentId)?' current':''}${isEarRead(item.id)?' read':''}" data-id="${item.id}">
       <input type="checkbox" ${selected.has(String(item.id))?'checked':''} aria-label="选择">
       <div>
         <div class="ear-en">${item.en}</div>
         <div class="ear-zh">${item.zh}</div>
-        <div class="ear-meta">${item.catName} · ${item.subName}</div>
+        <div class="ear-meta">${item.catName} · ${item.subName}${isEarRead(item.id)?' · <span class="ear-read">已读</span>':''}</div>
       </div>
+      <button type="button" data-action="read">已读</button>
       <button type="button" data-action="mastered">会了</button>
     </div>`).join('');
+  if(earNow&&!earLoopActive)earNow.textContent=`${earSourceLabel()}：${items.length} 句可播；已读记录 ${readCount} 句。`;
   const syncSelected=()=>{
     const ids=[...earList.querySelectorAll('.ear-item input:checked')].map(input=>input.closest('.ear-item').dataset.id);
     setEarSelected(ids);
@@ -10088,6 +10187,11 @@ function renderEarDrawer(){
     itemEl.querySelector('[data-action="mastered"]').onclick=e=>{
       e.stopPropagation();
       setSentenceStatus(itemEl.dataset.id,'mastered');
+    };
+    itemEl.querySelector('[data-action="read"]').onclick=e=>{
+      e.stopPropagation();
+      markEarRead(itemEl.dataset.id);
+      renderEarDrawer();
     };
   });
 }
@@ -10113,8 +10217,11 @@ async function playEarLoop(items){
   if('speechSynthesis' in window)speechSynthesis.cancel();
   earLoopActive=true;
   openEarDrawer();
+  let played=0;
   while(earLoopActive){
-    for(const item of items){
+    const queue=(earSkipRead&&earSkipRead.checked)?items.filter(item=>!isEarRead(item.id)):items;
+    if(!queue.length){if(earNow)earNow.textContent='这一组都读过了。换一组，或关闭「跳过已读」。';break;}
+    for(const item of queue){
       if(!earLoopActive)break;
       earCurrentId=item.id;renderEarDrawer();
       if(earNow)earNow.textContent=`正在读英文：${item.en}`;
@@ -10125,8 +10232,12 @@ async function playEarLoop(items){
       if(earNow)earNow.textContent=`正在读中文：${item.zh}`;
       try{await speakTeacher(item.zh,'zh',document.querySelector(`.row[data-sentence-id="${item.id}"]`));}
       catch(e){if(earNow)earNow.textContent='中文朗读失败，请检查接口。';earLoopActive=false;break;}
+      markEarRead(item.id);
+      played++;
+      if(earNow)earNow.textContent=`已读 ${played} 句，继续播放下一句。`;
       await new Promise(resolve=>setTimeout(resolve,850));
     }
+    if(earSkipRead&&earSkipRead.checked)break;
   }
   stopEarLoop();
 }
@@ -10135,6 +10246,9 @@ if(earClose)earClose.onclick=closeEarDrawer;
 if(earStop)earStop.onclick=stopAll;
 if(earPlaySelected)earPlaySelected.onclick=()=>playEarLoop(selectedEarItems(false));
 if(earPlayAll)earPlayAll.onclick=()=>playEarLoop(selectedEarItems(true));
+if(earSource)earSource.onchange=()=>{setEarSource(earSource.value);setEarSelected([]);renderEarDrawer();};
+if(earSkipRead)earSkipRead.onchange=()=>{setEarSkipRead(earSkipRead.checked);renderEarDrawer();};
+if(earClearRead)earClearRead.onclick=()=>{setEarReadIds([]);renderEarDrawer();if(earNow)earNow.textContent='已清空读过记录。';};
 
 /* ---------- 收集所有行（含收藏区），供搜索/筛选用 ---------- */
 function collectRows(){
