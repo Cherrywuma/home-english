@@ -567,7 +567,7 @@ if(location.hostname==='cherrywuma.github.io'){
   <div class="ear-head">
     <div>
       <h2>磨耳朵播放器</h2>
-      <p>选择一批内容后连续读：英文，再中文。读过的会自动记录，可以跳过。</p>
+      <p>选择一批内容后连续读：中文，再英文。读过的会自动记录，可以跳过。</p>
     </div>
     <button id="earClose" class="ear-close" type="button" aria-label="关闭">×</button>
   </div>
@@ -10224,14 +10224,14 @@ async function playEarLoop(items){
     for(const item of queue){
       if(!earLoopActive)break;
       earCurrentId=item.id;renderEarDrawer();
-      if(earNow)earNow.textContent=`正在读英文：${item.en}`;
-      try{await speakTeacher(item.en,'en',document.querySelector(`.row[data-sentence-id="${item.id}"]`));}
-      catch(e){if(earNow)earNow.textContent='老师级朗读失败，请检查接口地址或 API Key。';earLoopActive=false;break;}
-      if(!earLoopActive)break;
-      await new Promise(resolve=>setTimeout(resolve,550));
       if(earNow)earNow.textContent=`正在读中文：${item.zh}`;
       try{await speakTeacher(item.zh,'zh',document.querySelector(`.row[data-sentence-id="${item.id}"]`));}
       catch(e){if(earNow)earNow.textContent='中文朗读失败，请检查接口。';earLoopActive=false;break;}
+      if(!earLoopActive)break;
+      await new Promise(resolve=>setTimeout(resolve,550));
+      if(earNow)earNow.textContent=`正在读英文：${item.en}`;
+      try{await speakTeacher(item.en,'en',document.querySelector(`.row[data-sentence-id="${item.id}"]`));}
+      catch(e){if(earNow)earNow.textContent='英文朗读失败，请检查接口地址或 API Key。';earLoopActive=false;break;}
       markEarRead(item.id);
       played++;
       if(earNow)earNow.textContent=`已读 ${played} 句，继续播放下一句。`;
