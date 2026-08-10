@@ -361,7 +361,7 @@
     min-width:0;font-family:var(--body);font-size:.84rem;font-weight:750;color:var(--ink);
     border:1px solid var(--line);background:#FCFAF6;border-radius:10px;padding:9px 10px;
   }
-  .ear-check{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:750;color:var(--muted);}
+  .ear-check{grid-column:1/-1;display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:750;color:var(--muted);}
   .ear-check input{accent-color:var(--accent);}
   .ear-actions{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;}
   .ear-actions button.ghost,.ear-item button{background:var(--accent-soft);color:var(--accent);}
@@ -577,6 +577,9 @@ if(location.hostname==='cherrywuma.github.io'){
       <option value="current">当前页面可见内容</option>
       <option value="all" selected>全部内容</option>
       <option value="unread">未读内容</option>
+    </select>
+    <select id="earCategory" aria-label="内容分类">
+      <option value="all">全部分类</option>
     </select>
     <label class="ear-check"><input id="earSkipRead" type="checkbox" checked> 跳过已读</label>
   </div>
@@ -10044,11 +10047,13 @@ const earPlaySelected=document.getElementById('earPlaySelected');
 const earPlayAll=document.getElementById('earPlayAll');
 const earStop=document.getElementById('earStop');
 const earSource=document.getElementById('earSource');
+const earCategory=document.getElementById('earCategory');
 const earSkipRead=document.getElementById('earSkipRead');
 const earClearRead=document.getElementById('earClearRead');
 const EAR_SELECTED_KEY='homeEnglishEarSelectedIds';
 const EAR_READ_KEY='homeEnglishEarReadIds';
 const EAR_SOURCE_KEY='homeEnglishEarSource';
+const EAR_CATEGORY_KEY='homeEnglishEarCategory';
 const EAR_SKIP_READ_KEY='homeEnglishEarSkipRead';
 let earLoopActive=false;
 let earCurrentId='';
@@ -10102,11 +10107,36 @@ function getEarSource(){
 function setEarSource(value){
   try{localStorage.setItem(EAR_SOURCE_KEY,value);}catch(e){}
 }
+function getEarCategory(){
+  try{return localStorage.getItem(EAR_CATEGORY_KEY)||'all';}catch(e){return 'all';}
+}
+function setEarCategory(value){
+  try{localStorage.setItem(EAR_CATEGORY_KEY,value);}catch(e){}
+}
 function getEarSkipRead(){
   try{return localStorage.getItem(EAR_SKIP_READ_KEY)!=='0';}catch(e){return true;}
 }
 function setEarSkipRead(value){
   try{localStorage.setItem(EAR_SKIP_READ_KEY,value?'1':'0');}catch(e){}
+}
+function getEarCategories(){
+  const names=getAllEarItems().map(item=>String(item.catName||'未分类')).filter(Boolean);
+  return [...new Set(names)];
+}
+function renderEarCategoryOptions(){
+  if(!earCategory)return;
+  const categories=getEarCategories();
+  const saved=getEarCategory();
+  earCategory.innerHTML='';
+  earCategory.appendChild(new Option('全部分类','all'));
+  categories.forEach(name=>earCategory.appendChild(new Option(name,name)));
+  earCategory.value=categories.includes(saved)?saved:'all';
+  if(earCategory.value!==saved)setEarCategory(earCategory.value);
+}
+function filterEarCategoryItems(items){
+  const category=earCategory?earCategory.value:getEarCategory();
+  if(!category||category==='all')return items;
+  return items.filter(item=>String(item.catName||'未分类')===category);
 }
 function baseEarItems(){
   const source=earSource?earSource.value:getEarSource();
@@ -10119,7 +10149,7 @@ function baseEarItems(){
   return getHardItems();
 }
 function currentEarItems(){
-  const items=baseEarItems();
+  const items=filterEarCategoryItems(baseEarItems());
   const source=earSource?earSource.value:getEarSource();
   const skip=earSkipRead?earSkipRead.checked:getEarSkipRead();
   if(source==='unread'||!skip)return items;
@@ -10130,6 +10160,14 @@ function earSourceLabel(){
   const source=earSource?earSource.value:getEarSource();
   const labels={hard:'不会内容',current:'当前页面可见内容',all:'全部内容',unread:'未读内容'};
   return labels[source]||labels.hard;
+}
+function earCategoryLabel(){
+  const category=earCategory?earCategory.value:getEarCategory();
+  return category&&category!=='all'?category:'全部分类';
+}
+function earGroupLabel(){
+  const category=earCategoryLabel();
+  return category==='全部分类'?earSourceLabel():`${earSourceLabel()} · ${category}`;
 }
 function openEarDrawer(){
   renderEarDrawer();
@@ -10148,6 +10186,7 @@ function selectedEarItems(useAll){
 function renderEarDrawer(){
   if(!earList)return;
   if(earSource)earSource.value=getEarSource();
+  renderEarCategoryOptions();
   if(earSkipRead)earSkipRead.checked=getEarSkipRead();
   const items=currentEarItems();
   const readCount=getEarReadIds().length;
@@ -10156,7 +10195,7 @@ function renderEarDrawer(){
   const selected=savedSelected.size?savedSelected:new Set(items.map(item=>String(item.id)));
   if(!items.length){
     earList.innerHTML='<div class="ear-empty">这一组暂时没有可播放内容。可以换播放范围，或关闭「跳过已读」。</div>';
-    if(earNow)earNow.textContent=`${earSourceLabel()}：0 句可播；已读记录 ${readCount} 句。`;
+    if(earNow)earNow.textContent=`${earGroupLabel()}：0 句可播；已读记录 ${readCount} 句。`;
     return;
   }
   earList.innerHTML=items.map(item=>`
@@ -10170,7 +10209,7 @@ function renderEarDrawer(){
       <button type="button" data-action="read">已读</button>
       <button type="button" data-action="mastered">会了</button>
     </div>`).join('');
-  if(earNow&&!earLoopActive)earNow.textContent=`${earSourceLabel()}：${items.length} 句可播；已读记录 ${readCount} 句。`;
+  if(earNow&&!earLoopActive)earNow.textContent=`${earGroupLabel()}：${items.length} 句可播；已读记录 ${readCount} 句。`;
   const syncSelected=()=>{
     const ids=[...earList.querySelectorAll('.ear-item input:checked')].map(input=>input.closest('.ear-item').dataset.id);
     setEarSelected(ids);
@@ -10247,6 +10286,7 @@ if(earStop)earStop.onclick=stopAll;
 if(earPlaySelected)earPlaySelected.onclick=()=>playEarLoop(selectedEarItems(false));
 if(earPlayAll)earPlayAll.onclick=()=>playEarLoop(selectedEarItems(true));
 if(earSource)earSource.onchange=()=>{setEarSource(earSource.value);setEarSelected([]);renderEarDrawer();};
+if(earCategory)earCategory.onchange=()=>{setEarCategory(earCategory.value);setEarSelected([]);renderEarDrawer();};
 if(earSkipRead)earSkipRead.onchange=()=>{setEarSkipRead(earSkipRead.checked);renderEarDrawer();};
 if(earClearRead)earClearRead.onclick=()=>{setEarReadIds([]);renderEarDrawer();if(earNow)earNow.textContent='已清空读过记录。';};
 
