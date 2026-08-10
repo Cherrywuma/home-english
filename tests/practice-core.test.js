@@ -982,6 +982,21 @@ test('includes reusable hand-written work follow-up sentence frames', () => {
   assert.ok(html.includes('At this stage, I suggest we confirm the basic details first.'));
 });
 
+test('includes more practical customer work sentence frames', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('Natural WhatsApp Follow-up'));
+  assert.ok(html.includes('Missing Details Before Quoting'));
+  assert.ok(html.includes('Price Discussion Without Awkwardness'));
+  assert.ok(html.includes('Deposit, Payment, and Production Schedule'));
+  assert.ok(html.includes('When I Cannot Agree Right Away'));
+  assert.ok(html.includes('No pressure at all; I just wanted to know whether the information is still useful for you.'));
+  assert.ok(html.includes('To quote accurately, I still need a few basic details from your side.'));
+  assert.ok(html.includes('Let us find a workable option instead of only pushing the number down.'));
+  assert.ok(html.includes('I am asking because we need to plan the production schedule, not because I want to pressure you.'));
+  assert.ok(html.includes('Once I have a confirmed answer, I will send it to you in writing.'));
+});
+
 test('page stays usable without external font cdn links', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
@@ -1079,7 +1094,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v92'));
+  assert.ok(worker.includes('home-english-v93'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
