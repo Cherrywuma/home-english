@@ -967,6 +967,21 @@ test('includes hand-written daily action chains in the original categories', () 
   assert.ok(html.includes('先选大类，再选具体主题'));
 });
 
+test('includes reusable hand-written work follow-up sentence frames', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('Following Up After a Quote'));
+  assert.ok(html.includes('After Sending Information'));
+  assert.ok(html.includes('Moving the Order to PI'));
+  assert.ok(html.includes('After Hours and Tomorrow Reply'));
+  assert.ok(html.includes('Reusable Explanation Frames'));
+  assert.ok(html.includes('I just wanted to follow up on the quotation I sent yesterday.'));
+  assert.ok(html.includes('If anything is unclear in the quotation, I can explain it point by point.'));
+  assert.ok(html.includes('Are you ready to place the order, or do you still need to confirm something internally?'));
+  assert.ok(html.includes('I am off work now, but I will check this first thing tomorrow.'));
+  assert.ok(html.includes('At this stage, I suggest we confirm the basic details first.'));
+});
+
 test('page stays usable without external font cdn links', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
@@ -1064,7 +1079,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v91'));
+  assert.ok(worker.includes('home-english-v92'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
