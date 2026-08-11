@@ -1111,6 +1111,19 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('Living abroad is full of small buttons and habits that nobody explains unless you ask.'));
   assert.ok(html.includes('I did not diagnose myself; I just learned how to ask for help clearly.'));
   assert.ok(html.includes('A good follow-up should help the customer remember the conversation, not feel chased.'));
+  assert.ok(html.includes('Getting the Keys and Learning How the Door Works'));
+  assert.ok(html.includes('Paying for Laundry in a Shared Laundry Room'));
+  assert.ok(html.includes('When Self-Checkout Gets Stuck at the Supermarket'));
+  assert.ok(html.includes('Asking at a Pharmacy About Allergy or Skin Discomfort'));
+  assert.ok(html.includes('Finding the Right Way During an Airport Transfer'));
+  assert.ok(html.includes('Confirming Meeting Points by Email With a Customer'));
+  assert.ok(html.includes('When You Do Not Fully Understand a Technical Question'));
+  assert.ok(html.includes('Organizing Receipts and Travel Details Before Leaving Germany'));
+  assert.ok(html.includes('I practiced once while the host was still there, because I did not want to panic later.'));
+  assert.ok(html.includes('I did not keep pressing random buttons because I did not want to make it worse.'));
+  assert.ok(html.includes('Panic makes me miss details.'));
+  assert.ok(html.includes('Not understanding everything is not the real problem; pretending to understand is.'));
+  assert.ok(html.includes('Good records are quiet work, but they save a lot of trouble later.'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1218,7 +1231,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v104'));
+  assert.ok(worker.includes('home-english-v105'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
