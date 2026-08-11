@@ -1292,6 +1292,23 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('It was not a formal lesson; it was just real life with simple words.'));
   assert.ok(html.includes('Being late is not good, but early communication makes it easier for everyone.'));
   assert.ok(html.includes("'维修','医生','同事','展会','孩子','迟到'"));
+  assert.ok(html.includes('Realizing Your Passport Is Not in the Bag Before Leaving'));
+  assert.ok(html.includes('Trying to Pay at a Parking Machine'));
+  assert.ok(html.includes('Checking the Dosage After Buying Medicine'));
+  assert.ok(html.includes('Recording a Machine Video at the Customer Site'));
+  assert.ok(html.includes('Making Sure the Invoice Company Name Is Exactly Right'));
+  assert.ok(html.includes('Messaging the Teacher When a Child Has a Fever at Night'));
+  assert.ok(html.includes('Talking Politely About Noise From Upstairs'));
+  assert.ok(html.includes('Reviewing the Day in Simple English at Night'));
+  assert.ok(html.includes('Leaving enough time saved me from turning a small mistake into a real problem.'));
+  assert.ok(html.includes('Next time, I will read the signs first and ask before I get nervous.'));
+  assert.ok(html.includes('For medicine, understanding the instructions matters more than acting confident.'));
+  assert.ok(html.includes('A useful video is not just about recording; it is about recording the right thing with permission.'));
+  assert.ok(html.includes('Careful checking at the beginning saves many emails later.'));
+  assert.ok(html.includes('When family life gets messy, simple clear words are often enough.'));
+  assert.ok(html.includes('A polite sentence does not guarantee the problem disappears, but it gives peace a chance.'));
+  assert.ok(html.includes('Learning a language becomes easier when daily life itself becomes the textbook.'));
+  assert.ok(html.includes("'停车','发票','邻居','复盘'"));
 });
 
 test('includes separate bedtime encyclopedia library for children', () => {
@@ -1447,7 +1464,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v118'));
+  assert.ok(worker.includes('home-english-v119'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
