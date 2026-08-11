@@ -286,6 +286,22 @@
   .idiom-use{font-size:.78rem;color:#8F7F6A;background:#FFF8E8;border:1px solid #ECD8A6;border-radius:9px;padding:7px 8px;margin-top:7px;line-height:1.45;}
   .idiom-empty{padding:18px;color:var(--muted);font-size:.88rem;}
   .story-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:13px;}
+  .story-finder{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#FFFCF5;overflow:hidden;}
+  .story-count{padding:10px 12px;font-size:.82rem;font-weight:850;color:var(--ink);border-bottom:1px solid var(--line);}
+  .story-quick{display:flex;flex-wrap:wrap;gap:7px;padding:10px 12px;border-bottom:1px solid var(--line);}
+  .story-quick button,.story-index-list button{
+    font-family:var(--body);font-size:.78rem;font-weight:800;border:1px solid #DAD0C2;border-radius:999px;
+    background:#fff;color:var(--ink);padding:7px 10px;cursor:pointer;
+  }
+  .story-quick button{color:var(--accent);background:var(--accent-soft);border-color:#CFE6DC;}
+  .story-quick button:active,.story-index-list button:active{transform:scale(.98);}
+  .story-index{padding:0;}
+  .story-index summary{list-style:none;cursor:pointer;padding:10px 12px;font-size:.82rem;font-weight:900;color:var(--ink);}
+  .story-index summary::-webkit-details-marker{display:none;}
+  .story-index summary::after{content:"展开 / 收起";float:right;color:var(--muted);font-size:.72rem;font-weight:750;}
+  .story-index-list{display:flex;flex-wrap:wrap;gap:7px;padding:0 12px 12px;}
+  .story-index-list button{border-radius:10px;text-align:left;line-height:1.28;max-width:100%;}
+  .story-index-list button span{display:block;color:var(--muted);font-size:.68rem;font-weight:700;margin-top:2px;}
   .story-card{border:1px solid var(--line);border-radius:14px;background:#FFFDF8;overflow:hidden;}
   .story-top{padding:14px 15px;border-bottom:1px solid var(--line);background:#FCFAF6;}
   .story-top h3{font-size:1.08rem;line-height:1.25;}
@@ -13747,6 +13763,23 @@ function storyMatches(story,query,category){
     .concat(story.patterns||[])
     .some(value=>String(value||'').toLowerCase().includes(qText));
 }
+function storyQuickKeywords(){
+  return ['德国','酒店','客户','机场','火车','超市','药店','厕所','付款','地址'];
+}
+function storyIndexHtml(stories){
+  const quick=storyQuickKeywords().map(text=>`<button type="button" data-story-search="${text}">${text}</button>`).join('');
+  const items=stories.map((story,index)=>`<button type="button" data-story-jump="${story.id}">
+    ${index+1}. ${story.title}<span>${story.enTitle}</span>
+  </button>`).join('');
+  return `<div class="story-finder">
+    <div class="story-count">找到 ${stories.length} 段口播。先点目录标题，直接跳到对应内容。</div>
+    <div class="story-quick">${quick}</div>
+    <details class="story-index" open>
+      <summary>口播目录</summary>
+      <div class="story-index-list">${items}</div>
+    </details>
+  </div>`;
+}
 async function speakStoryText(text,lang,row){
   const cleanText=String(text||'').trim();
   if(!cleanText)return;
@@ -13826,8 +13859,20 @@ function renderStoryCards(){
   const catValue=category?category.value:'全部';
   const stories=STORY_LIBRARY.filter(story=>storyMatches(story,qText,catValue));
   panel.innerHTML=stories.length
-    ? `<div class="story-grid">${stories.map(storyCardHtml).join('')}</div>`
+    ? `${storyIndexHtml(stories)}<div class="story-grid">${stories.map(storyCardHtml).join('')}</div>`
     : '<div class="idiom-list"><div class="idiom-empty">这一组没搜到，换个生活动作或场景词试试。</div></div>';
+  panel.querySelectorAll('[data-story-search]').forEach(btn=>{
+    btn.onclick=()=>{
+      if(search)search.value=btn.dataset.storySearch||'';
+      renderStoryCards();
+    };
+  });
+  panel.querySelectorAll('[data-story-jump]').forEach(btn=>{
+    btn.onclick=()=>{
+      const card=panel.querySelector(`[data-story-card="${btn.dataset.storyJump}"]`);
+      if(card)card.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+  });
   panel.querySelectorAll('[data-story-play]').forEach(btn=>{
     btn.onclick=()=>playStory(STORY_LIBRARY.find(story=>story.id===btn.dataset.story),btn.dataset.storyPlay,btn);
   });

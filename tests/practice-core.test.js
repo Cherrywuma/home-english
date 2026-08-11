@@ -1019,6 +1019,13 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('data-dash-action="stories"'));
   assert.ok(html.includes('const STORY_LIBRARY'));
   assert.ok(html.includes('showStoryLibrary'));
+  assert.ok(html.includes('storyIndexHtml'));
+  assert.ok(html.includes('storyQuickKeywords'));
+  assert.ok(html.includes('data-story-jump'));
+  assert.ok(html.includes('data-story-search'));
+  assert.ok(html.includes('口播目录'));
+  assert.ok(html.includes('找到 ${stories.length} 段口播'));
+  assert.ok(html.includes('card.scrollIntoView'));
   assert.ok(html.includes('英文口播'));
   assert.ok(html.includes('中英跟读'));
   assert.ok(html.includes('晚饭后扫餐桌下面'));
@@ -1244,7 +1251,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v106'));
+  assert.ok(worker.includes('home-english-v107'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
