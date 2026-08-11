@@ -1392,6 +1392,22 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('For personal leave, I can say: I need to take a day off for a personal matter.'));
   assert.ok(html.includes('One day I looked at the shower drain and felt scared by how much hair was there.'));
   assert.ok(html.includes('These are not words for exams. They are words for awkward moments.'));
+  assert.ok(html.includes('In Germany, Look for an Apotheke When You Need Medicine'));
+  assert.ok(html.includes('Read the Door Signs Before You Push or Pull'));
+  assert.ok(html.includes('Explaining the Deposit Before Production Starts'));
+  assert.ok(html.includes('When the Customer Changes the Specification Midway'));
+  assert.ok(html.includes('When a Child Breaks a Cup'));
+  assert.ok(html.includes('Chinese Tea Is More Than a Drink'));
+  assert.ok(html.includes('Ask About Trash Sorting During Your First Week in Germany'));
+  assert.ok(html.includes('When You Feel Left Out in a Conversation'));
+  assert.ok(html.includes('That makes the short conversation much safer and clearer.'));
+  assert.ok(html.includes('One calm look at the door can save one awkward minute.'));
+  assert.ok(html.includes('I ask: could you send the bank slip so we can check with our finance team?'));
+  assert.ok(html.includes('I do this because memory is not a good contract.'));
+  assert.ok(html.includes('Next time, we move the cup farther from the edge. That is enough for today.'));
+  assert.ok(html.includes('It is a quiet way to make a guest feel less like a stranger.'));
+  assert.ok(html.includes('It is better to look careful than to mix everything because I feel shy.'));
+  assert.ok(html.includes('I do not need to be funny right away. I just need a small place to stand.'));
   assert.ok(html.includes("'文旅'"));
   assert.ok(html.includes("'历史'"));
   assert.ok(html.includes("'人物'"));
@@ -1554,7 +1570,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v124'));
+  assert.ok(worker.includes('home-english-v125'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
