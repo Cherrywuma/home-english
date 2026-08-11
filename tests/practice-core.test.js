@@ -1079,6 +1079,24 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('It felt like a tiny local habit, but learning it made daily life feel more normal.'));
   assert.ok(html.includes('Before visiting a customer in Germany, I did not want to rely only on the address in the email.'));
   assert.ok(html.includes('A small quiet corner can make a busy day feel much easier.'));
+  assert.ok(html.includes('Getting Through Airport Security Without Panicking'));
+  assert.ok(html.includes('Using a Luggage Locker at the Station'));
+  assert.ok(html.includes('Taking a Bus or Tram in the Right Direction'));
+  assert.ok(html.includes('When Someone Checks Your Ticket'));
+  assert.ok(html.includes('Buying Vegetables and Checking How to Weigh Them'));
+  assert.ok(html.includes('Asking Whether Card or Cash Is Better'));
+  assert.ok(html.includes('Asking for the Bill and Receipt After a Meal'));
+  assert.ok(html.includes('Asking for Towels and Housekeeping at the Hotel'));
+  assert.ok(html.includes("Checking In at a Customer's Reception Desk"));
+  assert.ok(html.includes("Visiting a Customer's Workshop in Germany"));
+  assert.ok(html.includes('When Someone Stops at Your Booth at a Trade Fair'));
+  assert.ok(html.includes('Checking a Public Notice You Do Not Understand'));
+  assert.ok(html.includes('I was not sure whether my laptop should come out.'));
+  assert.ok(html.includes('I saved the locker number and took a photo of the screen just in case.'));
+  assert.ok(html.includes('I learned that asking early is much better than pretending I understand everything.'));
+  assert.ok(html.includes('I did not over-explain; I just answered the questions clearly.'));
+  assert.ok(html.includes('It was a tiny shopping detail, but it helped me feel less like a visitor and more like someone living there.'));
+  assert.ok(html.includes('I did not jump into a long sales pitch right away.'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1186,7 +1204,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v102'));
+  assert.ok(worker.includes('home-english-v103'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
