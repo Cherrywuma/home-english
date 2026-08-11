@@ -1,5 +1,5 @@
 /* 改了 index.html 内容后，把下面的版本号 +1，手机就会拉到新内容 */
-const VERSION = 'home-english-v121';
+const VERSION = 'home-english-v122';
 const ASSETS = [
   './',
   './index.html',

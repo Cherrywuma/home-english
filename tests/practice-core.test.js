@@ -1318,13 +1318,13 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('A Clear Question Saves Time When You Do Not Understand'));
   assert.ok(html.includes('Do Not Only Memorize English; Review Real Life'));
   assert.ok(html.includes('Good follow-up is not chasing; it is helping the next step become clear.'));
-  assert.ok(html.includes('A professional price discussion should explain the reason behind the number.'));
+  assert.ok(html.includes('When I explain the number, the conversation feels less like a fight over a discount.'));
   assert.ok(html.includes('In health situations, simple truth is better than confident guessing.'));
-  assert.ok(html.includes('Airport English is not about beautiful sentences; it is about finding the next correct step.'));
-  assert.ok(html.includes('In business, careful documents often save more time than fast replies.'));
+  assert.ok(html.includes('At the airport, I care less about perfect sentences and more about finding the next counter or gate.'));
+  assert.ok(html.includes('I would rather spend two minutes checking the invoice name than twenty emails fixing it later.'));
   assert.ok(html.includes('This is not only English; it is a small life habit abroad.'));
-  assert.ok(html.includes('Clear questions are a kind of confidence.'));
-  assert.ok(html.includes('A language becomes useful when it follows you through real life.'));
+  assert.ok(html.includes('I still feel a bit awkward asking, but the conversation usually gets easier after that.'));
+  assert.ok(html.includes('That is the kind of English I actually remember the next morning.'));
   assert.ok(html.includes("'短视频'"));
   assert.ok(html.includes("'跟进'"));
   assert.ok(html.includes("'谈价'"));
@@ -1344,7 +1344,22 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('A reliable adult is often the first lesson in trust for a child.'));
   assert.ok(html.includes('A museum becomes interesting when old things start to speak about real people.'));
   assert.ok(html.includes('But small progress repeated for a long time becomes a different life.'));
-  assert.ok(html.includes('When we respect difference, our own culture becomes easier to share.'));
+  assert.ok(html.includes('It is easier to share my culture when I am not trying to win the conversation.'));
+  assert.ok(html.includes('Start With the Market When You Visit a City'));
+  assert.ok(html.includes('Du Fu Was Not Only a Poet in a Textbook'));
+  assert.ok(html.includes('Talking About Zheng He Without Only Talking About Big Ships'));
+  assert.ok(html.includes("A Historical Map Is Not Today's Map"));
+  assert.ok(html.includes('When You Miss Home in a New Place'));
+  assert.ok(html.includes('When a Child Loses a Game, Do Not Rush Past the Feeling'));
+  assert.ok(html.includes('Kindness Can Pause Before Saying Yes'));
+  assert.ok(html.includes('It Is Okay to Have an Accent'));
+  assert.ok(html.includes('The famous square is still worth seeing, but the stall where someone is arguing over tomatoes feels closer to daily life.'));
+  assert.ok(html.includes('When I explain him this way, he stops feeling like a name printed under a poem.'));
+  assert.ok(html.includes('That question stays with me longer than the number of ships.'));
+  assert.ok(html.includes('So when I see an old map, I try to slow down before I point and say a modern name.'));
+  assert.ok(html.includes('After a short call home, I can usually go back to the new day in front of me.'));
+  assert.ok(html.includes('I am still learning this one. Saying no early is kinder than saying yes and disappearing later.'));
+  assert.ok(html.includes('These days I care more about being understood than sounding like someone from a movie.'));
   assert.ok(html.includes("'文旅'"));
   assert.ok(html.includes("'历史'"));
   assert.ok(html.includes("'人物'"));
@@ -1507,7 +1522,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v121'));
+  assert.ok(worker.includes('home-english-v122'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
