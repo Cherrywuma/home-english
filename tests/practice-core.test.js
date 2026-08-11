@@ -1035,10 +1035,27 @@ test('includes hand-written word path library for vocabulary memory', () => {
   assert.ok(html.includes('Quotation and Order'));
   assert.ok(html.includes('Shipping and Logistics'));
   assert.ok(html.includes('Customer Follow-up'));
+  assert.ok(html.includes('Medical and Pharmacy'));
+  assert.ok(html.includes('Train, Metro, and Street Signs'));
+  assert.ok(html.includes('Restaurant, Cafe, and Food'));
+  assert.ok(html.includes('Phone, Internet, and Accounts'));
+  assert.ok(html.includes('Company Documents'));
+  assert.ok(html.includes('Payment and Banking'));
+  assert.ok(html.includes('Technical and Quality'));
+  assert.ok(html.includes('After-sales and Problems'));
   assert.ok(html.includes('boarding pass'));
   assert.ok(html.includes('passport control'));
   assert.ok(html.includes('address registration'));
   assert.ok(html.includes('contactless payment'));
+  assert.ok(html.includes('period pain'));
+  assert.ok(html.includes('sanitary pad'));
+  assert.ok(html.includes('validate the ticket'));
+  assert.ok(html.includes('still water'));
+  assert.ok(html.includes('verification code'));
+  assert.ok(html.includes('business license'));
+  assert.ok(html.includes('bank charge'));
+  assert.ok(html.includes('surface treatment'));
+  assert.ok(html.includes('root cause'));
   assert.ok(html.includes('purchase order'));
   assert.ok(html.includes('scope of supply'));
   assert.ok(html.includes('customs clearance'));
@@ -1050,6 +1067,10 @@ test('includes hand-written word path library for vocabulary memory', () => {
   assert.ok(html.includes('How early should we arrive at the airport?'));
   assert.ok(html.includes('The quotation is valid for seven days.'));
   assert.ok(html.includes('Please confirm the delivery address and consignee name.'));
+  assert.ok(html.includes('Could you explain the dosage in simple English?'));
+  assert.ok(html.includes('Which platform is for trains to the city center?'));
+  assert.ok(html.includes('I did not receive the verification code.'));
+  assert.ok(html.includes('Please send the serial number and a short video of the issue.'));
   assert.ok(html.includes('Can I borrow your charger for a minute?'));
   assert.ok(html.includes('Make sure the door is locked before you leave.'));
 });
@@ -1341,7 +1362,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v113'));
+  assert.ok(worker.includes('home-english-v114'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
