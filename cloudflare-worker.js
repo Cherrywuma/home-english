@@ -29,6 +29,22 @@ function jsonResponse(data, status, origin) {
   });
 }
 
+const BUILT_IN_VOICES = new Set([
+  'alloy',
+  'ash',
+  'ballad',
+  'coral',
+  'echo',
+  'fable',
+  'nova',
+  'onyx',
+  'sage',
+  'shimmer',
+  'verse',
+  'marin',
+  'cedar'
+]);
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
@@ -62,15 +78,28 @@ export default {
     const language = body.language === 'zh' ? 'zh' : 'en';
     const format = body.format === 'opus' ? 'opus' : 'mp3';
     const maxChars = Number(env.MAX_TTS_CHARS || 700);
+    const requestedVoice = String(body.voice || '').trim();
+    const instructions = String(body.instructions || '').trim().slice(0, 700);
 
     if (!text) return jsonResponse({ error: 'Missing text' }, 400, origin);
     if (text.length > maxChars) return jsonResponse({ error: 'Text is too long' }, 413, origin);
 
     const model = env.TTS_MODEL || 'gpt-4o-mini-tts';
-    const voice = language === 'zh'
+    const envVoice = language === 'zh'
       ? (env.TTS_VOICE_ZH || env.TTS_VOICE || 'alloy')
       : (env.TTS_VOICE_EN || env.TTS_VOICE || 'alloy');
+    const voice = BUILT_IN_VOICES.has(requestedVoice) ? requestedVoice : envVoice;
     const speed = Number(env.TTS_SPEED || 1);
+    const speechPayload = {
+      model,
+      voice,
+      input: text,
+      response_format: format,
+      speed
+    };
+    if (instructions && model === 'gpt-4o-mini-tts') {
+      speechPayload.instructions = instructions;
+    }
 
     const response = await fetch('https://api.openai.com/v1/audio/speech', {
       method: 'POST',
@@ -78,13 +107,7 @@ export default {
         'Authorization': `Bearer ${env.OPENAI_API_KEY}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        model,
-        voice,
-        input: text,
-        response_format: format,
-        speed
-      })
+      body: JSON.stringify(speechPayload)
     });
 
     if (!response.ok) {

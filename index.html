@@ -13331,15 +13331,22 @@ async function requestTeacherAudio(endpoint,payload){
   }
   return res;
 }
-async function getTeacherAudio(text,lang){
+async function getTeacherAudio(text,lang,options={}){
   const endpoint=readTeacherEndpoint();
   if(!endpoint)throw new Error('missing-endpoint');
   const cleanText=String(text||'').trim();
   const cleanLang=lang==='zh'?'zh':'en';
-  const key=await sha256Text([endpoint,cleanLang,cleanText,'mp3','v1'].join('|'));
+  const style=String(options.style||'plain').trim()||'plain';
+  const voice=String(options.voice||'').trim();
+  const instructions=String(options.instructions||'').trim();
+  const key=await sha256Text([endpoint,cleanLang,cleanText,'mp3','v2',style,voice,instructions].join('|'));
   const cached=await cacheGetAudio(key);
   if(cached)return {blob:cached,cached:true};
-  const res=await requestTeacherAudio(endpoint,{text:cleanText,language:cleanLang,format:'mp3'});
+  const payload={text:cleanText,language:cleanLang,format:'mp3'};
+  if(style!=='plain')payload.style=style;
+  if(voice)payload.voice=voice;
+  if(instructions)payload.instructions=instructions;
+  const res=await requestTeacherAudio(endpoint,payload);
   if(!res.ok)throw new Error(`tts-${res.status}`);
   const contentType=res.headers.get('Content-Type')||'';
   if(!/audio\//i.test(contentType))throw new Error('tts-not-audio');
@@ -13347,13 +13354,13 @@ async function getTeacherAudio(text,lang){
   await cachePutAudio(key,blob);
   return {blob,cached:false};
 }
-async function speakTeacher(text,lang,row){
+async function speakTeacher(text,lang,row,options={}){
   const cleanText=String(text||'').trim();
   if(!cleanText)return;
   stopTeacherAudio();
   if('speechSynthesis' in window)speechSynthesis.cancel();
   if(row)row.classList.add('speaking');
-  const {blob,cached}=await getTeacherAudio(cleanText,lang);
+  const {blob,cached}=await getTeacherAudio(cleanText,lang,options);
   if(teacherStatus)teacherStatus.textContent=cached?'播放本机缓存音频':'已生成并缓存本句音频';
   currentTeacherUrl=URL.createObjectURL(blob);
   currentTeacherAudio=new Audio(currentTeacherUrl);
@@ -13415,9 +13422,9 @@ function speakFreeLang(text,lang,row){
 }
 
 /* ---------- 单句 ---------- */
-async function speakOne(text,row){
+async function speakOne(text,row,options={}){
   if(teacherEnabled()){
-    try{await speakTeacher(text,'en',row);return;}
+    try{await speakTeacher(text,'en',row,options);return;}
     catch(err){
       if(teacherStatus)teacherStatus.textContent=teacherErrorText(err,'老师级朗读失败，已改用免费朗读');
     }
@@ -13450,7 +13457,7 @@ function stopSingleRepeat(){
   singleRepeatRow=null;
 }
 function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
-async function playSingleRepeat(text,row){
+async function playSingleRepeat(text,row,options={}){
   const cleanText=String(text||'').trim();
   if(!cleanText)return;
   if(!teacherEnabled()&&!(('speechSynthesis' in window)))return;
@@ -13463,7 +13470,7 @@ async function playSingleRepeat(text,row){
   const runId=++singleRepeatRun;
   stopbar.classList.add('show');
   while(singleRepeatActive&&singleRepeatKey===key&&singleRepeatRun===runId){
-    await speakOne(cleanText,row);
+    await speakOne(cleanText,row,options);
     if(!singleRepeatActive||singleRepeatKey!==key||singleRepeatRun!==runId)break;
     await sleep(360);
   }
@@ -14338,9 +14345,7 @@ function bedtimeCardHtml(story){
       <div class="story-scene">${story.scene}</div>
       <div class="bedtime-meta"><span>${story.minutes}</span><span>${story.age}</span>${words}</div>
       <div class="bedtime-actions">
-        <button class="primary" type="button" data-bedtime-play="zh" data-bedtime="${story.id}">中文讲故事</button>
-        <button type="button" data-bedtime-play="bilingual" data-bedtime="${story.id}">中英亲子讲</button>
-        <button type="button" data-bedtime-play="en" data-bedtime="${story.id}">英文慢慢听</button>
+        <button class="primary" type="button" data-bedtime-play="en" data-bedtime="${story.id}">英文讲故事</button>
       </div>
     </div>
     ${chapters}
@@ -14349,6 +14354,22 @@ function bedtimeCardHtml(story){
 }
 function bedtimeRows(story){
   return [...lookup.querySelectorAll(`[data-bedtime-id="${story.id}"]`)];
+}
+const BEDTIME_TTS_OPTIONS={
+  style:'bedtime-storyteller',
+  voice:'fable',
+  instructions:'Read in warm, expressive bedtime storyteller style for a child. Use gentle pacing, natural pauses, clear pronunciation, and a little wonder. Keep it calm, vivid, and soothing, not dramatic or scary.'
+};
+async function speakBedtimeEnglish(text,row){
+  const cleanText=String(text||'').trim();
+  if(!cleanText)return;
+  if(teacherEnabled()){
+    try{await speakTeacher(cleanText,'en',row,BEDTIME_TTS_OPTIONS);return;}
+    catch(err){
+      if(teacherStatus)teacherStatus.textContent=teacherErrorText(err,'故事人朗读失败，已改用免费英文朗读');
+    }
+  }
+  await speakFreeLang(cleanText,'en',row).catch(()=>{});
 }
 async function playBedtimeStory(story,mode,btn){
   if(!story||!Array.isArray(story.chapters)||!story.chapters.length)return;
@@ -14369,9 +14390,7 @@ async function playBedtimeStory(story,mode,btn){
         rows.forEach(row=>row.classList.remove('speaking'));
         const row=rows[rowIndex++];
         if(row){row.classList.add('speaking');row.scrollIntoView({behavior:'smooth',block:'center'});}
-        if(mode==='zh'||mode==='bilingual')await speakStoryText(line[1],'zh',row);
-        if(!seqActive)break;
-        if(mode==='en'||mode==='bilingual')await speakStoryText(line[0],'en',row);
+        await speakBedtimeEnglish(line[0],row);
         if(row)row.classList.remove('speaking');
         await new Promise(resolve=>setTimeout(resolve,320));
       }
@@ -14408,7 +14427,7 @@ function renderBedtimeStories(){
   });
   panel.querySelectorAll('.bedtime-line[data-sentence-id]').forEach(row=>{
     const item=sentenceLookup.get(row.dataset.sentenceId);
-    row.onclick=()=>playSingleRepeat(item.en,row);
+    row.onclick=()=>playSingleRepeat(item.en,row,BEDTIME_TTS_OPTIONS);
     row.querySelector('[data-status="hard"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'hard');};
     row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'mastered');};
     refreshSentenceStatus(row);

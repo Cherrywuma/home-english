@@ -1155,9 +1155,14 @@ test('includes separate bedtime encyclopedia library for children', () => {
   assert.ok(html.includes('showBedtimeLibrary'));
   assert.ok(html.includes('renderBedtimeStories'));
   assert.ok(html.includes('playBedtimeStory'));
-  assert.ok(html.includes('中文讲故事'));
-  assert.ok(html.includes('中英亲子讲'));
-  assert.ok(html.includes('英文慢慢听'));
+  assert.equal(html.includes('中文讲故事'), false);
+  assert.equal(html.includes('中英亲子讲'), false);
+  assert.equal(html.includes('英文慢慢听'), false);
+  assert.ok(html.includes('英文讲故事'));
+  assert.ok(html.includes('BEDTIME_TTS_OPTIONS'));
+  assert.ok(html.includes("voice:'fable'"));
+  assert.ok(html.includes('bedtime-storyteller'));
+  assert.ok(html.includes('Read in warm, expressive bedtime storyteller style for a child.'));
   assert.ok(html.includes('The Night Journey of a Drop of Water'));
   assert.ok(html.includes('How a Grain of Rice Arrives in a Bowl'));
   assert.ok(html.includes('The Second Life of a Cardboard Box'));
@@ -1254,6 +1259,10 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(worker.includes('OPENAI_API_KEY'));
   assert.ok(worker.includes('https://api.openai.com/v1/audio/speech'));
   assert.ok(worker.includes('gpt-4o-mini-tts'));
+  assert.ok(worker.includes('BUILT_IN_VOICES'));
+  assert.ok(worker.includes('speechPayload.instructions = instructions'));
+  assert.ok(worker.includes('body.voice'));
+  assert.ok(worker.includes('body.instructions'));
   assert.ok(worker.includes('Access-Control-Allow-Origin'));
   assert.equal(worker.includes('https://cherrywuma.github.io'), false);
   assert.ok(worker.includes("return jsonResponse({ error: 'Origin not allowed' }, 403, origin);"));
@@ -1282,7 +1291,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v109'));
+  assert.ok(worker.includes('home-english-v110'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
