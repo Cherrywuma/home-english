@@ -1325,7 +1325,33 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('This is not only English; it is a small life habit abroad.'));
   assert.ok(html.includes('Clear questions are a kind of confidence.'));
   assert.ok(html.includes('A language becomes useful when it follows you through real life.'));
-  assert.ok(html.includes("'短视频','跟进','谈价','学习方法'"));
+  assert.ok(html.includes("'短视频'"));
+  assert.ok(html.includes("'跟进'"));
+  assert.ok(html.includes("'谈价'"));
+  assert.ok(html.includes("'学习方法'"));
+  assert.ok(html.includes('Travel Is Not Only About Taking Photos'));
+  assert.ok(html.includes('A Timeline Helps History Make Sense'));
+  assert.ok(html.includes('Historical Figures Are Not Simple Labels'));
+  assert.ok(html.includes('Being Calm Does Not Mean Having No Boundaries'));
+  assert.ok(html.includes('Teach Children Trust Through Small Promises'));
+  assert.ok(html.includes('A Museum Is Not Just a Place for Old Things'));
+  assert.ok(html.includes('Long-term Work Is Not Built on Excitement Alone'));
+  assert.ok(html.includes('Cultural Confidence Is Not Loud Superiority'));
+  assert.ok(html.includes('A good trip does not only fill your album; it changes how you notice the world.'));
+  assert.ok(html.includes('Learning history is learning to see time, not just learning to remember numbers.'));
+  assert.ok(html.includes('A mature view of history leaves room for facts, context, and judgment together.'));
+  assert.ok(html.includes('Real kindness should include respect for others and respect for yourself.'));
+  assert.ok(html.includes('A reliable adult is often the first lesson in trust for a child.'));
+  assert.ok(html.includes('A museum becomes interesting when old things start to speak about real people.'));
+  assert.ok(html.includes('But small progress repeated for a long time becomes a different life.'));
+  assert.ok(html.includes('When we respect difference, our own culture becomes easier to share.'));
+  assert.ok(html.includes("'文旅'"));
+  assert.ok(html.includes("'历史'"));
+  assert.ok(html.includes("'人物'"));
+  assert.ok(html.includes("'情感'"));
+  assert.ok(html.includes("'价值观'"));
+  assert.ok(html.includes("'文化'"));
+  assert.ok(html.includes("'博物馆'"));
 });
 
 test('includes separate bedtime encyclopedia library for children', () => {
@@ -1481,7 +1507,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v120'));
+  assert.ok(worker.includes('home-english-v121'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
