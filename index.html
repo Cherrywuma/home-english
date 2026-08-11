@@ -12772,27 +12772,31 @@ async function speakStoryText(text,lang,row){
 }
 async function playStory(story,mode,btn){
   if(!story||!Array.isArray(story.lines)||!story.lines.length)return;
+  if(btn&&btn.classList.contains('playing')){stopAll();return;}
   stopAll();
   seqActive=true;
   curBtn=null;
   stopbar.classList.add('show');
   const oldText=btn?btn.textContent:'';
-  if(btn)btn.textContent='停止';
+  if(btn){btn.classList.add('playing');btn.textContent='停止';}
   const rows=[...lookup.querySelectorAll(`[data-story-id="${story.id}"]`)];
-  for(let i=0;seqActive&&i<story.lines.length;i++){
-    rows.forEach(row=>row.classList.remove('speaking'));
-    const row=rows[i];
-    if(row){row.classList.add('speaking');row.scrollIntoView({behavior:'smooth',block:'center'});}
-    if(mode==='bilingual')await speakStoryText(story.lines[i][1],'zh',row);
-    if(!seqActive)break;
-    await speakStoryText(story.lines[i][0],'en',row);
-    if(row)row.classList.remove('speaking');
-    await new Promise(resolve=>setTimeout(resolve,260));
+  while(seqActive){
+    for(let i=0;seqActive&&i<story.lines.length;i++){
+      rows.forEach(row=>row.classList.remove('speaking'));
+      const row=rows[i];
+      if(row){row.classList.add('speaking');row.scrollIntoView({behavior:'smooth',block:'center'});}
+      if(mode==='bilingual')await speakStoryText(story.lines[i][1],'zh',row);
+      if(!seqActive)break;
+      await speakStoryText(story.lines[i][0],'en',row);
+      if(row)row.classList.remove('speaking');
+      await new Promise(resolve=>setTimeout(resolve,260));
+    }
+    if(seqActive)await new Promise(resolve=>setTimeout(resolve,650));
   }
   rows.forEach(row=>row.classList.remove('speaking'));
   stopbar.classList.remove('show');
   seqActive=false;
-  if(btn)btn.textContent=oldText;
+  if(btn){btn.classList.remove('playing');btn.textContent=oldText;}
 }
 function storyCardHtml(story){
   const words=(story.words||[]).map(([en,zh])=>`<span>${en} / ${zh}</span>`).join('');
