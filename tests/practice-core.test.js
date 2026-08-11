@@ -1043,6 +1043,12 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('请病假时怕麻烦同事'));
   assert.ok(html.includes('搬到新住处的第一晚'));
   assert.ok(html.includes('别人问我中国日常生活是什么样'));
+  assert.ok(html.includes('到德国机场后跟着 Arrival 和 Baggage Claim 走'));
+  assert.ok(html.includes('入境时被问来德国做什么'));
+  assert.ok(html.includes('德国火车站看懂 Platform、Track 和 Exit'));
+  assert.ok(html.includes('在德国售票机前不知道怎么买票'));
+  assert.ok(html.includes('德国超市买水、面包和简单晚饭'));
+  assert.ok(html.includes('德国餐馆第一次点餐怕说错'));
   assert.ok(html.includes('After dinner, I looked under the table and noticed that the floor was pretty messy.'));
   assert.ok(html.includes('The point was not to force an answer, but to make the next step clear.'));
   assert.ok(html.includes('I woke up and realized that my alarm had not gone off.'));
@@ -1057,6 +1063,10 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('For a moment, I felt small, like everyone else knew what was happening except me.'));
   assert.ok(html.includes('I still missed home, but I also knew I was slowly learning how to live here.'));
   assert.ok(html.includes('I wanted him to understand the small real details, not just imagine China from news or travel videos.'));
+  assert.ok(html.includes('The signs showed Passport Control, Baggage Claim, Customs, and Exit.'));
+  assert.ok(html.includes('I kept my answer simple and said I was here for a business trip and customer training.'));
+  assert.ok(html.includes('I checked the train number first, then the departure time, and then the platform or track number.'));
+  assert.ok(html.includes('I learned that I do not need perfect English to eat out; I just need clear and polite English.'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1156,7 +1166,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v98'));
+  assert.ok(worker.includes('home-english-v99'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
