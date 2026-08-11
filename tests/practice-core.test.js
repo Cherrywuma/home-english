@@ -1124,6 +1124,19 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('Panic makes me miss details.'));
   assert.ok(html.includes('Not understanding everything is not the real problem; pretending to understand is.'));
   assert.ok(html.includes('Good records are quiet work, but they save a lot of trouble later.'));
+  assert.ok(html.includes('When Your New SIM Card Has No Signal'));
+  assert.ok(html.includes('Finding a Restroom When Payment or a Code Is Needed'));
+  assert.ok(html.includes('Picking Up a Food Order at a Counter'));
+  assert.ok(html.includes('Asking About Breakfast Ingredients at a Hotel'));
+  assert.ok(html.includes('Withdrawing Cash From an ATM Carefully'));
+  assert.ok(html.includes('When a Customer Reschedules a Meeting'));
+  assert.ok(html.includes('Finding the Right Address and Doorbell Name'));
+  assert.ok(html.includes('Checking Whether You Are in the Right Line'));
+  assert.ok(html.includes('That small signal icon felt like a little piece of freedom in a new country.'));
+  assert.ok(html.includes('A restroom question is not embarrassing; everybody needs it at some point.'));
+  assert.ok(html.includes('Breakfast abroad became easier when I stopped guessing and started asking about ingredients.'));
+  assert.ok(html.includes('A calm reply kept the relationship smooth even when the plan changed.'));
+  assert.ok(html.includes('Now I know that an address is not always enough; sometimes the doorbell name matters just as much.'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1231,7 +1244,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v105'));
+  assert.ok(worker.includes('home-english-v106'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
