@@ -1037,6 +1037,12 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('去药店描述喉咙痛'));
   assert.ok(html.includes('孩子发烧给老师发消息请假'));
   assert.ok(html.includes('客户现场看机器不急着下结论'));
+  assert.ok(html.includes('一个人去诊所时有点紧张'));
+  assert.ok(html.includes('听不懂别人说话时觉得有点委屈'));
+  assert.ok(html.includes('深夜突然想家'));
+  assert.ok(html.includes('请病假时怕麻烦同事'));
+  assert.ok(html.includes('搬到新住处的第一晚'));
+  assert.ok(html.includes('别人问我中国日常生活是什么样'));
   assert.ok(html.includes('After dinner, I looked under the table and noticed that the floor was pretty messy.'));
   assert.ok(html.includes('The point was not to force an answer, but to make the next step clear.'));
   assert.ok(html.includes('I woke up and realized that my alarm had not gone off.'));
@@ -1047,6 +1053,10 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('Lesson learned: next time I will separate white clothes from dark clothes before washing.'));
   assert.ok(html.includes('I asked how much the deposit was and whether utilities were included in the rent.'));
   assert.ok(html.includes('At the customer site, the customer took me to see the machine in the workshop.'));
+  assert.ok(html.includes('It was not only because I felt unwell, but also because I was afraid I would not understand everything.'));
+  assert.ok(html.includes('For a moment, I felt small, like everyone else knew what was happening except me.'));
+  assert.ok(html.includes('I still missed home, but I also knew I was slowly learning how to live here.'));
+  assert.ok(html.includes('I wanted him to understand the small real details, not just imagine China from news or travel videos.'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1146,7 +1156,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v97'));
+  assert.ok(worker.includes('home-english-v98'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
