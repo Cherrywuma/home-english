@@ -1025,8 +1025,18 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('下班后做辣椒炒鸡蛋'));
   assert.ok(html.includes('刚到德国第一次逛超市'));
   assert.ok(html.includes('报价后客户突然安静了'));
+  assert.ok(html.includes('早上醒来发现快迟到了'));
+  assert.ok(html.includes('洗头时发现掉发有点多'));
+  assert.ok(html.includes('厕所堵了先别继续冲水'));
+  assert.ok(html.includes('在超市想买卫生巾但不知道怎么问'));
+  assert.ok(html.includes('客户说价格高，我解释不能只比价格'));
+  assert.ok(html.includes('和邻居聊小区环境'));
   assert.ok(html.includes('After dinner, I looked under the table and noticed that the floor was pretty messy.'));
   assert.ok(html.includes('The point was not to force an answer, but to make the next step clear.'));
+  assert.ok(html.includes('I woke up and realized that my alarm had not gone off.'));
+  assert.ok(html.includes('The water level started to rise, so I stopped and did not flush again.'));
+  assert.ok(html.includes('At first, I felt a little embarrassed to ask, but then I told myself it was just a normal daily need.'));
+  assert.ok(html.includes('I wanted the customer to feel that I was helping him compare properly, not just defending my price.'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1126,7 +1136,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v95'));
+  assert.ok(worker.includes('home-english-v96'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
