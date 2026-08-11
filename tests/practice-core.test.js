@@ -1097,6 +1097,20 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('I did not over-explain; I just answered the questions clearly.'));
   assert.ok(html.includes('It was a tiny shopping detail, but it helped me feel less like a visitor and more like someone living there.'));
   assert.ok(html.includes('I did not jump into a long sales pitch right away.'));
+  assert.ok(html.includes('Leaving Luggage at the Hotel After Checkout'));
+  assert.ok(html.includes('Asking for Help After Missing a Train Connection'));
+  assert.ok(html.includes('When Nearby Shops Are Closed and You Need a Backup Plan'));
+  assert.ok(html.includes('Asking How Trash Sorting Works at a New Place'));
+  assert.ok(html.includes('Asking About Heating and Windows in a German Room'));
+  assert.ok(html.includes('Sending a Parcel or Returning an Online Order'));
+  assert.ok(html.includes('Trying to Book a Doctor Appointment When You Feel Unwell'));
+  assert.ok(html.includes('Making Natural Small Talk at a Customer Dinner'));
+  assert.ok(html.includes('Following Up on WhatsApp After a Customer Meeting'));
+  assert.ok(html.includes('That simple question saved me from worrying about my suitcase all afternoon.'));
+  assert.ok(html.includes('Once I had the train number and platform, I felt less helpless.'));
+  assert.ok(html.includes('Living abroad is full of small buttons and habits that nobody explains unless you ask.'));
+  assert.ok(html.includes('I did not diagnose myself; I just learned how to ask for help clearly.'));
+  assert.ok(html.includes('A good follow-up should help the customer remember the conversation, not feel chased.'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1204,7 +1218,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v103'));
+  assert.ok(worker.includes('home-english-v104'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
