@@ -1309,6 +1309,23 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('A polite sentence does not guarantee the problem disappears, but it gives peace a chance.'));
   assert.ok(html.includes('Learning a language becomes easier when daily life itself becomes the textbook.'));
   assert.ok(html.includes("'停车','发票','邻居','复盘'"));
+  assert.ok(html.includes('When a Customer Goes Silent After a Quote'));
+  assert.ok(html.includes('When the Customer Says the Price Is Too High'));
+  assert.ok(html.includes('At a Pharmacy, Describe Symptoms Before Guessing the Illness'));
+  assert.ok(html.includes('At the Airport, Watch Three Words First'));
+  assert.ok(html.includes('Why the Invoice Name Must Be Exactly Right'));
+  assert.ok(html.includes('In Germany, Do Not Wait Until Sunday to Buy Essentials'));
+  assert.ok(html.includes('A Clear Question Saves Time When You Do Not Understand'));
+  assert.ok(html.includes('Do Not Only Memorize English; Review Real Life'));
+  assert.ok(html.includes('Good follow-up is not chasing; it is helping the next step become clear.'));
+  assert.ok(html.includes('A professional price discussion should explain the reason behind the number.'));
+  assert.ok(html.includes('In health situations, simple truth is better than confident guessing.'));
+  assert.ok(html.includes('Airport English is not about beautiful sentences; it is about finding the next correct step.'));
+  assert.ok(html.includes('In business, careful documents often save more time than fast replies.'));
+  assert.ok(html.includes('This is not only English; it is a small life habit abroad.'));
+  assert.ok(html.includes('Clear questions are a kind of confidence.'));
+  assert.ok(html.includes('A language becomes useful when it follows you through real life.'));
+  assert.ok(html.includes("'短视频','跟进','谈价','学习方法'"));
 });
 
 test('includes separate bedtime encyclopedia library for children', () => {
@@ -1464,7 +1481,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v119'));
+  assert.ok(worker.includes('home-english-v120'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
