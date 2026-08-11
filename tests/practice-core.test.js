@@ -1360,6 +1360,22 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('After a short call home, I can usually go back to the new day in front of me.'));
   assert.ok(html.includes('I am still learning this one. Saying no early is kinder than saying yes and disappearing later.'));
   assert.ok(html.includes('These days I care more about being understood than sounding like someone from a movie.'));
+  assert.ok(html.includes('Check the Platform Again Before Taking a Train in Germany'));
+  assert.ok(html.includes('Do Not Forget the Bottle Deposit in Germany'));
+  assert.ok(html.includes('Ask the Breakfast Time Clearly at a Hotel'));
+  assert.ok(html.includes('Following Up After a Quote Without Sounding Pushy'));
+  assert.ok(html.includes('What to Say After You Spoke Too Harshly'));
+  assert.ok(html.includes('The Silk Road Was Not One Straight Road'));
+  assert.ok(html.includes('How to Describe a Nice Neighborhood Without Only Saying Beautiful'));
+  assert.ok(html.includes('When a Child Keeps Asking Why Before Bed'));
+  assert.ok(html.includes('Missing one sign can cost more energy than asking one simple question.'));
+  assert.ok(html.includes('After a few times, it becomes just another small habit of shopping there.'));
+  assert.ok(html.includes('A clear question at the front desk can save a hungry walk in the hallway later.'));
+  assert.ok(html.includes('If the customer still does not reply, I may ask one lighter question later: should I keep this on my follow-up list?'));
+  assert.ok(html.includes('Usually the conversation becomes softer after one honest sentence.'));
+  assert.ok(html.includes('That rough part makes the history easier for me to believe.'));
+  assert.ok(html.includes('Another sentence is: the buildings are not new, but the area is well kept.'));
+  assert.ok(html.includes('This keeps the door open without turning bedtime into a two-hour meeting.'));
   assert.ok(html.includes("'文旅'"));
   assert.ok(html.includes("'历史'"));
   assert.ok(html.includes("'人物'"));
@@ -1522,7 +1538,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v122'));
+  assert.ok(worker.includes('home-english-v123'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
