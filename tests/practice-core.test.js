@@ -1179,7 +1179,15 @@ test('includes separate bedtime encyclopedia library for children', () => {
   assert.ok(html.includes('A good map does not finish your thinking; it wakes it up.'));
   assert.ok(html.includes('There may be whole little worlds under places we usually ignore.'));
   assert.ok(html.includes('Maybe a road stays alive whenever people are willing to meet, listen, and learn.'));
-  assert.ok(html.includes("['自然','生活百科','人文','历史','地理','生物','长城','地图','蚂蚁','丝绸之路']"));
+  assert.ok(html.includes('The Little Boats Inside Our Blood'));
+  assert.ok(html.includes('Why the Moon Seems to Follow Me'));
+  assert.ok(html.includes('The Invisible Passages Under a City'));
+  assert.ok(html.includes('A Letter Left by a Dinosaur Footprint'));
+  assert.ok(html.includes('Sometimes the most important work is the quiet work we cannot see.'));
+  assert.ok(html.includes('a good question can be like a small lamp in your mind.'));
+  assert.ok(html.includes('A city is also the careful work underneath, helping everyone live above.'));
+  assert.ok(html.includes('The dinosaur was gone, but one footprint still said, I was here.'));
+  assert.ok(html.includes("['自然','生活百科','人文','历史','地理','生物','身体','天文','城市','远古生物','长城','地图','蚂蚁','月亮','恐龙']"));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1291,7 +1299,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v110'));
+  assert.ok(worker.includes('home-english-v111'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
