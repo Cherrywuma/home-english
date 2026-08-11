@@ -1067,6 +1067,18 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('I kept my answer simple and said I was here for a business trip and customer training.'));
   assert.ok(html.includes('I checked the train number first, then the departure time, and then the platform or track number.'));
   assert.ok(html.includes('I learned that I do not need perfect English to eat out; I just need clear and polite English.'));
+  assert.ok(html.includes('Buying a SIM Card and Checking Mobile Data'));
+  assert.ok(html.includes('When the Hotel Wi-Fi Does Not Work'));
+  assert.ok(html.includes('When the Train Is Delayed and the Platform Changes'));
+  assert.ok(html.includes('Returning Deposit Bottles at the Supermarket'));
+  assert.ok(html.includes('Asking About House Rules in a Temporary Stay'));
+  assert.ok(html.includes('Finding a Seat and Power Outlet in a Cafe'));
+  assert.ok(html.includes('I mainly needed mobile data for maps, messages, and translation.'));
+  assert.ok(html.includes('I went down to the front desk and explained that the Wi-Fi was not connecting in my room.'));
+  assert.ok(html.includes('People around me started moving, so I knew something had changed.'));
+  assert.ok(html.includes('It felt like a tiny local habit, but learning it made daily life feel more normal.'));
+  assert.ok(html.includes('Before visiting a customer in Germany, I did not want to rely only on the address in the email.'));
+  assert.ok(html.includes('A small quiet corner can make a busy day feel much easier.'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1166,7 +1178,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v99'));
+  assert.ok(worker.includes('home-english-v100'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
