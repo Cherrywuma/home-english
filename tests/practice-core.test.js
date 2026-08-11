@@ -1376,6 +1376,22 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('That rough part makes the history easier for me to believe.'));
   assert.ok(html.includes('Another sentence is: the buildings are not new, but the area is well kept.'));
   assert.ok(html.includes('This keeps the door open without turning bedtime into a two-hour meeting.'));
+  assert.ok(html.includes('Bring a Shopping Bag Before Going to the Supermarket'));
+  assert.ok(html.includes('What to Say at Airport Security'));
+  assert.ok(html.includes('Finding the Restroom When the Sign Does Not Say Bathroom'));
+  assert.ok(html.includes('Still Water or Sparkling Water at a Restaurant'));
+  assert.ok(html.includes('Describe Stomach Pain Clearly Before Guessing the Illness'));
+  assert.ok(html.includes('How to Ask for Leave in Simple English'));
+  assert.ok(html.includes('How to Say You Are Losing a Lot of Hair'));
+  assert.ok(html.includes('Squat Toilet and Sitting Toilet'));
+  assert.ok(html.includes('The hardest part is often not English. It is staying calm while people are waiting behind you.'));
+  assert.ok(html.includes('A short question is better than opening the wrong bag three times.'));
+  assert.ok(html.includes('When you really need the toilet, one clear sentence is enough.'));
+  assert.ok(html.includes('These sentences are simple, but they keep the meal from turning into guessing.'));
+  assert.ok(html.includes('A better sentence is: I have stomach pain, and it started this morning.'));
+  assert.ok(html.includes('For personal leave, I can say: I need to take a day off for a personal matter.'));
+  assert.ok(html.includes('One day I looked at the shower drain and felt scared by how much hair was there.'));
+  assert.ok(html.includes('These are not words for exams. They are words for awkward moments.'));
   assert.ok(html.includes("'文旅'"));
   assert.ok(html.includes("'历史'"));
   assert.ok(html.includes("'人物'"));
@@ -1538,7 +1554,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v123'));
+  assert.ok(worker.includes('home-english-v124'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
