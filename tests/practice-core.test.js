@@ -1031,12 +1031,22 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('在超市想买卫生巾但不知道怎么问'));
   assert.ok(html.includes('客户说价格高，我解释不能只比价格'));
   assert.ok(html.includes('和邻居聊小区环境'));
+  assert.ok(html.includes('出门倒垃圾忘带钥匙'));
+  assert.ok(html.includes('洗衣服时白衣服被染色了'));
+  assert.ok(html.includes('第一次看房问清楚租房细节'));
+  assert.ok(html.includes('去药店描述喉咙痛'));
+  assert.ok(html.includes('孩子发烧给老师发消息请假'));
+  assert.ok(html.includes('客户现场看机器不急着下结论'));
   assert.ok(html.includes('After dinner, I looked under the table and noticed that the floor was pretty messy.'));
   assert.ok(html.includes('The point was not to force an answer, but to make the next step clear.'));
   assert.ok(html.includes('I woke up and realized that my alarm had not gone off.'));
   assert.ok(html.includes('The water level started to rise, so I stopped and did not flush again.'));
   assert.ok(html.includes('At first, I felt a little embarrassed to ask, but then I told myself it was just a normal daily need.'));
   assert.ok(html.includes('I wanted the customer to feel that I was helping him compare properly, not just defending my price.'));
+  assert.ok(html.includes('The moment the door closed behind me, I realized I had made a mistake.'));
+  assert.ok(html.includes('Lesson learned: next time I will separate white clothes from dark clothes before washing.'));
+  assert.ok(html.includes('I asked how much the deposit was and whether utilities were included in the rent.'));
+  assert.ok(html.includes('At the customer site, the customer took me to see the machine in the workshop.'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1136,7 +1146,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v96'));
+  assert.ok(worker.includes('home-english-v97'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
