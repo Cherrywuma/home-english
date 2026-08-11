@@ -1012,6 +1012,23 @@ test('includes practical first-week abroad living sentence frames', () => {
   assert.ok(html.includes('How do I use this washing machine? The buttons are different from the ones at home.'));
 });
 
+test('includes story speaking library for narrative practice', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('id="storyBtn"'));
+  assert.ok(html.includes('data-dash-action="stories"'));
+  assert.ok(html.includes('const STORY_LIBRARY'));
+  assert.ok(html.includes('showStoryLibrary'));
+  assert.ok(html.includes('英文口播'));
+  assert.ok(html.includes('中英跟读'));
+  assert.ok(html.includes('晚饭后扫餐桌下面'));
+  assert.ok(html.includes('下班后做辣椒炒鸡蛋'));
+  assert.ok(html.includes('刚到德国第一次逛超市'));
+  assert.ok(html.includes('报价后客户突然安静了'));
+  assert.ok(html.includes('After dinner, I looked under the table and noticed that the floor was pretty messy.'));
+  assert.ok(html.includes('The point was not to force an answer, but to make the next step clear.'));
+});
+
 test('page stays usable without external font cdn links', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
@@ -1109,7 +1126,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v94'));
+  assert.ok(worker.includes('home-english-v95'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

@@ -244,9 +244,9 @@
 
   /* 查词 */
   .lookupbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;}
-  #lookupBtn,#randomSceneBtn,#randomWordBtn,#idiomBtn{flex:0 0 auto;font-family:var(--body);font-size:.84rem;font-weight:600;color:var(--accent);
+  #lookupBtn,#randomSceneBtn,#randomWordBtn,#idiomBtn,#storyBtn{flex:0 0 auto;font-family:var(--body);font-size:.84rem;font-weight:600;color:var(--accent);
     background:var(--accent-soft);border:1px solid #CFE6DC;border-radius:999px;padding:8px 14px;cursor:pointer;}
-  #lookupBtn:active,#randomSceneBtn:active,#randomWordBtn:active,#idiomBtn:active{transform:scale(.97);}
+  #lookupBtn:active,#randomSceneBtn:active,#randomWordBtn:active,#idiomBtn:active,#storyBtn:active{transform:scale(.97);}
   .lk-hint{font-size:.76rem;color:var(--muted);}
   .lookup{display:none;margin-top:10px;}
   .lk-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;box-shadow:var(--shadow);}
@@ -285,6 +285,32 @@
   .idiom-zh{font-size:.9rem;color:var(--muted);margin-top:2px;}
   .idiom-use{font-size:.78rem;color:#8F7F6A;background:#FFF8E8;border:1px solid #ECD8A6;border-radius:9px;padding:7px 8px;margin-top:7px;line-height:1.45;}
   .idiom-empty{padding:18px;color:var(--muted);font-size:.88rem;}
+  .story-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:13px;}
+  .story-card{border:1px solid var(--line);border-radius:14px;background:#FFFDF8;overflow:hidden;}
+  .story-top{padding:14px 15px;border-bottom:1px solid var(--line);background:#FCFAF6;}
+  .story-top h3{font-size:1.08rem;line-height:1.25;}
+  .story-top h3 span{display:block;color:var(--muted);font-size:.8rem;font-weight:700;margin-top:2px;}
+  .story-scene{font-size:.86rem;color:var(--muted);line-height:1.55;margin-top:8px;}
+  .story-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px;}
+  .story-actions button{
+    font-family:var(--body);font-size:.78rem;font-weight:800;border:none;border-radius:999px;
+    padding:8px 12px;cursor:pointer;background:var(--accent-soft);color:var(--accent);
+  }
+  .story-actions button.primary{background:var(--accent);color:#fff;}
+  .story-actions button:active{transform:scale(.97);}
+  .story-lines{border-top:1px solid var(--line);}
+  .story-row{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;}
+  .story-row:last-child{border-bottom:none;}
+  .story-row.hard{background:#FFF9F1;}
+  .story-row.mastered{opacity:.68;}
+  .story-row .spk{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;}
+  .story-row .spk svg{width:15px;height:15px;fill:var(--accent);}
+  .story-row.speaking .spk{background:var(--accent);}
+  .story-row.speaking .spk svg{fill:#fff;}
+  .story-en{font-size:1rem;font-weight:850;line-height:1.42;}
+  .story-zh{font-size:.88rem;color:var(--muted);line-height:1.45;margin-top:3px;}
+  .story-bank{display:flex;flex-wrap:wrap;gap:8px;padding:12px 14px;background:#FFF8E8;border-top:1px solid #ECD8A6;}
+  .story-bank span{border:1px solid #E8D29A;border-radius:999px;padding:6px 10px;font-size:.78rem;font-weight:750;color:#6C4A12;background:#fff;}
   .row .del{flex:0 0 auto;align-self:center;border:none;background:none;color:#C4BBAE;font-size:1rem;cursor:pointer;padding:4px 6px;}
   .row .del:active{color:#B0573A;}
 
@@ -505,6 +531,7 @@ if(location.hostname==='cherrywuma.github.io'){
       <button id="randomSceneBtn" type="button">🧭 场景训练</button>
       <button id="randomWordBtn" type="button">🎯 随机单词</button>
       <button id="idiomBtn" type="button">🗣️ 地道说法</button>
+      <button id="storyBtn" type="button">🎙️ 故事口播</button>
       <span class="lk-hint">本地没有的词点这里查，中↔英都行（如「粽子」）</span>
     </div>
     <div id="lookup" class="lookup"></div>
@@ -546,6 +573,10 @@ if(location.hostname==='cherrywuma.github.io'){
       <button class="dash-action" type="button" data-dash-action="idioms">
         <strong>地道说法</strong>
         <span>同一个中文意思，按不同场合换自然说法。</span>
+      </button>
+      <button class="dash-action" type="button" data-dash-action="stories">
+        <strong>故事口播</strong>
+        <span>一小段真实场景，有人物、有问题、有动作，练连续表达。</span>
       </button>
       <button class="dash-action" type="button" data-dash-action="library">
         <strong>全部内容</strong>
@@ -8776,6 +8807,142 @@ const DATA = [
   },
 ];
 
+const STORY_LIBRARY = [
+  {
+    id:"sweeping-after-dinner",
+    category:"生活",
+    title:"晚饭后扫餐桌下面",
+    enTitle:"Sweeping Under the Table After Dinner",
+    scene:"晚饭后发现餐桌下面有面包屑和食物碎渣。这个口播练的是：发现问题、拿工具、按顺序清理、最后归位。",
+    words:[
+      ["crumbs","面包屑；碎屑"],
+      ["dustpan","簸箕"],
+      ["sweep into a pile","扫成一小堆"],
+      ["trash can","垃圾桶"],
+      ["put back","放回原处"]
+    ],
+    lines:[
+      ["After dinner, I looked under the table and noticed that the floor was pretty messy.","晚饭后，我看了一下餐桌下面，发现地面挺脏的。"],
+      ["There were some bread crumbs, a few small pieces of food, and a little dust near the chair legs.","椅子腿旁边有一些面包屑、几小块食物碎渣，还有一点灰。"],
+      ["I moved the chairs back first, because it is hard to clean when everything is in the way.","我先把椅子往后挪开，因为东西挡着的时候不好打扫。"],
+      ["Then I got the broom and the dustpan from behind the door.","然后我从门后拿了扫帚和簸箕。"],
+      ["I did not sweep too fast. I slowly pushed all the crumbs into one small pile.","我没有扫得很快，而是慢慢把碎屑都扫成一小堆。"],
+      ["After that, I held the dustpan close to the floor and swept the pile into it.","接着我把簸箕贴近地面，把那一小堆垃圾扫进去。"],
+      ["I dumped everything into the trash can and checked the floor one more time.","我把垃圾倒进垃圾桶，又检查了一遍地面。"],
+      ["Finally, I put the broom and dustpan back where they belong, and the dining area looked much cleaner.","最后我把扫帚和簸箕放回原位，餐桌这一块看起来干净多了。"]
+    ],
+    patterns:["I noticed that ...","I did not ..., I slowly ...","Finally, I put ... back where they belong."]
+  },
+  {
+    id:"pepper-eggs-weeknight",
+    category:"厨房",
+    title:"下班后做辣椒炒鸡蛋",
+    enTitle:"Cooking Peppers and Eggs After Work",
+    scene:"下班回家想简单做饭，从冰箱拿辣椒、处理菜、打鸡蛋、热锅、炒菜。这个口播练的是厨房动作连续表达。",
+    words:[
+      ["take out","拿出来"],
+      ["rinse","冲洗"],
+      ["remove the seeds","去籽"],
+      ["cut into strips","切成条"],
+      ["stir the eggs","搅鸡蛋"],
+      ["heat the oil","把油烧热"]
+    ],
+    lines:[
+      ["I came home after work and wanted to make something simple but warm.","我下班回家后，想做点简单但热乎的东西。"],
+      ["I opened the fridge and took out two peppers and a few eggs.","我打开冰箱，拿出两个辣椒和几个鸡蛋。"],
+      ["The peppers looked fine, but I still rinsed them carefully under running water.","辣椒看起来还可以，但我还是在水龙头下认真冲洗了一下。"],
+      ["Then I cut them open, removed the seeds, and sliced them into thin strips.","然后我把辣椒切开，去掉籽，再切成细条。"],
+      ["I put the cutting board flat on the counter so it would not move while I was cutting.","我把砧板平放在台面上，这样切菜的时候不会滑动。"],
+      ["After that, I cracked the eggs into a bowl and stirred them until the color looked even.","接着我把鸡蛋打进碗里，一直搅到颜色均匀。"],
+      ["I heated the pan, added a little oil, and poured in the eggs first.","我把锅烧热，加了一点油，先把鸡蛋液倒进去。"],
+      ["When the eggs were almost set, I added the peppers, stirred everything together, and cooked it for a little longer.","鸡蛋快凝固的时候，我加入辣椒，把它们一起翻炒，又多炒了一会儿。"],
+      ["At the end, I added a little salt, turned off the heat, and put the dish on a plate.","最后我加了一点盐，关火，把菜盛到盘子里。"]
+    ],
+    patterns:["I wanted to make something simple but ...","Then I ..., removed ..., and sliced ...","At the end, I ..., turned off ..., and ..."]
+  },
+  {
+    id:"first-supermarket-germany",
+    category:"出国",
+    title:"刚到德国第一次逛超市",
+    enTitle:"My First Supermarket Run in Germany",
+    scene:"刚到德国，去超市买基础生活用品。看不懂货架、不会称重、自助结账有点慌，但慢慢问清楚。",
+    words:[
+      ["shopping basket","购物篮"],
+      ["aisle","货架通道"],
+      ["weigh","称重"],
+      ["self-checkout","自助结账"],
+      ["receipt","小票"],
+      ["basic supplies","基础生活用品"]
+    ],
+    lines:[
+      ["On my first day in Germany, I went to a nearby supermarket to buy some basic supplies.","到德国第一天，我去了附近一家超市买基础生活用品。"],
+      ["I only took a shopping basket because I did not want to buy too much at once.","我只拿了一个购物篮，因为不想一次买太多。"],
+      ["At first, I walked around slowly and tried to understand where everything was.","一开始我慢慢逛，想先弄清楚东西都放在哪里。"],
+      ["I found water and bread easily, but I had trouble finding rice and simple ready meals.","水和面包很容易找到，但米和简单的即食餐我找了半天。"],
+      ["When I picked up some vegetables, I was not sure whether I needed to weigh them first.","我拿了些蔬菜以后，不确定是不是要先称重。"],
+      ["So I asked a staff member, and she pointed me to the small weighing scale nearby.","所以我问了工作人员，她指给我看旁边的小称。"],
+      ["At the self-checkout, the screen asked me something I did not fully understand.","到自助结账时，屏幕上弹出一个我没完全看懂的选项。"],
+      ["I asked for help again, paid for the groceries, took the receipt, and felt a little more confident.","我又请人帮忙，付了钱，拿了小票，心里踏实了一点。"],
+      ["It was not a big trip, but it made my first evening abroad much easier.","这次买得不多，但让我在国外的第一个晚上轻松了很多。"]
+    ],
+    patterns:["At first, I ... and tried to ...","I was not sure whether ...","It was not ..., but it made ... easier."]
+  },
+  {
+    id:"hotel-room-smoke-noise",
+    category:"旅行",
+    title:"酒店房间有烟味还很吵",
+    enTitle:"A Smoky and Noisy Hotel Room",
+    scene:"入住后发现房间有烟味，走廊也吵。这个口播练的是：礼貌说明问题、提出需求、请求换房。",
+    words:[
+      ["front desk","前台"],
+      ["smoke smell","烟味"],
+      ["hallway","走廊"],
+      ["room change","换房"],
+      ["non-smoking room","无烟房"],
+      ["sort this out","处理好这个问题"]
+    ],
+    lines:[
+      ["After I checked into the hotel, I went upstairs and opened the door to my room.","我在酒店办完入住后，上楼打开了房门。"],
+      ["The room looked clean, but there was a strong smoke smell inside.","房间看起来挺干净，但里面有很明显的烟味。"],
+      ["I waited for a few minutes and opened the window, but the smell did not go away.","我等了几分钟，也打开窗户通风，但味道没有散掉。"],
+      ["Then I heard people talking loudly in the hallway, and the room started to feel uncomfortable.","后来我又听到走廊里有人大声说话，房间让我感觉不太舒服。"],
+      ["I called the front desk and explained the problem as calmly as I could.","我给前台打电话，尽量平静地说明了这个问题。"],
+      ["I said that I did not need a better room; I just needed a quiet non-smoking room.","我说我不需要更好的房间，只需要一间安静的无烟房。"],
+      ["The staff checked the system and told me they could arrange a room change.","工作人员查了系统，告诉我可以帮我换房。"],
+      ["I packed my things again, went downstairs for a new room key, and thanked them for helping me sort it out.","我重新收拾东西，下楼拿了新房卡，并感谢他们帮我处理这个问题。"],
+      ["The second room was much better, so I finally took a shower and got some rest.","第二个房间好多了，所以我终于洗了个澡，休息了一下。"]
+    ],
+    patterns:["The room looked ..., but there was ...","I said that I did not need ...; I just needed ...","The second ... was much better, so ..."]
+  },
+  {
+    id:"customer-quiet-after-quote-story",
+    category:"工作",
+    title:"报价后客户突然安静了",
+    enTitle:"The Customer Went Quiet After the Quote",
+    scene:"客户之前问得很细，拿到报价后不回复。这个口播练的是：不抱怨、不硬催，体面跟进并给客户台阶。",
+    words:[
+      ["follow up","跟进"],
+      ["quotation","报价"],
+      ["went quiet","突然安静；不回复了"],
+      ["internal discussion","内部讨论"],
+      ["still active","还在继续"],
+      ["next step","下一步"]
+    ],
+    lines:[
+      ["Last week, a customer asked many detailed questions about one project.","上周，一个客户针对一个项目问了很多细节问题。"],
+      ["He wanted photos, basic drawings, and a clear quotation, so I prepared everything carefully.","他要照片、基础图纸和清楚的报价，所以我认真把资料都准备好了。"],
+      ["After I sent the quotation, the conversation suddenly went quiet.","我把报价发过去以后，对话突然安静了。"],
+      ["At first, I felt a little worried, but I did not want to push him too hard.","一开始我有点担心，但我不想太用力地催他。"],
+      ["So I waited one day and then sent a short follow-up message on WhatsApp.","所以我等了一天，然后在 WhatsApp 上发了一条简短跟进消息。"],
+      ["I said, no pressure, I just wanted to check whether the project was still active.","我说没有催你的意思，只是想确认这个项目是否还在继续。"],
+      ["I also told him that if his team needed more time for internal discussion, I could wait.","我也告诉他，如果他们团队还需要时间内部讨论，我可以等。"],
+      ["The point was not to force an answer, but to make the next step clear.","重点不是逼客户马上答复，而是把下一步弄清楚。"],
+      ["Even if he does not order now, I still want him to feel that I am helpful and easy to talk to.","就算他现在不下单，我也希望他觉得我这个人靠谱、好沟通。"]
+    ],
+    patterns:["After I sent ..., the conversation ...","The point was not to ..., but to ...","Even if ..., I still want ..."]
+  }
+];
+
 const IDIOM_LIBRARY = [
   {
     topic:"臭 / 难闻", en:"Smell Bad", color:"#8A6A3D",
@@ -9766,6 +9933,12 @@ IDIOM_LIBRARY.forEach(group=>{
     sentenceLookup.set(id,{id,en:entry.en,zh:entry.zh,catName:'地道说法',subName:group.topic});
   });
 });
+STORY_LIBRARY.forEach(story=>{
+  story.lines.forEach((line,index)=>{
+    const id=`story-${story.id}-${index}`;
+    sentenceLookup.set(id,{id,en:line[0],zh:line[1],catName:'故事口播',subName:story.title});
+  });
+});
 
 function readIdList(key){
   try{return JSON.parse(localStorage.getItem(key)||'[]');}catch(e){return [];}
@@ -10093,6 +10266,7 @@ function bindDashboard(){
       }
       if(action==='scenes'){showSceneTrainingPanel();return;}
       if(action==='idioms'){showIdiomLibrary();return;}
+      if(action==='stories'){showStoryLibrary();return;}
       if(action==='library'){filterCat(null);return;}
       if(action==='searchFocus'){q.focus();return;}
       if(action==='voiceSettings'){
@@ -10917,6 +11091,7 @@ const lookupBtn=document.getElementById('lookupBtn');
 const randomSceneBtn=document.getElementById('randomSceneBtn');
 const randomWordBtn=document.getElementById('randomWordBtn');
 const idiomBtn=document.getElementById('idiomBtn');
+const storyBtn=document.getElementById('storyBtn');
 
 function showLocalDictionary(words,term){
   const word=dictCore.findDictionaryEntry(words,term);
@@ -11082,6 +11257,129 @@ function renderIdiomEntries(){
   });
 }
 
+function storyCategories(){
+  return ['全部',...[...new Set(STORY_LIBRARY.map(story=>story.category).filter(Boolean))]];
+}
+function storyMatches(story,query,category){
+  const qText=String(query||'').trim().toLowerCase();
+  if(category&&category!=='全部'&&story.category!==category)return false;
+  if(!qText)return true;
+  return [story.title,story.enTitle,story.scene,story.category]
+    .concat(story.lines.flat())
+    .concat((story.words||[]).flat())
+    .concat(story.patterns||[])
+    .some(value=>String(value||'').toLowerCase().includes(qText));
+}
+async function speakStoryText(text,lang,row){
+  const cleanText=String(text||'').trim();
+  if(!cleanText)return;
+  if(lang==='en'&&teacherEnabled()){
+    try{await speakTeacher(cleanText,'en',row);return;}
+    catch(err){
+      if(teacherStatus)teacherStatus.textContent=teacherErrorText(err,'老师级朗读失败，已改用免费朗读');
+    }
+  }
+  await speakFreeLang(cleanText,lang,row).catch(()=>{});
+}
+async function playStory(story,mode,btn){
+  if(!story||!Array.isArray(story.lines)||!story.lines.length)return;
+  stopAll();
+  seqActive=true;
+  curBtn=null;
+  stopbar.classList.add('show');
+  const oldText=btn?btn.textContent:'';
+  if(btn)btn.textContent='停止';
+  const rows=[...lookup.querySelectorAll(`[data-story-id="${story.id}"]`)];
+  for(let i=0;seqActive&&i<story.lines.length;i++){
+    rows.forEach(row=>row.classList.remove('speaking'));
+    const row=rows[i];
+    if(row){row.classList.add('speaking');row.scrollIntoView({behavior:'smooth',block:'center'});}
+    if(mode==='bilingual')await speakStoryText(story.lines[i][1],'zh',row);
+    if(!seqActive)break;
+    await speakStoryText(story.lines[i][0],'en',row);
+    if(row)row.classList.remove('speaking');
+    await new Promise(resolve=>setTimeout(resolve,260));
+  }
+  rows.forEach(row=>row.classList.remove('speaking'));
+  stopbar.classList.remove('show');
+  seqActive=false;
+  if(btn)btn.textContent=oldText;
+}
+function storyCardHtml(story){
+  const words=(story.words||[]).map(([en,zh])=>`<span>${en} / ${zh}</span>`).join('');
+  const patterns=(story.patterns||[]).map(text=>`<span>${text}</span>`).join('');
+  const lines=story.lines.map((line,index)=>{
+    const id=`story-${story.id}-${index}`;
+    return `<div class="story-row row" data-story-id="${story.id}" data-sentence-id="${id}">
+      <div class="spk">${SPK_SVG}</div>
+      <div class="txt">
+        <div class="story-en en">${line[0]}</div>
+        <div class="story-zh zh">${line[1]}</div>
+        <div class="statusbar">
+          <button class="statusbtn" data-status="hard" type="button">不熟</button>
+          <button class="statusbtn" data-status="mastered" type="button">会了</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  return `<article class="story-card" data-story-card="${story.id}">
+    <div class="story-top">
+      <h3>${story.title}<span>${story.enTitle} · ${story.category}</span></h3>
+      <div class="story-scene">${story.scene}</div>
+      <div class="story-actions">
+        <button class="primary" type="button" data-story-play="en" data-story="${story.id}">英文口播</button>
+        <button type="button" data-story-play="bilingual" data-story="${story.id}">中英跟读</button>
+      </div>
+    </div>
+    <div class="story-bank">${words}</div>
+    <div class="story-bank">${patterns}</div>
+    <div class="story-lines">${lines}</div>
+  </article>`;
+}
+function renderStoryCards(){
+  const panel=lookup.querySelector('#storyPanel');
+  if(!panel)return;
+  const search=lookup.querySelector('#storySearch');
+  const category=lookup.querySelector('#storyCategory');
+  const qText=search?search.value:'';
+  const catValue=category?category.value:'全部';
+  const stories=STORY_LIBRARY.filter(story=>storyMatches(story,qText,catValue));
+  panel.innerHTML=stories.length
+    ? `<div class="story-grid">${stories.map(storyCardHtml).join('')}</div>`
+    : '<div class="idiom-list"><div class="idiom-empty">这一组没搜到，换个生活动作或场景词试试。</div></div>';
+  panel.querySelectorAll('[data-story-play]').forEach(btn=>{
+    btn.onclick=()=>playStory(STORY_LIBRARY.find(story=>story.id===btn.dataset.story),btn.dataset.storyPlay,btn);
+  });
+  panel.querySelectorAll('.story-row[data-sentence-id]').forEach(row=>{
+    const item=sentenceLookup.get(row.dataset.sentenceId);
+    row.onclick=()=>{stopAll();speakOne(item.en,row);};
+    row.querySelector('[data-status="hard"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'hard');};
+    row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'mastered');};
+    refreshSentenceStatus(row);
+  });
+}
+function showStoryLibrary(){
+  stopAll();
+  lookup.style.display='block';
+  const categories=storyCategories();
+  lookup.innerHTML=`<div class="lk-card">
+    <div class="lk-en">故事口播</div>
+    <div class="lk-zh">不是把旧句子拼长，而是一个真实小场景：起因、动作、处理、收尾。英文按钮只读英文；中英跟读会先中文再英文。</div>
+    <div class="idiom-tools">
+      <input id="storySearch" type="search" placeholder="搜故事、动作、词汇，例如：扫地、德国、酒店、报价">
+      <select id="storyCategory" aria-label="故事口播分类">
+        ${categories.map(item=>`<option value="${item}">${item}</option>`).join('')}
+      </select>
+    </div>
+    <div class="lk-note">当前 ${STORY_LIBRARY.length} 段。每个分句都可以单独朗读，也可以点“不熟”放进不会专练。</div>
+    <div id="storyPanel"></div>
+  </div>`;
+  lookup.querySelector('#storySearch').oninput=renderStoryCards;
+  lookup.querySelector('#storyCategory').onchange=renderStoryCards;
+  renderStoryCards();
+  window.scrollTo({top:lookup.offsetTop-12,behavior:'smooth'});
+}
+
 function showIdiomLibrary(topicIndex,preserveCategory){
   if(Number.isFinite(topicIndex))currentIdiomTopic=topicIndex;
   if(Number.isFinite(topicIndex)&&!preserveCategory)currentIdiomCategory=idiomCategoryIdForGroup(IDIOM_LIBRARY[currentIdiomTopic]||IDIOM_LIBRARY[0]);
@@ -11161,6 +11459,7 @@ lookupBtn.onclick=translate;
 randomSceneBtn.onclick=showSceneTrainingPanel;
 randomWordBtn.onclick=showRandomWord;
 idiomBtn.onclick=showIdiomLibrary;
+storyBtn.onclick=showStoryLibrary;
 q.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();translate();}});
 
 /* ---------- 分类筛选 ---------- */
@@ -11208,7 +11507,7 @@ renderEarDrawer();
 refreshAllSentenceStatus();
 bindDashboard();
 updateDashboard();
-window.HomeEnglishApp = {DATA, content, chipsBox, chip, stopAll, speakOne, makeUtter, getHardIds, getMasteredIds, setSentenceStatus, refreshAllSentenceStatus, enterListMode, showHomeDashboard, updateDashboard, openEarDrawer};
+window.HomeEnglishApp = {DATA, STORY_LIBRARY, content, chipsBox, chip, stopAll, speakOne, makeUtter, getHardIds, getMasteredIds, setSentenceStatus, refreshAllSentenceStatus, enterListMode, showHomeDashboard, updateDashboard, openEarDrawer, showStoryLibrary};
 </script>
 <script src="practice.js"></script>
 <script>
