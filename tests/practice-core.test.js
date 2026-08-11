@@ -1012,6 +1012,30 @@ test('includes practical first-week abroad living sentence frames', () => {
   assert.ok(html.includes('How do I use this washing machine? The buttons are different from the ones at home.'));
 });
 
+test('includes hand-written word path library for vocabulary memory', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('id="wordPathBtn"'));
+  assert.ok(html.includes('data-dash-action="wordpaths"'));
+  assert.ok(html.includes('const WORD_PATH_LIBRARY'));
+  assert.ok(html.includes('showWordPathLibrary'));
+  assert.ok(html.includes('renderWordPathCards'));
+  assert.ok(html.includes('wordPathIndexHtml'));
+  assert.ok(html.includes('catName:\'单词路径\''));
+  assert.ok(html.includes('re-: again or back'));
+  assert.ok(html.includes('un-: not or reverse'));
+  assert.ok(html.includes('-er: person or tool'));
+  assert.ok(html.includes('-able: can be done'));
+  assert.ok(html.includes('port: carry'));
+  assert.ok(html.includes('Common daily verb pairs'));
+  assert.ok(html.includes('Power verbs for life and work'));
+  assert.ok(html.includes('I will resend the quotation to you now.'));
+  assert.ok(html.includes('Is the tap water drinkable here?'));
+  assert.ok(html.includes('How early should we arrive at the airport?'));
+  assert.ok(html.includes('Can I borrow your charger for a minute?'));
+  assert.ok(html.includes('Make sure the door is locked before you leave.'));
+});
+
 test('includes story speaking library for narrative practice', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
@@ -1299,7 +1323,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v111'));
+  assert.ok(worker.includes('home-english-v112'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

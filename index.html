@@ -244,9 +244,9 @@
 
   /* 查词 */
   .lookupbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;}
-  #lookupBtn,#randomSceneBtn,#randomWordBtn,#idiomBtn,#storyBtn,#bedtimeBtn{flex:0 0 auto;font-family:var(--body);font-size:.84rem;font-weight:600;color:var(--accent);
+  #lookupBtn,#randomSceneBtn,#randomWordBtn,#wordPathBtn,#idiomBtn,#storyBtn,#bedtimeBtn{flex:0 0 auto;font-family:var(--body);font-size:.84rem;font-weight:600;color:var(--accent);
     background:var(--accent-soft);border:1px solid #CFE6DC;border-radius:999px;padding:8px 14px;cursor:pointer;}
-  #lookupBtn:active,#randomSceneBtn:active,#randomWordBtn:active,#idiomBtn:active,#storyBtn:active,#bedtimeBtn:active{transform:scale(.97);}
+  #lookupBtn:active,#randomSceneBtn:active,#randomWordBtn:active,#wordPathBtn:active,#idiomBtn:active,#storyBtn:active,#bedtimeBtn:active{transform:scale(.97);}
   .lk-hint{font-size:.76rem;color:var(--muted);}
   .lookup{display:none;margin-top:10px;}
   .lk-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;box-shadow:var(--shadow);}
@@ -285,6 +285,16 @@
   .idiom-zh{font-size:.9rem;color:var(--muted);margin-top:2px;}
   .idiom-use{font-size:.78rem;color:#8F7F6A;background:#FFF8E8;border:1px solid #ECD8A6;border-radius:9px;padding:7px 8px;margin-top:7px;line-height:1.45;}
   .idiom-empty{padding:18px;color:var(--muted);font-size:.88rem;}
+  .wordpath-card{border:1px solid var(--line);border-radius:14px;background:#FFFDF8;overflow:hidden;margin-top:13px;}
+  .wordpath-top{padding:14px 15px;background:#FCFAF6;border-bottom:1px solid var(--line);}
+  .wordpath-top h3{font-size:1.05rem;line-height:1.28;}
+  .wordpath-top h3 span{display:block;color:var(--muted);font-size:.78rem;font-weight:750;margin-top:2px;}
+  .wordpath-memory{font-size:.84rem;color:var(--muted);line-height:1.55;margin-top:7px;}
+  .wordpath-item{padding:12px 14px;border-top:1px solid var(--line);}
+  .wordpath-word{font-size:1rem;font-weight:900;color:var(--ink);}
+  .wordpath-word span{color:var(--accent);font-size:.86rem;margin-left:6px;}
+  .wordpath-note{font-size:.78rem;color:#8F7F6A;background:#FFF8E8;border:1px solid #ECD8A6;border-radius:9px;padding:7px 8px;margin-top:7px;line-height:1.45;}
+  .wordpath-examples{margin-top:8px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;}
   .story-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:13px;}
   .story-finder{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#FFFCF5;overflow:hidden;}
   .story-count{padding:10px 12px;font-size:.82rem;font-weight:850;color:var(--ink);border-bottom:1px solid var(--line);}
@@ -567,6 +577,7 @@ if(location.hostname==='cherrywuma.github.io'){
       <button id="lookupBtn">🔎 联网查词 / 翻译</button>
       <button id="randomSceneBtn" type="button">🧭 场景训练</button>
       <button id="randomWordBtn" type="button">🎯 随机单词</button>
+      <button id="wordPathBtn" type="button">🧩 单词路径</button>
       <button id="idiomBtn" type="button">🗣️ 地道说法</button>
       <button id="storyBtn" type="button">🎙️ 故事口播</button>
       <button id="bedtimeBtn" type="button">🌙 睡前百科</button>
@@ -611,6 +622,10 @@ if(location.hostname==='cherrywuma.github.io'){
       <button class="dash-action" type="button" data-dash-action="idioms">
         <strong>地道说法</strong>
         <span>同一个中文意思，按不同场合换自然说法。</span>
+      </button>
+      <button class="dash-action orange" type="button" data-dash-action="wordpaths">
+        <strong>单词路径</strong>
+        <span>前缀、后缀、词根和场景词串，按一组一组记。</span>
       </button>
       <button class="dash-action" type="button" data-dash-action="stories">
         <strong>故事口播</strong>
@@ -11961,6 +11976,184 @@ const BEDTIME_LIBRARY = [
   }
 ];
 
+const WORD_PATH_LIBRARY = [
+  {
+    id:"prefix-re-again-back",
+    type:"前缀",
+    title:"re-：再一次，也可以是往回",
+    enTitle:"re-: again or back",
+    memory:"看到 re-，先想“再来一次”或“回到原来的状态”。不要死背，把它放进生活动作里：重写、重发、重复使用、重新安排。",
+    items:[
+      {word:"rewrite",zh:"重写；改写",note:"write again。邮件写得不清楚、句子不自然，都可以 rewrite。",examples:[
+        ["I need to rewrite this message before I send it.","我得先把这条消息改一下再发。"],
+        ["Can you rewrite it in simpler English?","你能用更简单的英语改写一下吗？"]
+      ]},
+      {word:"resend",zh:"重新发送",note:"send again。客户没收到文件、图片压缩坏了、邮件退回时很实用。",examples:[
+        ["I will resend the quotation to you now.","我现在把报价重新发给你。"],
+        ["The file did not go through, so I sent it again.","文件没发过去，所以我又发了一遍。"]
+      ]},
+      {word:"reuse",zh:"重新使用；重复利用",note:"use again。袋子、盒子、瓶子、旧资料都可以 reuse。",examples:[
+        ["Can we reuse this bag for the vegetables?","这个袋子能不能拿来再装蔬菜？"],
+        ["I kept the box because I may reuse it later.","我把盒子留着，因为后面可能还能用。"]
+      ]},
+      {word:"recheck",zh:"重新检查；再确认",note:"check again。比只说 check 更强调“不想出错”。",examples:[
+        ["Let me recheck the address before I book it.","我先重新确认一下地址再预订。"],
+        ["Please recheck the drawing and tell me if anything is missing.","请再检查一下图纸，看看有没有缺东西。"]
+      ]}
+    ]
+  },
+  {
+    id:"prefix-un-not-opposite",
+    type:"前缀",
+    title:"un-：不，或者反过来",
+    enTitle:"un-: not or reverse",
+    memory:"un- 常常把意思反过来：happy 变 unhappy，lock 变 unlock。生活里不要只背中文，要连着动作记。",
+    items:[
+      {word:"unlock",zh:"解锁；打开锁",note:"lock 是锁上，unlock 是解开。手机、门、账号都能用。",examples:[
+        ["Can you unlock the door for me?","你能帮我把门打开吗？"],
+        ["My account is locked, and I need to unlock it.","我的账号被锁了，我需要解锁。"]
+      ]},
+      {word:"unpack",zh:"拆开；把行李拿出来",note:"pack 是打包，unpack 是拆包或整理行李。",examples:[
+        ["I am too tired to unpack tonight.","我今晚太累了，不想收拾行李。"],
+        ["After we get to the hotel, let's unpack the essentials first.","到酒店后，我们先把必需品拿出来。"]
+      ]},
+      {word:"uncomfortable",zh:"不舒服；不自在",note:"身体不舒服、鞋子不舒服、场面尴尬都能用。",examples:[
+        ["These shoes are uncomfortable after a long walk.","这双鞋走久了不舒服。"],
+        ["I felt uncomfortable asking the same question again.","我再问同一个问题时有点不好意思。"]
+      ]},
+      {word:"unclear",zh:"不清楚；不明确",note:"邮件、要求、说明、声音都可以 unclear。",examples:[
+        ["This part is still unclear to me.","这一部分我还是不太清楚。"],
+        ["The instruction was unclear, so I asked them to explain it again.","说明不清楚，所以我请他们再解释一遍。"]
+      ]}
+    ]
+  },
+  {
+    id:"suffix-er-person-tool",
+    type:"后缀",
+    title:"-er：做事的人，也可以是工具",
+    enTitle:"-er: person or tool",
+    memory:"动词后面加 -er，很多时候变成“做这个动作的人或东西”。cleaner 是清洁工或清洁剂，charger 是充电器。",
+    items:[
+      {word:"cleaner",zh:"清洁工；清洁剂",note:"看上下文判断是人还是东西。house cleaner 是清洁人员，floor cleaner 是地板清洁剂。",examples:[
+        ["Do we have a floor cleaner for this stain?","我们有没有能处理这个污渍的地板清洁剂？"],
+        ["The cleaner will come tomorrow morning.","清洁人员明天上午会来。"]
+      ]},
+      {word:"charger",zh:"充电器",note:"charge 是充电，charger 是充电器。出国、机场、酒店高频。",examples:[
+        ["I forgot my phone charger at home.","我把手机充电器忘在家里了。"],
+        ["Do you have a charger I can borrow?","你有没有充电器可以借我一下？"]
+      ]},
+      {word:"driver",zh:"司机；驾驶员",note:"drive 开车，driver 司机。出租车、接送、物流都常用。",examples:[
+        ["The driver is waiting outside the hotel.","司机在酒店外面等。"],
+        ["Please tell the driver to use this address.","请告诉司机用这个地址。"]
+      ]},
+      {word:"opener",zh:"开瓶器；开罐器",note:"open 打开，opener 是用来打开的工具。",examples:[
+        ["Do we have a bottle opener?","我们有开瓶器吗？"],
+        ["I cannot open this can without an opener.","没有开罐器，我打不开这个罐头。"]
+      ]}
+    ]
+  },
+  {
+    id:"suffix-able-can-be-done",
+    type:"后缀",
+    title:"-able：可以被这样做",
+    enTitle:"-able: can be done",
+    memory:"-able 常常表示“可以……的”。drinkable 是可以喝的，washable 是可以洗的，usable 是能用的。",
+    items:[
+      {word:"drinkable",zh:"可以喝的",note:"问水能不能喝，比 safe 更窄，只说“能不能饮用”。",examples:[
+        ["Is the tap water drinkable here?","这里的自来水可以直接喝吗？"],
+        ["This water is not drinkable, so do not use it for cooking.","这个水不能喝，所以不要拿来做饭。"]
+      ]},
+      {word:"washable",zh:"可以洗的",note:"衣服、垫子、袋子、滤网都可能 washable。",examples:[
+        ["Is this jacket washable, or should I dry-clean it?","这件外套能水洗吗，还是要干洗？"],
+        ["The cover is removable and washable.","这个套子可以拆下来洗。"]
+      ]},
+      {word:"usable",zh:"能用的；可用的",note:"东西没有坏到完全不能用，就可以说 still usable。",examples:[
+        ["The box is old, but it is still usable.","这个盒子旧了，但还能用。"],
+        ["Is this SIM card usable in Germany?","这张电话卡在德国能用吗？"]
+      ]},
+      {word:"readable",zh:"看得清的；容易读的",note:"字迹、照片、截图、英文说明都能用。",examples:[
+        ["The photo is too blurry; the text is not readable.","照片太糊了，字看不清。"],
+        ["Can you send a more readable picture of the label?","你能发一张标签更清楚的照片吗？"]
+      ]}
+    ]
+  },
+  {
+    id:"root-port-carry",
+    type:"词根",
+    title:"port：带着走，搬运，连接地方",
+    enTitle:"port: carry",
+    memory:"port 这条线可以想成“把东西从一个地方带到另一个地方”。出国、物流、文件、交通里特别常见。",
+    items:[
+      {word:"transport",zh:"运输；交通",note:"trans 是跨过去，port 是搬运。transport 就是把人或东西运过去。",examples:[
+        ["How will we transport the goods to the customer's factory?","我们怎么把货运到客户工厂？"],
+        ["Public transport is convenient in this city.","这个城市公共交通很方便。"]
+      ]},
+      {word:"airport",zh:"机场",note:"air 加 port，飞机把人和行李带来带去的地方。",examples:[
+        ["How early should we arrive at the airport?","我们应该提前多久到机场？"],
+        ["I will meet you at the airport exit.","我在机场出口接你。"]
+      ]},
+      {word:"import",zh:"进口；导入",note:"im/in 是往里面，import 是带进来。货物、数据都能用。",examples:[
+        ["Does your company import this kind of equipment?","你们公司进口这种设备吗？"],
+        ["I need to import the contacts into my phone.","我需要把联系人导入手机。"]
+      ]},
+      {word:"export",zh:"出口；导出",note:"ex 是往外，export 是带出去。外贸和文件都高频。",examples:[
+        ["We export hydraulic equipment to different countries.","我们把液压设备出口到不同国家。"],
+        ["Can you export the file as a PDF?","你能把文件导出成 PDF 吗？"]
+      ]}
+    ]
+  },
+  {
+    id:"confusing-daily-verb-pairs",
+    type:"易混词",
+    title:"容易混的日常动词，一组一组分开",
+    enTitle:"Common daily verb pairs",
+    memory:"易混词不要按字典背，要按“谁做动作、东西往哪里走、眼睛耳朵有没有主动用力”来分。",
+    items:[
+      {word:"bring / take",zh:"拿来 / 拿走",note:"bring 是拿到说话人这里，take 是带去别处。",examples:[
+        ["Can you bring me the broom?","你能把扫帚拿过来给我吗？"],
+        ["Please take this bag to the trash room.","请把这个袋子拿到垃圾房去。"]
+      ]},
+      {word:"borrow / lend",zh:"借入 / 借出",note:"borrow 是我向别人借，lend 是别人借给我或我借给别人。",examples:[
+        ["Can I borrow your charger for a minute?","我能借你的充电器用一下吗？"],
+        ["I can lend you my umbrella.","我可以把伞借给你。"]
+      ]},
+      {word:"look / see / watch",zh:"看 / 看见 / 观看",note:"look 是主动看，see 是看见结果，watch 是盯着一段时间看。",examples:[
+        ["Look at this label first.","先看一下这个标签。"],
+        ["I saw a notice on the door, but I did not understand it.","我看到门上有通知，但没看懂。"]
+      ]},
+      {word:"hear / listen",zh:"听见 / 认真听",note:"hear 是声音进耳朵，listen 是你主动去听。",examples:[
+        ["I can hear you, but the sound is not clear.","我听得到你，但声音不清楚。"],
+        ["Please listen to the announcement carefully.","请认真听广播通知。"]
+      ]}
+    ]
+  },
+  {
+    id:"power-verbs-life-work",
+    type:"万能动词",
+    title:"生活工作都绕不开的万能动词",
+    enTitle:"Power verbs for life and work",
+    memory:"很多英语不是靠大词，而是靠小动词加具体名词。get、put、take、make 学透，日常会突然顺很多。",
+    items:[
+      {word:"get",zh:"拿到；变得；到达；理解",note:"get 很万能，但要靠后面的词决定意思。",examples:[
+        ["I need to get some cash before we leave.","出门前我得取点现金。"],
+        ["I did not get what he meant.","我没明白他的意思。"]
+      ]},
+      {word:"put",zh:"放；放进；写上",note:"put 后面常接位置：put it here, put it back, put it in the fridge。",examples:[
+        ["Put the leftovers in the fridge.","把剩菜放进冰箱。"],
+        ["Please put your name on the form.","请在表格上写上你的名字。"]
+      ]},
+      {word:"take",zh:"拿；带；花费；乘坐",note:"take 不是只有“拿”，出行和办事都常用。",examples:[
+        ["Take your passport out before security check.","安检前把护照拿出来。"],
+        ["It takes about twenty minutes by subway.","坐地铁大约二十分钟。"]
+      ]},
+      {word:"make",zh:"做；让；确认",note:"make food, make a call, make sure 都很常用。",examples:[
+        ["I will make a quick call and come back.","我打个简短电话就回来。"],
+        ["Make sure the door is locked before you leave.","离开前确认门锁好了。"]
+      ]}
+    ]
+  }
+];
+
 const IDIOM_LIBRARY = [
   {
     topic:"臭 / 难闻", en:"Smell Bad", color:"#8A6A3D",
@@ -12945,6 +13138,17 @@ function ensureCurrentIdiomTopic(){
   return topics;
 }
 
+function wordPathIdPart(text){
+  return String(text||'word').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'word';
+}
+WORD_PATH_LIBRARY.forEach(path=>{
+  path.items.forEach(item=>{
+    (item.examples||[]).forEach((line,index)=>{
+      const id=`wordpath-${path.id}-${wordPathIdPart(item.word)}-${index}`;
+      sentenceLookup.set(id,{id,en:line[0],zh:line[1],catName:'单词路径',subName:path.title});
+    });
+  });
+});
 IDIOM_LIBRARY.forEach(group=>{
   group.entries.forEach(entry=>{
     const id=`idiom-${entry.id}`;
@@ -13291,6 +13495,7 @@ function bindDashboard(){
         return;
       }
       if(action==='scenes'){showSceneTrainingPanel();return;}
+      if(action==='wordpaths'){showWordPathLibrary();return;}
       if(action==='idioms'){showIdiomLibrary();return;}
       if(action==='stories'){showStoryLibrary();return;}
       if(action==='bedtime'){showBedtimeLibrary();return;}
@@ -14156,6 +14361,7 @@ const lookup=document.getElementById('lookup');
 const lookupBtn=document.getElementById('lookupBtn');
 const randomSceneBtn=document.getElementById('randomSceneBtn');
 const randomWordBtn=document.getElementById('randomWordBtn');
+const wordPathBtn=document.getElementById('wordPathBtn');
 const idiomBtn=document.getElementById('idiomBtn');
 const storyBtn=document.getElementById('storyBtn');
 const bedtimeBtn=document.getElementById('bedtimeBtn');
@@ -14280,6 +14486,114 @@ function showRandomWord(){
   const word=dictCore.pickRandomDictionaryEntry(allWords);
   if(!word)return;
   showLocalDictionary(allWords,word.term);
+}
+
+function wordPathTypes(){
+  return ['全部',...[...new Set(WORD_PATH_LIBRARY.map(path=>path.type).filter(Boolean))]];
+}
+function wordPathMatches(path,query,type){
+  const qText=String(query||'').trim().toLowerCase();
+  if(type&&type!=='全部'&&path.type!==type)return false;
+  if(!qText)return true;
+  return [path.title,path.enTitle,path.type,path.memory]
+    .concat((path.items||[]).flatMap(item=>[
+      item.word,item.zh,item.note,
+      ...(item.examples||[]).flat()
+    ]))
+    .some(value=>String(value||'').toLowerCase().includes(qText));
+}
+function wordPathIndexHtml(paths){
+  const quick=['re-','un-','-er','-able','port','bring / take','get','机场','充电器','重新发送'].map(text=>`<button type="button" data-wordpath-search="${text}">${text}</button>`).join('');
+  const items=paths.map((path,index)=>`<button type="button" data-wordpath-jump="${path.id}">
+    ${index+1}. ${path.title}<span>${path.enTitle} · ${path.type}</span>
+  </button>`).join('');
+  return `<div class="story-finder">
+    <div class="story-count">找到 ${paths.length} 条单词路径。先按路径记，再把例句放进口里。</div>
+    <div class="story-quick">${quick}</div>
+    <details class="story-index" open>
+      <summary>单词路径目录</summary>
+      <div class="story-index-list">${items}</div>
+    </details>
+  </div>`;
+}
+function wordPathItemHtml(path,item){
+  const examples=(item.examples||[]).map((line,index)=>{
+    const id=`wordpath-${path.id}-${wordPathIdPart(item.word)}-${index}`;
+    return `<div class="idiom-row row" data-sentence-id="${id}">
+      <div class="spk">${SPK_SVG}</div>
+      <div class="txt">
+        <div class="idiom-en en">${line[0]}</div>
+        <div class="idiom-zh zh">${line[1]}</div>
+        <div class="statusbar">
+          <button class="statusbtn" data-status="hard" type="button">不熟</button>
+          <button class="statusbtn" data-status="mastered" type="button">会了</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  return `<div class="wordpath-item">
+    <div class="wordpath-word">${item.word}<span>${item.zh}</span></div>
+    <div class="wordpath-note">${item.note}</div>
+    <div class="wordpath-examples">${examples}</div>
+  </div>`;
+}
+function wordPathCardHtml(path){
+  return `<article class="wordpath-card" data-wordpath-card="${path.id}">
+    <div class="wordpath-top">
+      <h3>${path.title}<span>${path.enTitle} · ${path.type}</span></h3>
+      <div class="wordpath-memory">${path.memory}</div>
+    </div>
+    ${(path.items||[]).map(item=>wordPathItemHtml(path,item)).join('')}
+  </article>`;
+}
+function renderWordPathCards(){
+  const panel=lookup.querySelector('#wordPathPanel');
+  if(!panel)return;
+  const search=lookup.querySelector('#wordPathSearch');
+  const type=lookup.querySelector('#wordPathType');
+  const qText=search?search.value:'';
+  const typeValue=type?type.value:'全部';
+  const paths=WORD_PATH_LIBRARY.filter(path=>wordPathMatches(path,qText,typeValue));
+  panel.innerHTML=paths.length
+    ? `${wordPathIndexHtml(paths)}<div class="story-grid">${paths.map(wordPathCardHtml).join('')}</div>`
+    : '<div class="idiom-list"><div class="idiom-empty">这一组没搜到，换个前缀、后缀、词根或中文试试。</div></div>';
+  panel.querySelectorAll('[data-wordpath-search]').forEach(btn=>{
+    btn.onclick=()=>{if(search)search.value=btn.dataset.wordpathSearch||'';renderWordPathCards();};
+  });
+  panel.querySelectorAll('[data-wordpath-jump]').forEach(btn=>{
+    btn.onclick=()=>{
+      const card=panel.querySelector(`[data-wordpath-card="${btn.dataset.wordpathJump}"]`);
+      if(card)card.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+  });
+  panel.querySelectorAll('.wordpath-examples .row[data-sentence-id]').forEach(row=>{
+    const item=sentenceLookup.get(row.dataset.sentenceId);
+    row.onclick=()=>playSingleRepeat(item.en,row);
+    row.querySelector('[data-status="hard"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'hard');};
+    row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'mastered');};
+    refreshSentenceStatus(row);
+  });
+}
+function showWordPathLibrary(){
+  stopAll();
+  lookup.style.display='block';
+  const types=wordPathTypes();
+  lookup.innerHTML=`<div class="lk-card">
+    <div class="lk-en">单词路径</div>
+    <div class="lk-zh">按前缀、后缀、词根、易混词和万能动词成组记。每条例句都可以朗读，也可以点“不熟”放进不会专练。</div>
+    <div class="idiom-tools">
+      <input id="wordPathSearch" type="search" placeholder="搜路径、词、中文，例如：re-、机场、充电器、拿来">
+      <select id="wordPathType" aria-label="单词路径分类">
+        ${types.map(item=>`<option value="${item}">${item}</option>`).join('')}
+      </select>
+    </div>
+    <div class="lk-note">当前 ${WORD_PATH_LIBRARY.length} 条路径。这部分按人工理解慢慢写，不自动乱生成词表。</div>
+    <div id="wordPathPanel"></div>
+  </div>`;
+  lookup.querySelector('#wordPathSearch').oninput=renderWordPathCards;
+  lookup.querySelector('#wordPathType').onchange=renderWordPathCards;
+  renderWordPathCards();
+  window.scrollTo({top:lookup.offsetTop-12,behavior:'smooth'});
 }
 
 function idiomMatches(entry,query){
@@ -14725,6 +15039,7 @@ async function translate(){
 lookupBtn.onclick=translate;
 randomSceneBtn.onclick=showSceneTrainingPanel;
 randomWordBtn.onclick=showRandomWord;
+wordPathBtn.onclick=showWordPathLibrary;
 idiomBtn.onclick=showIdiomLibrary;
 storyBtn.onclick=showStoryLibrary;
 bedtimeBtn.onclick=showBedtimeLibrary;
@@ -14775,7 +15090,7 @@ renderEarDrawer();
 refreshAllSentenceStatus();
 bindDashboard();
 updateDashboard();
-window.HomeEnglishApp = {DATA, STORY_LIBRARY, BEDTIME_LIBRARY, content, chipsBox, chip, stopAll, speakOne, makeUtter, getHardIds, getMasteredIds, setSentenceStatus, refreshAllSentenceStatus, enterListMode, showHomeDashboard, updateDashboard, openEarDrawer, showStoryLibrary, showBedtimeLibrary};
+window.HomeEnglishApp = {DATA, WORD_PATH_LIBRARY, STORY_LIBRARY, BEDTIME_LIBRARY, content, chipsBox, chip, stopAll, speakOne, makeUtter, getHardIds, getMasteredIds, setSentenceStatus, refreshAllSentenceStatus, enterListMode, showHomeDashboard, updateDashboard, openEarDrawer, showWordPathLibrary, showStoryLibrary, showBedtimeLibrary};
 </script>
 <script src="practice.js"></script>
 <script>
