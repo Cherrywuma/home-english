@@ -1051,6 +1051,14 @@ test('includes hand-written word path library for vocabulary memory', () => {
   assert.ok(html.includes('Safety and Emergency'));
   assert.ok(html.includes('Office and Meeting'));
   assert.ok(html.includes('Exhibition and Customer Visit'));
+  assert.ok(html.includes('Supermarket Ingredients'));
+  assert.ok(html.includes('Seasoning and Cooking'));
+  assert.ok(html.includes('Bank and Post Office'));
+  assert.ok(html.includes('Hair, Beauty, and Personal Care'));
+  assert.ok(html.includes('Clothes, Shoes, and Laundry'));
+  assert.ok(html.includes('Community and Neighborhood'));
+  assert.ok(html.includes('Feelings and Communication'));
+  assert.ok(html.includes('Packaging and Labels'));
   assert.ok(html.includes('boarding pass'));
   assert.ok(html.includes('passport control'));
   assert.ok(html.includes('address registration'));
@@ -1072,6 +1080,14 @@ test('includes hand-written word path library for vocabulary memory', () => {
   assert.ok(html.includes('emergency contact'));
   assert.ok(html.includes('action item'));
   assert.ok(html.includes('factory visit'));
+  assert.ok(html.includes('expiration date'));
+  assert.ok(html.includes('soy sauce'));
+  assert.ok(html.includes('customs form'));
+  assert.ok(html.includes('sensitive skin'));
+  assert.ok(html.includes('washing label'));
+  assert.ok(html.includes('property management'));
+  assert.ok(html.includes('overwhelmed'));
+  assert.ok(html.includes('shipping mark'));
   assert.ok(html.includes('purchase order'));
   assert.ok(html.includes('scope of supply'));
   assert.ok(html.includes('customs clearance'));
@@ -1093,6 +1109,12 @@ test('includes hand-written word path library for vocabulary memory', () => {
   assert.ok(html.includes('Do I need proof of address for this registration?'));
   assert.ok(html.includes('Someone is hurt. Please call an ambulance.'));
   assert.ok(html.includes('Our booth is in Hall 3.'));
+  assert.ok(html.includes('Where is the dairy section?'));
+  assert.ok(html.includes('Mince the garlic before you heat the oil.'));
+  assert.ok(html.includes('Do I need to fill out a customs form?'));
+  assert.ok(html.includes('I need a moisturizer for sensitive skin.'));
+  assert.ok(html.includes('This neighborhood has good greenery and feels quiet.'));
+  assert.ok(html.includes('Please confirm the shipping mark before we print the labels.'));
   assert.ok(html.includes('Can I borrow your charger for a minute?'));
   assert.ok(html.includes('Make sure the door is locked before you leave.'));
 });
@@ -1384,7 +1406,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v115'));
+  assert.ok(worker.includes('home-english-v116'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
