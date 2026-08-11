@@ -1275,6 +1275,23 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('Breakfast abroad became easier when I stopped guessing and started asking about ingredients.'));
   assert.ok(html.includes('A calm reply kept the relationship smooth even when the plan changed.'));
   assert.ok(html.includes('Now I know that an address is not always enough; sometimes the doorbell name matters just as much.'));
+  assert.ok(html.includes('Contacting Maintenance About a Leaking Sink'));
+  assert.ok(html.includes('Almost Mixing Up a Doctor Appointment Time'));
+  assert.ok(html.includes('Having Lunch With German Colleagues for the First Time'));
+  assert.ok(html.includes('When a Customer Asks for a Discount Right After the Quote'));
+  assert.ok(html.includes('Sorting Business Cards and Leads After a Trade Fair Day'));
+  assert.ok(html.includes('Recovering Naturally After Missing a Customer Message'));
+  assert.ok(html.includes("Packing a Child's Schoolbag for Tomorrow"));
+  assert.ok(html.includes('Sending a Message When Rain Makes You Late'));
+  assert.ok(html.includes('I took a few photos and sent a short message to the landlord or maintenance contact.'));
+  assert.ok(html.includes('Instead of guessing, I called again and said I wanted to confirm my appointment.'));
+  assert.ok(html.includes('Sometimes connection starts with a simple question about food.'));
+  assert.ok(html.includes('The goal was not to win the argument, but to find a workable option.'));
+  assert.ok(html.includes('A trade fair does not end when the hall closes; it continues in the notes you keep.'));
+  assert.ok(html.includes('Making a mistake is uncomfortable, but fixing it clearly can still protect trust.'));
+  assert.ok(html.includes('It was not a formal lesson; it was just real life with simple words.'));
+  assert.ok(html.includes('Being late is not good, but early communication makes it easier for everyone.'));
+  assert.ok(html.includes("'维修','医生','同事','展会','孩子','迟到'"));
 });
 
 test('includes separate bedtime encyclopedia library for children', () => {
@@ -1430,7 +1447,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v117'));
+  assert.ok(worker.includes('home-english-v118'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
