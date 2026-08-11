@@ -1173,12 +1173,17 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(html.includes('requestTeacherAudio'));
   assert.ok(html.includes('res.status===404&&isPrivateSite()&&endpoint===DEFAULT_TEACHER_ENDPOINT'));
   assert.ok(html.includes('fetch(OLD_TEACHER_ENDPOINT'));
+  assert.ok(html.includes('playSingleRepeat'));
+  assert.ok(html.includes('singleRepeatActive'));
+  assert.ok(html.includes('while(singleRepeatActive'));
+  assert.ok(html.includes('stopSingleRepeat'));
+  assert.ok(html.includes('row.onclick=()=>playSingleRepeat'));
 });
 
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v100'));
+  assert.ok(worker.includes('home-english-v101'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

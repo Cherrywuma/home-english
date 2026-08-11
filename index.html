@@ -11597,7 +11597,7 @@ DATA.forEach((cat,ci)=>{
       addTextWithDictionary(row.querySelector('.en'),en,sub.sceneWords);
       row.querySelector('.zh').textContent=zh;
       addStudyTags(row,item,sub.sceneWords);
-      row.onclick=()=>{stopAll();speakOne(en,row);};
+      row.onclick=()=>playSingleRepeat(en,row);
       row.querySelector('[data-status="hard"]').onclick=e=>{e.stopPropagation();setSentenceStatus(sentenceId,'hard');};
       row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(sentenceId,'mastered');};
       list.appendChild(row);
@@ -12037,28 +12037,59 @@ function speakFreeLang(text,lang,row){
 }
 
 /* ---------- 单句 ---------- */
-function speakOne(text,row){
+async function speakOne(text,row){
   if(teacherEnabled()){
-    speakTeacher(text,'en',row).catch(err=>{
+    try{await speakTeacher(text,'en',row);return;}
+    catch(err){
       if(teacherStatus)teacherStatus.textContent=teacherErrorText(err,'老师级朗读失败，已改用免费朗读');
-      speakOneFree(text,row);
-    });
-    return;
+    }
   }
-  speakOneFree(text,row);
+  await speakOneFree(text,row);
 }
 function speakOneFree(text,row){
-  if(!('speechSynthesis' in window))return;
-  speechSynthesis.cancel();
-  row.classList.add('speaking');
-  const u=makeUtter(text);
-  u.onend=u.onerror=()=>row.classList.remove('speaking');
-  speechSynthesis.speak(u);
+  return new Promise(resolve=>{
+    if(!('speechSynthesis' in window)){resolve();return;}
+    speechSynthesis.cancel();
+    if(row)row.classList.add('speaking');
+    const u=makeUtter(text);
+    u.onend=u.onerror=()=>{if(row)row.classList.remove('speaking');resolve();};
+    speechSynthesis.speak(u);
+  });
 }
 
 /* ---------- 连续朗读 ---------- */
 const stopbar=document.getElementById('stopbar');
 let seqActive=false,curBtn=null;
+let singleRepeatActive=false,singleRepeatKey='',singleRepeatRun=0,singleRepeatRow=null;
+function singleKey(text,row){
+  return row&&row.dataset&&row.dataset.sentenceId?row.dataset.sentenceId:String(text||'').trim();
+}
+function stopSingleRepeat(){
+  singleRepeatActive=false;
+  singleRepeatKey='';
+  singleRepeatRun++;
+  if(singleRepeatRow)singleRepeatRow.classList.remove('speaking');
+  singleRepeatRow=null;
+}
+function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
+async function playSingleRepeat(text,row){
+  const cleanText=String(text||'').trim();
+  if(!cleanText)return;
+  if(!teacherEnabled()&&!(('speechSynthesis' in window)))return;
+  const key=singleKey(cleanText,row);
+  if(singleRepeatActive&&singleRepeatKey===key){stopAll();return;}
+  stopAll();
+  singleRepeatActive=true;
+  singleRepeatKey=key;
+  singleRepeatRow=row||null;
+  const runId=++singleRepeatRun;
+  stopbar.classList.add('show');
+  while(singleRepeatActive&&singleRepeatKey===key&&singleRepeatRun===runId){
+    await speakOne(cleanText,row);
+    if(!singleRepeatActive||singleRepeatKey!==key||singleRepeatRun!==runId)break;
+    await sleep(360);
+  }
+}
 function playSeq(items,rowEls,btn){
   if(teacherEnabled()){playSeqTeacher(items,rowEls,btn);return;}
   if(!('speechSynthesis' in window))return;
@@ -12101,6 +12132,7 @@ function finishSeq(){
   if(curBtn){curBtn.classList.remove('playing');curBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>朗读本节';curBtn=null;}
 }
 function stopAll(){
+  stopSingleRepeat();
   stopTeacherAudio();
   if('speechSynthesis' in window)speechSynthesis.cancel();
   stopDictation();
@@ -12527,7 +12559,7 @@ function renderSaved(){
       const en=it[0],zh=it[1];
       const row=document.createElement('div');row.className='row';
       row.innerHTML=`<div class="spk">${SPK_SVG}</div><div class="txt"><div class="en">${en}</div><div class="zh">${zh}</div></div><button class="del" title="删除">✕</button>`;
-      row.onclick=()=>{stopAll();speakOne(en,row);};
+      row.onclick=()=>playSingleRepeat(en,row);
       row.querySelector('.del').onclick=(e)=>{
         e.stopPropagation();
         setSaved(getSaved().filter(x=>x[0]!==en));
@@ -12567,7 +12599,7 @@ function showLocalDictionary(words,term){
       </div>
     </div>`;
   const card=lookup.querySelector('.lk-card');
-  lookup.querySelector('.lk-spk').onclick=()=>{stopAll();speakOne(`${word.term}. ${word.example}`,card);};
+  lookup.querySelector('.lk-spk').onclick=()=>playSingleRepeat(`${word.term}. ${word.example}`,card);
   lookup.querySelector('.lk-save').onclick=function(){
     const a=getSaved();
     if(!a.some(x=>x[0]===word.term)){a.unshift([word.term,`${word.zh}｜${word.example}`]);setSaved(a);renderSaved();}
@@ -12707,7 +12739,7 @@ function renderIdiomEntries(){
     : '<div class="idiom-list"><div class="idiom-empty">这一组没搜到，换个中文或英文试试。</div></div>';
   panel.querySelectorAll('.idiom-row[data-sentence-id]').forEach(row=>{
     const item=sentenceLookup.get(row.dataset.sentenceId);
-    row.onclick=()=>{stopAll();speakOne(item.en,row);};
+    row.onclick=()=>playSingleRepeat(item.en,row);
     row.querySelector('[data-status="hard"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'hard');};
     row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'mastered');};
     refreshSentenceStatus(row);
@@ -12809,7 +12841,7 @@ function renderStoryCards(){
   });
   panel.querySelectorAll('.story-row[data-sentence-id]').forEach(row=>{
     const item=sentenceLookup.get(row.dataset.sentenceId);
-    row.onclick=()=>{stopAll();speakOne(item.en,row);};
+    row.onclick=()=>playSingleRepeat(item.en,row);
     row.querySelector('[data-status="hard"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'hard');};
     row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'mastered');};
     refreshSentenceStatus(row);
@@ -12901,7 +12933,7 @@ async function translate(){
         <div class="lk-note">联网机器翻译，日常够用；专有名词/地道说法可能不准。</div>
       </div>`;
     const card=lookup.querySelector('.lk-card');
-    lookup.querySelector('.lk-spk').onclick=()=>{stopAll();speakOne(en,card);};
+    lookup.querySelector('.lk-spk').onclick=()=>playSingleRepeat(en,card);
     speakOne(en,card); // 查出来顺便读一遍
     lookup.querySelector('.lk-save').onclick=function(){
       const a=getSaved();
