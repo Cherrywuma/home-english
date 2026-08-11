@@ -244,9 +244,9 @@
 
   /* 查词 */
   .lookupbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;}
-  #lookupBtn,#randomSceneBtn,#randomWordBtn,#idiomBtn,#storyBtn{flex:0 0 auto;font-family:var(--body);font-size:.84rem;font-weight:600;color:var(--accent);
+  #lookupBtn,#randomSceneBtn,#randomWordBtn,#idiomBtn,#storyBtn,#bedtimeBtn{flex:0 0 auto;font-family:var(--body);font-size:.84rem;font-weight:600;color:var(--accent);
     background:var(--accent-soft);border:1px solid #CFE6DC;border-radius:999px;padding:8px 14px;cursor:pointer;}
-  #lookupBtn:active,#randomSceneBtn:active,#randomWordBtn:active,#idiomBtn:active,#storyBtn:active{transform:scale(.97);}
+  #lookupBtn:active,#randomSceneBtn:active,#randomWordBtn:active,#idiomBtn:active,#storyBtn:active,#bedtimeBtn:active{transform:scale(.97);}
   .lk-hint{font-size:.76rem;color:var(--muted);}
   .lookup{display:none;margin-top:10px;}
   .lk-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;box-shadow:var(--shadow);}
@@ -302,6 +302,27 @@
   .story-index-list{display:flex;flex-wrap:wrap;gap:7px;padding:0 12px 12px;}
   .story-index-list button{border-radius:10px;text-align:left;line-height:1.28;max-width:100%;}
   .story-index-list button span{display:block;color:var(--muted);font-size:.68rem;font-weight:700;margin-top:2px;}
+  .bedtime-card{border:1px solid var(--line);border-radius:14px;background:#FFFDF8;overflow:hidden;margin-top:14px;}
+  .bedtime-top{padding:15px;border-bottom:1px solid var(--line);background:#FAF6EC;}
+  .bedtime-top h3{font-size:1.1rem;line-height:1.25;}
+  .bedtime-top h3 span{display:block;color:var(--muted);font-size:.8rem;font-weight:700;margin-top:2px;}
+  .bedtime-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;}
+  .bedtime-meta span{border:1px solid #E8D29A;border-radius:999px;padding:6px 10px;font-size:.76rem;font-weight:800;color:#6C4A12;background:#fff;}
+  .bedtime-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+  .bedtime-actions button{font-family:var(--body);font-size:.78rem;font-weight:850;border:none;border-radius:999px;padding:8px 12px;cursor:pointer;background:var(--accent-soft);color:var(--accent);}
+  .bedtime-actions button.primary{background:var(--accent);color:#fff;}
+  .bedtime-chapter{border-top:1px solid var(--line);}
+  .bedtime-chapter h4{padding:11px 14px;background:#FFFCF5;font-size:.92rem;color:var(--ink);}
+  .bedtime-line{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 14px;border-top:1px solid var(--line);cursor:pointer;}
+  .bedtime-line .spk{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;}
+  .bedtime-line .spk svg{width:15px;height:15px;fill:var(--accent);}
+  .bedtime-line.speaking .spk{background:var(--accent);}
+  .bedtime-line.speaking .spk svg{fill:#fff;}
+  .bedtime-en{font-size:1rem;font-weight:850;line-height:1.45;}
+  .bedtime-zh{font-size:.88rem;color:var(--muted);line-height:1.5;margin-top:3px;}
+  .bedtime-questions{padding:12px 14px;background:#F6FBF8;border-top:1px solid #CFE6DC;}
+  .bedtime-questions b{display:block;font-size:.82rem;color:var(--accent);margin-bottom:6px;}
+  .bedtime-questions p{font-size:.86rem;color:var(--ink);line-height:1.55;}
   .story-card{border:1px solid var(--line);border-radius:14px;background:#FFFDF8;overflow:hidden;}
   .story-top{padding:14px 15px;border-bottom:1px solid var(--line);background:#FCFAF6;}
   .story-top h3{font-size:1.08rem;line-height:1.25;}
@@ -548,6 +569,7 @@ if(location.hostname==='cherrywuma.github.io'){
       <button id="randomWordBtn" type="button">🎯 随机单词</button>
       <button id="idiomBtn" type="button">🗣️ 地道说法</button>
       <button id="storyBtn" type="button">🎙️ 故事口播</button>
+      <button id="bedtimeBtn" type="button">🌙 睡前百科</button>
       <span class="lk-hint">本地没有的词点这里查，中↔英都行（如「粽子」）</span>
     </div>
     <div id="lookup" class="lookup"></div>
@@ -593,6 +615,10 @@ if(location.hostname==='cherrywuma.github.io'){
       <button class="dash-action" type="button" data-dash-action="stories">
         <strong>故事口播</strong>
         <span>一小段真实场景，有人物、有问题、有动作，练连续表达。</span>
+      </button>
+      <button class="dash-action purple" type="button" data-dash-action="bedtime">
+        <strong>睡前百科</strong>
+        <span>给孩子讲的长故事：自然、身体、生活和人文，分章节慢慢讲。</span>
       </button>
       <button class="dash-action" type="button" data-dash-action="library">
         <strong>全部内容</strong>
@@ -11404,6 +11430,153 @@ const STORY_LIBRARY = [
   }
 ];
 
+const BEDTIME_LIBRARY = [
+  {
+    id:"water-drop-night-journey",
+    category:"自然",
+    title:"一滴水的夜间旅行",
+    enTitle:"The Night Journey of a Drop of Water",
+    minutes:"约 8-10 分钟",
+    age:"亲子讲述",
+    scene:"从厨房水龙头开始，把蒸发、云、雨、河流和家里的用水串成一个孩子能听懂的故事。",
+    words:[
+      ["drop of water","一滴水"],
+      ["steam","水蒸气"],
+      ["cloud","云"],
+      ["rain","雨"],
+      ["river","河流"],
+      ["save water","节约用水"]
+    ],
+    chapters:[
+      {title:"厨房里的小水滴",lines:[
+        ["A tiny drop of water woke up on the edge of the kitchen tap.","一滴小水滴在厨房水龙头边醒来了。"],
+        ["It was so small that nobody noticed it at first, not even the child brushing a cup nearby.","它小到一开始没人注意到，连旁边刷杯子的孩子也没有发现。"],
+        ["The drop looked around and wondered why people always needed water for cooking, washing, drinking, and cleaning.","小水滴四处看了看，很好奇为什么做饭、洗东西、喝水、打扫都需要水。"],
+        ["Grandma turned off the tap carefully and said, water looks ordinary, but it is not easy to get clean water every day.","奶奶小心关上水龙头，说水看起来普通，但每天能用到干净的水并不容易。"],
+        ["The child touched the cup and asked where water came from before it reached the kitchen.","孩子摸着杯子问，水到厨房之前是从哪里来的。"]
+      ]},
+      {title:"它飞到天上去了",lines:[
+        ["That night, the little drop imagined itself becoming steam from a warm pot.","那天晚上，小水滴想象自己从热锅里变成了水蒸气。"],
+        ["It rose gently, not like a bird with wings, but like a quiet breath moving upward.","它轻轻往上升，不像有翅膀的鸟，更像一口安静的气往上走。"],
+        ["High in the sky, many tiny drops gathered together and became part of a cloud.","到了高高的天空，许多小水滴聚在一起，成了一朵云的一部分。"],
+        ["The cloud was not a cotton blanket; it was a busy meeting place for tiny water drops.","云不是棉花毯，而是许多小水滴热闹集合的地方。"],
+        ["When the cloud became heavy, the drops fell back down as rain.","当云越来越重，小水滴们又变成雨落了下来。"]
+      ]},
+      {title:"雨落到城市里",lines:[
+        ["Some rain landed on leaves, some ran along the road, and some slipped into the soil.","有些雨落在树叶上，有些沿着马路流走，有些钻进了土里。"],
+        ["A little stream carried part of the water toward a river outside the city.","一条小水流把一部分水带向城市外面的河。"],
+        ["The river did not hurry; it carried water, mud, fallen leaves, and tiny stories from many places.","河流不着急，它带着水、泥土、落叶，还有许多地方的小故事。"],
+        ["People built pipes and treatment systems so that some water could become clean enough to use at home.","人们修了管道和处理系统，让一部分水变得足够干净，可以回到家里使用。"],
+        ["The child listened and suddenly looked at the tap in a new way.","孩子听着听着，忽然用新的眼光看水龙头。"]
+      ]},
+      {title:"回到一只小杯子里",lines:[
+        ["The next morning, the child filled only half a cup and drank it slowly.","第二天早上，孩子只接了半杯水，慢慢喝完。"],
+        ["He did not leave the tap running while brushing the cup.","他刷杯子时没有让水龙头一直开着。"],
+        ["He said good night to the little drop in his imagination, even though he could not see which drop it was.","虽然看不出哪一滴是那滴小水滴，他还是在想象里跟它说了晚安。"],
+        ["The world felt bigger after he learned that one tiny drop could travel through kitchen, sky, cloud, rain, river, and home.","知道一滴小水能经过厨房、天空、云、雨、河流和家以后，世界一下子变大了。"],
+        ["Maybe every ordinary thing at home has a long journey behind it.","也许家里每一样普通东西，背后都有一段很长的旅程。"]
+      ]}
+    ],
+    questions:["今天家里哪些地方用到了水？","如果水龙头一直开着，会浪费什么？","你觉得一滴水最想去哪里旅行？"]
+  },
+  {
+    id:"rice-grain-home-story",
+    category:"生活百科",
+    title:"一粒米怎么来到碗里",
+    enTitle:"How a Grain of Rice Arrives in a Bowl",
+    minutes:"约 8-10 分钟",
+    age:"亲子讲述",
+    scene:"从一粒米讲到稻田、农民、运输、厨房和中国饭桌习惯，适合孩子理解食物来之不易。",
+    words:[
+      ["grain of rice","一粒米"],
+      ["rice field","稻田"],
+      ["farmer","农民"],
+      ["harvest","收割"],
+      ["rice cooker","电饭煲"],
+      ["do not waste food","不要浪费食物"]
+    ],
+    chapters:[
+      {title:"碗底的一粒米",lines:[
+        ["After dinner, one grain of rice stayed at the bottom of the bowl.","晚饭后，一粒米留在了碗底。"],
+        ["The child almost washed it away, but Grandpa stopped him gently.","孩子差点把它冲掉，爷爷轻轻拦住了他。"],
+        ["Grandpa said, this tiny grain looks small, but it has traveled farther than you think.","爷爷说，这粒米看起来很小，但它走过的路比你想的远。"],
+        ["The child picked up the grain carefully and asked what kind of road a grain of rice could have.","孩子小心夹起那粒米，问一粒米还能走什么路。"],
+        ["Grandpa smiled and began the story from a green rice field.","爷爷笑了笑，把故事从一片绿色稻田讲起。"]
+      ]},
+      {title:"稻田里的早晨",lines:[
+        ["In the rice field, young rice plants stood in water like rows of little green soldiers.","稻田里，幼小的稻苗站在水中，像一排排绿色小士兵。"],
+        ["Farmers checked the field again and again, because rice needs care for many days, not just one morning.","农民一遍遍查看稻田，因为水稻需要许多天的照顾，不只是一个早晨。"],
+        ["There was sunshine, rain, mud, insects, wind, and hard work hiding behind each grain.","每一粒米背后都有阳光、雨水、泥土、小虫、风，还有辛苦劳动。"],
+        ["When the rice turned golden, people knew harvest time was close.","稻谷变成金黄色时，人们就知道收割的时间快到了。"],
+        ["The field that once looked soft and green became heavy with food for many families.","那片曾经柔软青绿的田，变成了承载许多家庭食物的地方。"]
+      ]},
+      {title:"从田里到厨房",lines:[
+        ["After harvest, rice did not jump straight into a bowl.","收割以后，米并不会直接跳进碗里。"],
+        ["It had to be dried, cleaned, packed, carried, sold, bought, washed, and cooked.","它要经过晾晒、清理、包装、运输、售卖、购买、淘洗和蒸煮。"],
+        ["At home, Mom washed the rice gently until the water became clearer.","在家里，妈妈轻轻淘米，直到水变得清一点。"],
+        ["Then the rice cooker warmed the grains and filled the kitchen with a soft smell.","然后电饭煲把米粒慢慢蒸热，厨房里有了柔软的米香。"],
+        ["The child suddenly understood that dinner was not just something that appeared at six o'clock.","孩子忽然明白，晚饭不是六点钟凭空出现的东西。"]
+      ]},
+      {title:"把最后一口吃完",lines:[
+        ["Grandpa put the small grain back into the bowl and said, we do not need to be afraid of food, but we should respect it.","爷爷把那粒米放回碗里，说我们不用怕食物，但应该尊重食物。"],
+        ["Respecting food can be as simple as taking only what we can finish.","尊重食物可以很简单，就是吃多少拿多少。"],
+        ["The child looked at the rice and imagined fields, farmers, rain, roads, and the warm kitchen.","孩子看着米饭，想象稻田、农民、雨水、道路和温暖的厨房。"],
+        ["Then he ate the last grain and said it tasted a little different tonight.","然后他吃掉最后一粒米，说今晚这粒米尝起来有点不一样。"],
+        ["Maybe the taste changed because he finally heard its story.","也许味道变了，是因为他终于听见了它的故事。"]
+      ]}
+    ],
+    questions:["你今天有没有剩饭？","一粒米到碗里经过了哪些人？","如果给一粒米画路线图，你会画什么？"]
+  },
+  {
+    id:"cardboard-second-life-story",
+    category:"生活百科",
+    title:"纸箱的第二次生命",
+    enTitle:"The Second Life of a Cardboard Box",
+    minutes:"约 8-10 分钟",
+    age:"亲子讲述",
+    scene:"从快递纸箱讲到树木、纸浆、回收、再利用，让孩子理解材料和垃圾分类。",
+    words:[
+      ["cardboard box","纸箱"],
+      ["recycle","回收"],
+      ["paper pulp","纸浆"],
+      ["delivery","快递"],
+      ["sort the trash","垃圾分类"],
+      ["second life","第二次生命"]
+    ],
+    chapters:[
+      {title:"门口的快递箱",lines:[
+        ["A cardboard box sat by the door after a package was opened.","一个快递拆开后，纸箱坐在门口。"],
+        ["The child wanted to step on it and throw it away quickly.","孩子想踩扁它，然后赶快扔掉。"],
+        ["Dad said, wait a second, this box may still have a second life.","爸爸说，等一下，这个纸箱也许还有第二次生命。"],
+        ["The child laughed and asked whether a box could really live twice.","孩子笑了，问纸箱真的能活两次吗。"],
+        ["Dad picked up the box and showed the folds, tape marks, and little dents from its trip.","爸爸拿起纸箱，给他看折痕、胶带印，还有一路运输留下的小凹痕。"]
+      ]},
+      {title:"它以前也不是纸箱",lines:[
+        ["Before it became a box, it may have been part of a tree, then wood fiber, then paper pulp.","在成为纸箱之前，它可能曾是树的一部分，后来变成木纤维，再变成纸浆。"],
+        ["Machines pressed and dried the pulp until it became sheets of cardboard.","机器把纸浆压平、烘干，让它变成一张张纸板。"],
+        ["Workers cut and folded the cardboard so it could protect things during delivery.","工人把纸板裁开、折好，让它能在快递运输中保护东西。"],
+        ["The box did a quiet job: it kept the item safe while nobody paid much attention to it.","纸箱做了一份安静的工作：在人们不太注意它的时候，保护里面的东西。"],
+        ["The child touched the corner and said the box was like a small guard.","孩子摸了摸纸箱角，说它像一个小小的守卫。"]
+      ]},
+      {title:"扔掉之前先分类",lines:[
+        ["Dad removed the tape and flattened the box carefully.","爸爸撕掉胶带，把纸箱小心压平。"],
+        ["He said recycling works better when things are clean, dry, and sorted properly.","他说东西干净、干燥、分好类，回收才更容易。"],
+        ["The child asked whether every box would become a new box again.","孩子问是不是每个纸箱都会重新变成新纸箱。"],
+        ["Dad said not always, but sorting gives the material a better chance to be used again.","爸爸说不一定，但分类能让材料更有机会被再次使用。"],
+        ["That answer was not magic, but it was honest, and the child liked it.","这个答案并不神奇，但很真实，孩子喜欢这种答案。"]
+      ]},
+      {title:"一个小小选择",lines:[
+        ["They put the flattened box with other paper items instead of mixing it with food waste.","他们把压平的纸箱和其他纸类放在一起，没有和厨余混在一起。"],
+        ["The child imagined the box traveling to a place where old paper waited for a new beginning.","孩子想象纸箱去到一个地方，旧纸在那里等待新的开始。"],
+        ["Maybe it would become another box, a paper bag, or something else useful.","也许它会变成另一个纸箱、一个纸袋，或者别的有用东西。"],
+        ["That night, the child looked at the trash bin differently.","那天晚上，孩子用不一样的眼光看垃圾桶。"],
+        ["Some things are not just trash; they are materials waiting for a smarter choice.","有些东西不只是垃圾，它们是等待一个更聪明选择的材料。"]
+      ]}
+    ],
+    questions:["家里的纸箱可以怎么处理？","为什么湿纸箱不好回收？","你想让旧纸箱变成什么？"]
+  }
+];
+
 const IDIOM_LIBRARY = [
   {
     topic:"臭 / 难闻", en:"Smell Bad", color:"#8A6A3D",
@@ -12400,6 +12573,14 @@ STORY_LIBRARY.forEach(story=>{
     sentenceLookup.set(id,{id,en:line[0],zh:line[1],catName:'故事口播',subName:story.title});
   });
 });
+BEDTIME_LIBRARY.forEach(story=>{
+  story.chapters.forEach((chapter,chapterIndex)=>{
+    chapter.lines.forEach((line,lineIndex)=>{
+      const id=`bedtime-${story.id}-${chapterIndex}-${lineIndex}`;
+      sentenceLookup.set(id,{id,en:line[0],zh:line[1],catName:'睡前百科',subName:story.title});
+    });
+  });
+});
 
 function readIdList(key){
   try{return JSON.parse(localStorage.getItem(key)||'[]');}catch(e){return [];}
@@ -12728,6 +12909,7 @@ function bindDashboard(){
       if(action==='scenes'){showSceneTrainingPanel();return;}
       if(action==='idioms'){showIdiomLibrary();return;}
       if(action==='stories'){showStoryLibrary();return;}
+      if(action==='bedtime'){showBedtimeLibrary();return;}
       if(action==='library'){filterCat(null);return;}
       if(action==='searchFocus'){q.focus();return;}
       if(action==='voiceSettings'){
@@ -13585,6 +13767,7 @@ const randomSceneBtn=document.getElementById('randomSceneBtn');
 const randomWordBtn=document.getElementById('randomWordBtn');
 const idiomBtn=document.getElementById('idiomBtn');
 const storyBtn=document.getElementById('storyBtn');
+const bedtimeBtn=document.getElementById('bedtimeBtn');
 
 function showLocalDictionary(words,term){
   const word=dictCore.findDictionaryEntry(words,term);
@@ -13906,6 +14089,161 @@ function showStoryLibrary(){
   window.scrollTo({top:lookup.offsetTop-12,behavior:'smooth'});
 }
 
+function bedtimeCategories(){
+  return ['全部',...[...new Set(BEDTIME_LIBRARY.map(story=>story.category).filter(Boolean))]];
+}
+function bedtimeMatches(story,query,category){
+  const qText=String(query||'').trim().toLowerCase();
+  if(category&&category!=='全部'&&story.category!==category)return false;
+  if(!qText)return true;
+  const chapterText=story.chapters.flatMap(chapter=>[chapter.title].concat(chapter.lines.flat()));
+  return [story.title,story.enTitle,story.scene,story.category,story.minutes,story.age]
+    .concat((story.words||[]).flat())
+    .concat(story.questions||[])
+    .concat(chapterText)
+    .some(value=>String(value||'').toLowerCase().includes(qText));
+}
+function bedtimeIndexHtml(stories){
+  const quick=['自然','生活百科','水','米','纸箱','节约','回收'].map(text=>`<button type="button" data-bedtime-search="${text}">${text}</button>`).join('');
+  const items=stories.map((story,index)=>`<button type="button" data-bedtime-jump="${story.id}">
+    ${index+1}. ${story.title}<span>${story.enTitle} · ${story.minutes}</span>
+  </button>`).join('');
+  return `<div class="story-finder">
+    <div class="story-count">找到 ${stories.length} 篇睡前百科。点目录标题，直接跳到今晚要讲的故事。</div>
+    <div class="story-quick">${quick}</div>
+    <details class="story-index" open>
+      <summary>睡前百科目录</summary>
+      <div class="story-index-list">${items}</div>
+    </details>
+  </div>`;
+}
+function bedtimeLineRows(story,chapter,chapterIndex){
+  return chapter.lines.map((line,lineIndex)=>{
+    const id=`bedtime-${story.id}-${chapterIndex}-${lineIndex}`;
+    return `<div class="bedtime-line row" data-bedtime-id="${story.id}" data-sentence-id="${id}">
+      <div class="spk">${SPK_SVG}</div>
+      <div class="txt">
+        <div class="bedtime-en en">${line[0]}</div>
+        <div class="bedtime-zh zh">${line[1]}</div>
+        <div class="statusbar">
+          <button class="statusbtn" data-status="hard" type="button">不熟</button>
+          <button class="statusbtn" data-status="mastered" type="button">会了</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function bedtimeCardHtml(story){
+  const words=(story.words||[]).map(([en,zh])=>`<span>${en} / ${zh}</span>`).join('');
+  const chapters=story.chapters.map((chapter,index)=>`<section class="bedtime-chapter">
+    <h4>${index+1}. ${chapter.title}</h4>
+    ${bedtimeLineRows(story,chapter,index)}
+  </section>`).join('');
+  const questions=(story.questions||[]).map((item,index)=>`${index+1}. ${item}`).join('<br>');
+  return `<article class="bedtime-card" data-bedtime-card="${story.id}">
+    <div class="bedtime-top">
+      <h3>${story.title}<span>${story.enTitle} · ${story.category}</span></h3>
+      <div class="story-scene">${story.scene}</div>
+      <div class="bedtime-meta"><span>${story.minutes}</span><span>${story.age}</span>${words}</div>
+      <div class="bedtime-actions">
+        <button class="primary" type="button" data-bedtime-play="zh" data-bedtime="${story.id}">中文讲故事</button>
+        <button type="button" data-bedtime-play="bilingual" data-bedtime="${story.id}">中英亲子讲</button>
+        <button type="button" data-bedtime-play="en" data-bedtime="${story.id}">英文慢慢听</button>
+      </div>
+    </div>
+    ${chapters}
+    <div class="bedtime-questions"><b>讲完可以问孩子</b><p>${questions}</p></div>
+  </article>`;
+}
+function bedtimeRows(story){
+  return [...lookup.querySelectorAll(`[data-bedtime-id="${story.id}"]`)];
+}
+async function playBedtimeStory(story,mode,btn){
+  if(!story||!Array.isArray(story.chapters)||!story.chapters.length)return;
+  if(btn&&btn.classList.contains('playing')){stopAll();return;}
+  stopAll();
+  seqActive=true;
+  curBtn=null;
+  stopbar.classList.add('show');
+  const oldText=btn?btn.textContent:'';
+  if(btn){btn.classList.add('playing');btn.textContent='停止';}
+  const rows=bedtimeRows(story);
+  let rowIndex=0;
+  while(seqActive){
+    rowIndex=0;
+    for(const chapter of story.chapters){
+      for(const line of chapter.lines){
+        if(!seqActive)break;
+        rows.forEach(row=>row.classList.remove('speaking'));
+        const row=rows[rowIndex++];
+        if(row){row.classList.add('speaking');row.scrollIntoView({behavior:'smooth',block:'center'});}
+        if(mode==='zh'||mode==='bilingual')await speakStoryText(line[1],'zh',row);
+        if(!seqActive)break;
+        if(mode==='en'||mode==='bilingual')await speakStoryText(line[0],'en',row);
+        if(row)row.classList.remove('speaking');
+        await new Promise(resolve=>setTimeout(resolve,320));
+      }
+    }
+    if(seqActive)await new Promise(resolve=>setTimeout(resolve,800));
+  }
+  rows.forEach(row=>row.classList.remove('speaking'));
+  stopbar.classList.remove('show');
+  seqActive=false;
+  if(btn){btn.classList.remove('playing');btn.textContent=oldText;}
+}
+function renderBedtimeStories(){
+  const panel=lookup.querySelector('#bedtimePanel');
+  if(!panel)return;
+  const search=lookup.querySelector('#bedtimeSearch');
+  const category=lookup.querySelector('#bedtimeCategory');
+  const qText=search?search.value:'';
+  const catValue=category?category.value:'全部';
+  const stories=BEDTIME_LIBRARY.filter(story=>bedtimeMatches(story,qText,catValue));
+  panel.innerHTML=stories.length
+    ? `${bedtimeIndexHtml(stories)}${stories.map(bedtimeCardHtml).join('')}`
+    : '<div class="idiom-list"><div class="idiom-empty">这一组没搜到，换个百科词试试。</div></div>';
+  panel.querySelectorAll('[data-bedtime-search]').forEach(btn=>{
+    btn.onclick=()=>{if(search)search.value=btn.dataset.bedtimeSearch||'';renderBedtimeStories();};
+  });
+  panel.querySelectorAll('[data-bedtime-jump]').forEach(btn=>{
+    btn.onclick=()=>{
+      const card=panel.querySelector(`[data-bedtime-card="${btn.dataset.bedtimeJump}"]`);
+      if(card)card.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+  });
+  panel.querySelectorAll('[data-bedtime-play]').forEach(btn=>{
+    btn.onclick=()=>playBedtimeStory(BEDTIME_LIBRARY.find(story=>story.id===btn.dataset.bedtime),btn.dataset.bedtimePlay,btn);
+  });
+  panel.querySelectorAll('.bedtime-line[data-sentence-id]').forEach(row=>{
+    const item=sentenceLookup.get(row.dataset.sentenceId);
+    row.onclick=()=>playSingleRepeat(item.en,row);
+    row.querySelector('[data-status="hard"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'hard');};
+    row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'mastered');};
+    refreshSentenceStatus(row);
+  });
+}
+function showBedtimeLibrary(){
+  stopAll();
+  lookup.style.display='block';
+  const categories=bedtimeCategories();
+  lookup.innerHTML=`<div class="lk-card">
+    <div class="lk-en">睡前百科</div>
+    <div class="lk-zh">这是单独给孩子讲的长故事库。不是搬别人的故事，而是把自然、生活、身体、人文讲成孩子愿意听的百科故事。</div>
+    <div class="idiom-tools">
+      <input id="bedtimeSearch" type="search" placeholder="搜百科故事，例如：水、米、纸箱、回收">
+      <select id="bedtimeCategory" aria-label="睡前百科分类">
+        ${categories.map(item=>`<option value="${item}">${item}</option>`).join('')}
+      </select>
+    </div>
+    <div class="lk-note">当前 ${BEDTIME_LIBRARY.length} 篇。长故事支持整篇循环讲，也可以点每一句单独反复听。</div>
+    <div id="bedtimePanel"></div>
+  </div>`;
+  lookup.querySelector('#bedtimeSearch').oninput=renderBedtimeStories;
+  lookup.querySelector('#bedtimeCategory').onchange=renderBedtimeStories;
+  renderBedtimeStories();
+  window.scrollTo({top:lookup.offsetTop-12,behavior:'smooth'});
+}
+
 function showIdiomLibrary(topicIndex,preserveCategory){
   if(Number.isFinite(topicIndex))currentIdiomTopic=topicIndex;
   if(Number.isFinite(topicIndex)&&!preserveCategory)currentIdiomCategory=idiomCategoryIdForGroup(IDIOM_LIBRARY[currentIdiomTopic]||IDIOM_LIBRARY[0]);
@@ -13986,6 +14324,7 @@ randomSceneBtn.onclick=showSceneTrainingPanel;
 randomWordBtn.onclick=showRandomWord;
 idiomBtn.onclick=showIdiomLibrary;
 storyBtn.onclick=showStoryLibrary;
+bedtimeBtn.onclick=showBedtimeLibrary;
 q.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();translate();}});
 
 /* ---------- 分类筛选 ---------- */
@@ -14033,7 +14372,7 @@ renderEarDrawer();
 refreshAllSentenceStatus();
 bindDashboard();
 updateDashboard();
-window.HomeEnglishApp = {DATA, STORY_LIBRARY, content, chipsBox, chip, stopAll, speakOne, makeUtter, getHardIds, getMasteredIds, setSentenceStatus, refreshAllSentenceStatus, enterListMode, showHomeDashboard, updateDashboard, openEarDrawer, showStoryLibrary};
+window.HomeEnglishApp = {DATA, STORY_LIBRARY, BEDTIME_LIBRARY, content, chipsBox, chip, stopAll, speakOne, makeUtter, getHardIds, getMasteredIds, setSentenceStatus, refreshAllSentenceStatus, enterListMode, showHomeDashboard, updateDashboard, openEarDrawer, showStoryLibrary, showBedtimeLibrary};
 </script>
 <script src="practice.js"></script>
 <script>

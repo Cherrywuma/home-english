@@ -1146,6 +1146,28 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('Now I know that an address is not always enough; sometimes the doorbell name matters just as much.'));
 });
 
+test('includes separate bedtime encyclopedia library for children', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+
+  assert.ok(html.includes('id="bedtimeBtn"'));
+  assert.ok(html.includes('data-dash-action="bedtime"'));
+  assert.ok(html.includes('const BEDTIME_LIBRARY'));
+  assert.ok(html.includes('showBedtimeLibrary'));
+  assert.ok(html.includes('renderBedtimeStories'));
+  assert.ok(html.includes('playBedtimeStory'));
+  assert.ok(html.includes('中文讲故事'));
+  assert.ok(html.includes('中英亲子讲'));
+  assert.ok(html.includes('英文慢慢听'));
+  assert.ok(html.includes('The Night Journey of a Drop of Water'));
+  assert.ok(html.includes('How a Grain of Rice Arrives in a Bowl'));
+  assert.ok(html.includes('The Second Life of a Cardboard Box'));
+  assert.ok(html.includes('A tiny drop of water woke up on the edge of the kitchen tap.'));
+  assert.ok(html.includes('The child suddenly understood that dinner was not just something that appeared'));
+  assert.ok(html.includes('Some things are not just trash; they are materials waiting for a smarter choice.'));
+  assert.ok(html.includes("catName:'睡前百科'"));
+  assert.ok(html.includes('BEDTIME_LIBRARY.length'));
+});
+
 test('page stays usable without external font cdn links', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
@@ -1251,7 +1273,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v107'));
+  assert.ok(worker.includes('home-english-v108'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
