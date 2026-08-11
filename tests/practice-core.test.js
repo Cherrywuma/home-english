@@ -1166,6 +1166,15 @@ test('includes separate bedtime encyclopedia library for children', () => {
   assert.ok(html.includes('Some things are not just trash; they are materials waiting for a smarter choice.'));
   assert.ok(html.includes("catName:'睡前百科'"));
   assert.ok(html.includes('BEDTIME_LIBRARY.length'));
+  assert.ok(html.includes('A Small Brick on the Great Wall'));
+  assert.ok(html.includes('How a Map Tries to Lay the Earth Flat'));
+  assert.ok(html.includes('The Tiny Ant City Under Our Feet'));
+  assert.ok(html.includes('A Little Bell on the Silk Road'));
+  assert.ok(html.includes('History was not only kings and battles; it was also someone staying awake when others slept.'));
+  assert.ok(html.includes('A good map does not finish your thinking; it wakes it up.'));
+  assert.ok(html.includes('There may be whole little worlds under places we usually ignore.'));
+  assert.ok(html.includes('Maybe a road stays alive whenever people are willing to meet, listen, and learn.'));
+  assert.ok(html.includes("['自然','生活百科','人文','历史','地理','生物','长城','地图','蚂蚁','丝绸之路']"));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1273,7 +1282,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v108'));
+  assert.ok(worker.includes('home-english-v109'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
