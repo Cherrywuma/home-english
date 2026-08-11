@@ -1029,9 +1029,27 @@ test('includes hand-written word path library for vocabulary memory', () => {
   assert.ok(html.includes('port: carry'));
   assert.ok(html.includes('Common daily verb pairs'));
   assert.ok(html.includes('Power verbs for life and work'));
+  assert.ok(html.includes('Airport and Documents'));
+  assert.ok(html.includes('Hotel and Apartment'));
+  assert.ok(html.includes('Shopping and Payment'));
+  assert.ok(html.includes('Quotation and Order'));
+  assert.ok(html.includes('Shipping and Logistics'));
+  assert.ok(html.includes('Customer Follow-up'));
+  assert.ok(html.includes('boarding pass'));
+  assert.ok(html.includes('passport control'));
+  assert.ok(html.includes('address registration'));
+  assert.ok(html.includes('contactless payment'));
+  assert.ok(html.includes('purchase order'));
+  assert.ok(html.includes('scope of supply'));
+  assert.ok(html.includes('customs clearance'));
+  assert.ok(html.includes('tracking number'));
+  assert.ok(html.includes('internal discussion'));
+  assert.ok(html.includes('target price'));
   assert.ok(html.includes('I will resend the quotation to you now.'));
   assert.ok(html.includes('Is the tap water drinkable here?'));
   assert.ok(html.includes('How early should we arrive at the airport?'));
+  assert.ok(html.includes('The quotation is valid for seven days.'));
+  assert.ok(html.includes('Please confirm the delivery address and consignee name.'));
   assert.ok(html.includes('Can I borrow your charger for a minute?'));
   assert.ok(html.includes('Make sure the door is locked before you leave.'));
 });
@@ -1323,7 +1341,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v112'));
+  assert.ok(worker.includes('home-english-v113'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

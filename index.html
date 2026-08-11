@@ -290,6 +290,9 @@
   .wordpath-top h3{font-size:1.05rem;line-height:1.28;}
   .wordpath-top h3 span{display:block;color:var(--muted);font-size:.78rem;font-weight:750;margin-top:2px;}
   .wordpath-memory{font-size:.84rem;color:var(--muted);line-height:1.55;margin-top:7px;}
+  .wordpath-vocab{display:flex;flex-wrap:wrap;gap:7px;padding:12px 14px;background:#F6FBF8;border-top:1px solid #CFE6DC;}
+  .wordpath-vocab span{border:1px solid #CFE6DC;border-radius:999px;padding:6px 9px;font-size:.77rem;font-weight:800;color:#286B59;background:#fff;}
+  .wordpath-vocab b{color:var(--ink);font-weight:900;}
   .wordpath-item{padding:12px 14px;border-top:1px solid var(--line);}
   .wordpath-word{font-size:1rem;font-weight:900;color:var(--ink);}
   .wordpath-word span{color:var(--accent);font-size:.86rem;margin-left:6px;}
@@ -12151,6 +12154,159 @@ const WORD_PATH_LIBRARY = [
         ["Make sure the door is locked before you leave.","离开前确认门锁好了。"]
       ]}
     ]
+  },
+  {
+    id:"abroad-airport-documents",
+    type:"出国词串",
+    title:"机场和证件：先把流程词认出来",
+    enTitle:"Airport and Documents",
+    memory:"机场不用背长句，先把牌子、窗口、文件、动作词看熟。真正开口时，很多问题都是 where、which、do I need 开头。",
+    vocab:[
+      ["passport","护照"],["visa","签证"],["boarding pass","登机牌"],["ticket","机票"],["gate","登机口"],
+      ["terminal","航站楼"],["check-in counter","值机柜台"],["baggage drop","托运行李柜台"],["carry-on bag","随身行李"],
+      ["checked baggage","托运行李"],["security check","安检"],["customs","海关"],["immigration","入境检查"],
+      ["arrival","到达"],["departure","出发"],["transfer","转机"],["layover","中转停留"],["delay","延误"],
+      ["cancelled","取消"],["baggage claim","行李提取处"],["lost luggage","行李丢失"],["liquids","液体"],
+      ["laptop","笔记本电脑"],["passport control","护照检查"],["invitation letter","邀请函"]
+    ],
+    items:[
+      {word:"boarding pass / gate / terminal",zh:"登机牌 / 登机口 / 航站楼",note:"这三个词在机场最容易马上用到。先看登机牌，再看航站楼和登机口。",examples:[
+        ["Which gate should I go to?","我应该去哪个登机口？"],
+        ["Do I need to go to another terminal?","我需要去另一个航站楼吗？"]
+      ]},
+      {word:"security check / liquids / laptop",zh:"安检 / 液体 / 笔记本",note:"安检时常听到这些词。不会解释时，直接问要不要拿出来。",examples:[
+        ["Do I need to take out my laptop?","我需要把笔记本电脑拿出来吗？"],
+        ["Are these liquids okay for carry-on?","这些液体可以放随身行李吗？"]
+      ]}
+    ]
+  },
+  {
+    id:"abroad-hotel-apartment",
+    type:"出国词串",
+    title:"酒店和租房：住进去之前先听懂",
+    enTitle:"Hotel and Apartment",
+    memory:"住的地方高频词集中在入住、钥匙、押金、设施、维修。你先认词，再把问题问短一点，沟通会稳很多。",
+    vocab:[
+      ["reservation","预订"],["booking","预订"],["check in","入住"],["check out","退房"],["reception","前台"],
+      ["room key","房卡"],["key card","房卡"],["deposit","押金"],["receipt","收据"],["invoice","发票"],
+      ["single room","单人间"],["double room","双人间"],["twin room","双床房"],["non-smoking room","无烟房"],
+      ["breakfast included","含早餐"],["Wi-Fi password","无线网密码"],["air conditioner","空调"],["heater","暖气"],
+      ["radiator","暖气片"],["hot water","热水"],["shower drain","淋浴地漏"],["laundry room","洗衣房"],
+      ["landlord","房东"],["tenant","租客"],["rent","房租"],["utilities","水电杂费"],["maintenance","维修"],
+      ["noise","噪音"],["address registration","住址登记"]
+    ],
+    items:[
+      {word:"deposit / receipt / invoice",zh:"押金 / 收据 / 发票",note:"付钱后一定要会问凭证。deposit 是押金，receipt 是普通收据，invoice 更像正式发票。",examples:[
+        ["Could I get a receipt for the deposit?","押金可以给我一张收据吗？"],
+        ["Is breakfast included in the booking?","这个预订包含早餐吗？"]
+      ]},
+      {word:"maintenance / hot water / drain",zh:"维修 / 热水 / 下水口",note:"房间有问题时先说具体名词，再说 not working。",examples:[
+        ["The hot water is not working in my room.","我房间没有热水。"],
+        ["The shower drain is blocked.","淋浴地漏堵了。"]
+      ]}
+    ]
+  },
+  {
+    id:"abroad-shopping-payment",
+    type:"出国词串",
+    title:"商店和付款：买东西别卡在小词上",
+    enTitle:"Shopping and Payment",
+    memory:"出国买东西，难点常常不是大词，而是收银、退换、尺码、袋子、发票这些小词。它们很碎，但很救命。",
+    vocab:[
+      ["cashier","收银员"],["checkout","收银台"],["self-checkout","自助收银"],["receipt","小票"],["refund","退款"],
+      ["return","退货"],["exchange","换货"],["warranty","保修"],["discount","折扣"],["promotion","促销"],
+      ["price tag","价签"],["barcode","条形码"],["shopping bag","购物袋"],["basket","购物篮"],["cart","购物车"],
+      ["cash","现金"],["card","银行卡"],["contactless payment","感应支付"],["PIN","密码"],["signature","签名"],
+      ["size","尺码"],["fitting room","试衣间"],["out of stock","缺货"],["in stock","有货"],["tax free","退税"],
+      ["customer service","客服台"],["membership card","会员卡"],["plastic bag","塑料袋"]
+    ],
+    items:[
+      {word:"refund / return / exchange",zh:"退款 / 退货 / 换货",note:"return 是把东西退回去，refund 是钱退回来，exchange 是换一个。",examples:[
+        ["Can I return this if it does not fit?","如果不合适，我可以退吗？"],
+        ["I would like to exchange this for a smaller size.","我想把这个换成小一号。"]
+      ]},
+      {word:"receipt / barcode / price tag",zh:"小票 / 条码 / 价签",note:"买错、扫不出来、价格不一致时，这几个词最常用。",examples:[
+        ["The price on the receipt looks different from the price tag.","小票上的价格好像和价签不一样。"],
+        ["The barcode is not scanning.","这个条码扫不出来。"]
+      ]}
+    ]
+  },
+  {
+    id:"trade-quotation-order",
+    type:"外贸词串",
+    title:"报价和订单：客户邮件里最常见的一层词",
+    enTitle:"Quotation and Order",
+    memory:"外贸沟通先把报价、付款、交期、确认、配置这些词吃透。句子可以短，但词不能模糊。",
+    vocab:[
+      ["quotation","报价"],["quote","报价"],["inquiry","询盘"],["requirement","需求"],["specification","规格"],
+      ["configuration","配置"],["drawing","图纸"],["dimension","尺寸"],["model","型号"],["quantity","数量"],
+      ["unit price","单价"],["total amount","总金额"],["discount","折扣"],["validity","有效期"],["lead time","交期"],
+      ["delivery time","交货时间"],["payment terms","付款条件"],["deposit","定金"],["balance payment","尾款"],
+      ["purchase order","采购订单"],["PI","形式发票"],["proforma invoice","形式发票"],["confirmation","确认"],
+      ["revision","修改版"],["updated quote","更新报价"],["final price","最终价格"],["technical details","技术细节"],
+      ["scope of supply","供货范围"],["excluded items","不包含项目"]
+    ],
+    items:[
+      {word:"quotation / validity / lead time",zh:"报价 / 有效期 / 交期",note:"客户问价格时，别只给 price，报价有效期和交期也常一起出现。",examples:[
+        ["The quotation is valid for seven days.","这个报价有效期是七天。"],
+        ["The lead time depends on the final quantity.","交期取决于最终数量。"]
+      ]},
+      {word:"purchase order / PI / deposit",zh:"采购订单 / 形式发票 / 定金",note:"从聊价格到正式下单，通常会出现 PO、PI、deposit 这条线。",examples:[
+        ["After you confirm the PI, we can arrange production after the deposit.","你确认 PI 后，我们收到定金就可以安排生产。"],
+        ["Could you send the purchase order for our records?","你能发采购订单给我们留档吗？"]
+      ]}
+    ]
+  },
+  {
+    id:"trade-shipping-logistics",
+    type:"外贸词串",
+    title:"物流和运输：货怎么走，文件怎么跟",
+    enTitle:"Shipping and Logistics",
+    memory:"物流词不要等发货时才学。客户一问运费、港口、跟踪号、清关，你要能马上认出来。",
+    vocab:[
+      ["shipment","出货；货件"],["shipping cost","运费"],["freight","货运；运费"],["air freight","空运"],
+      ["sea freight","海运"],["courier","快递"],["express delivery","快递运输"],["tracking number","跟踪号"],
+      ["pickup","取件"],["delivery address","收货地址"],["consignee","收货人"],["sender","寄件人"],
+      ["package","包裹"],["carton","纸箱"],["pallet","托盘"],["gross weight","毛重"],["net weight","净重"],
+      ["packing list","装箱单"],["commercial invoice","商业发票"],["bill of lading","提单"],["customs clearance","清关"],
+      ["HS code","海关编码"],["import duty","进口关税"],["destination port","目的港"],["loading port","装货港"],
+      ["ETA","预计到达时间"],["ETD","预计离港时间"],["incoterms","国际贸易术语"]
+    ],
+    items:[
+      {word:"tracking number / delivery address / consignee",zh:"跟踪号 / 收货地址 / 收货人",note:"快递和货运都绕不开。地址不完整时，先补 consignee 和 phone number。",examples:[
+        ["I will send the tracking number once the shipment is picked up.","货被取走后，我会把跟踪号发给你。"],
+        ["Please confirm the delivery address and consignee name.","请确认收货地址和收货人姓名。"]
+      ]},
+      {word:"packing list / commercial invoice / customs clearance",zh:"装箱单 / 商业发票 / 清关",note:"这组是外贸文件核心词，客户或货代经常会问。",examples:[
+        ["We will prepare the packing list and commercial invoice before shipment.","出货前我们会准备装箱单和商业发票。"],
+        ["Please check whether you need any extra documents for customs clearance.","请确认清关是否需要额外文件。"]
+      ]}
+    ]
+  },
+  {
+    id:"trade-customer-follow-up",
+    type:"外贸词串",
+    title:"客户跟进：不回复时先听懂这些词",
+    enTitle:"Customer Follow-up",
+    memory:"客户不回复，不一定是不买。有时是在 review、compare、approve、discuss。先学这些词，你就能判断跟进语气。",
+    vocab:[
+      ["follow up","跟进"],["review","查看；审核"],["feedback","反馈"],["update","更新；进展"],["decision","决定"],
+      ["approval","批准"],["budget","预算"],["schedule","时间安排"],["priority","优先级"],["comparison","对比"],
+      ["competitor","竞争对手"],["alternative","替代方案"],["concern","顾虑"],["question","问题"],["clarification","澄清"],
+      ["internal discussion","内部讨论"],["manager","经理"],["engineer","工程师"],["purchasing team","采购团队"],
+      ["end user","终端用户"],["urgent","紧急"],["pending","待处理"],["on hold","暂停"],["move forward","推进"],
+      ["next step","下一步"],["timeline","时间线"],["target price","目标价"],["budget limit","预算限制"]
+    ],
+    items:[
+      {word:"review / feedback / update",zh:"查看 / 反馈 / 进展",note:"跟进客户时最温和的一组词，不会显得太催。",examples:[
+        ["Just checking if you had a chance to review the quotation.","我想确认一下你是否有时间看过报价。"],
+        ["Do you have any feedback or update on this project?","这个项目你有什么反馈或进展吗？"]
+      ]},
+      {word:"concern / budget / next step",zh:"顾虑 / 预算 / 下一步",note:"客户沉默时，可以给对方一个容易回答的出口。",examples:[
+        ["If price is a concern, we can discuss a more suitable option.","如果价格是顾虑，我们可以讨论更合适的方案。"],
+        ["What would be the next step on your side?","你们这边下一步会是什么？"]
+      ]}
+    ]
   }
 ];
 
@@ -14496,6 +14652,7 @@ function wordPathMatches(path,query,type){
   if(type&&type!=='全部'&&path.type!==type)return false;
   if(!qText)return true;
   return [path.title,path.enTitle,path.type,path.memory]
+    .concat((path.vocab||[]).flat())
     .concat((path.items||[]).flatMap(item=>[
       item.word,item.zh,item.note,
       ...(item.examples||[]).flat()
@@ -14503,12 +14660,13 @@ function wordPathMatches(path,query,type){
     .some(value=>String(value||'').toLowerCase().includes(qText));
 }
 function wordPathIndexHtml(paths){
-  const quick=['re-','un-','-er','-able','port','bring / take','get','机场','充电器','重新发送'].map(text=>`<button type="button" data-wordpath-search="${text}">${text}</button>`).join('');
+  const wordCount=paths.reduce((sum,path)=>sum+(path.vocab||[]).length+(path.items||[]).length,0);
+  const quick=['机场','护照','酒店','押金','退货','报价','交期','清关','跟踪号','客户跟进','re-','un-'].map(text=>`<button type="button" data-wordpath-search="${text}">${text}</button>`).join('');
   const items=paths.map((path,index)=>`<button type="button" data-wordpath-jump="${path.id}">
     ${index+1}. ${path.title}<span>${path.enTitle} · ${path.type}</span>
   </button>`).join('');
   return `<div class="story-finder">
-    <div class="story-count">找到 ${paths.length} 条单词路径。先按路径记，再把例句放进口里。</div>
+    <div class="story-count">找到 ${paths.length} 条单词路径，约 ${wordCount} 个核心词。先扫词，再看少量例句。</div>
     <div class="story-quick">${quick}</div>
     <details class="story-index" open>
       <summary>单词路径目录</summary>
@@ -14538,11 +14696,13 @@ function wordPathItemHtml(path,item){
   </div>`;
 }
 function wordPathCardHtml(path){
+  const vocab=(path.vocab||[]).map(([en,zh])=>`<span><b>${en}</b> / ${zh}</span>`).join('');
   return `<article class="wordpath-card" data-wordpath-card="${path.id}">
     <div class="wordpath-top">
       <h3>${path.title}<span>${path.enTitle} · ${path.type}</span></h3>
       <div class="wordpath-memory">${path.memory}</div>
     </div>
+    ${vocab?`<div class="wordpath-vocab">${vocab}</div>`:''}
     ${(path.items||[]).map(item=>wordPathItemHtml(path,item)).join('')}
   </article>`;
 }
@@ -14587,7 +14747,7 @@ function showWordPathLibrary(){
         ${types.map(item=>`<option value="${item}">${item}</option>`).join('')}
       </select>
     </div>
-    <div class="lk-note">当前 ${WORD_PATH_LIBRARY.length} 条路径。这部分按人工理解慢慢写，不自动乱生成词表。</div>
+    <div class="lk-note">当前 ${WORD_PATH_LIBRARY.length} 条路径。这里优先加出国和外贸会卡住的小词，句子少一点，词汇覆盖多一点。</div>
     <div id="wordPathPanel"></div>
   </div>`;
   lookup.querySelector('#wordPathSearch').oninput=renderWordPathCards;
