@@ -1456,6 +1456,22 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('Li Bai is often described as romantic, but that word alone is too clean for him.'));
   assert.ok(html.includes('Some ancient objects look familiar, but Sanxingdui almost refuses to look familiar.'));
   assert.ok(html.includes('If you want to understand a Chinese city today, do not only look at tall buildings; watch the delivery riders for five minutes.'));
+  assert.ok(html.includes('A Teahouse Is Not Just a Place to Drink Tea'));
+  assert.ok(html.includes('A Temple Fair Is Loud, Crowded, and Alive'));
+  assert.ok(html.includes('A County Town Can Explain a Lot About China'));
+  assert.ok(html.includes('Market Day Is More Than Shopping'));
+  assert.ok(html.includes('An Ancestral Hall Holds Family Memory'));
+  assert.ok(html.includes('A Chinese Garden Teaches You to Look Slowly'));
+  assert.ok(html.includes('West Lake Is Scenery, Stories, and City Life Together'));
+  assert.ok(html.includes('A Night Market Is Smoke, Choice, and Small Decisions'));
+  assert.ok(html.includes('If I call a teahouse just a place to drink tea, I miss the chairs, the voices, and the slow time inside it.'));
+  assert.ok(html.includes('A temple fair is not the quiet kind of tradition you only see in a museum.'));
+  assert.ok(html.includes('If you only talk about Beijing, Shanghai, and Shenzhen, you may miss a large part of ordinary China.'));
+  assert.ok(html.includes('Market day is shopping, yes, but in many towns it is also a weekly meeting of real life.'));
+  assert.ok(html.includes('An ancestral hall is connected with ancestors, family names, ceremonies, and village memory.'));
+  assert.ok(html.includes('A Chinese garden is not trying to show everything at once, and that is why some visitors miss it at first.'));
+  assert.ok(html.includes('West Lake is beautiful, but saying only beautiful feels like taking one photo and leaving too early.'));
+  assert.ok(html.includes('A night market looks like noise first, but after a while you start to hear small choices inside it.'));
   assert.ok(html.includes("'文旅'"));
   assert.ok(html.includes("'历史'"));
   assert.ok(html.includes("'人物'"));
@@ -1618,7 +1634,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v128'));
+  assert.ok(worker.includes('home-english-v129'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
