@@ -1440,6 +1440,22 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('Dunhuang is beautiful, but if we only say beautiful, we make it too small.'));
   assert.ok(html.includes('If you only say the Spring Festival travel rush is crowded, you are correct, but you miss the reason people still go.'));
   assert.ok(html.includes('A hutong can look like an old wall in a photo, but real life there is louder than the photo.'));
+  assert.ok(html.includes('Explain Traditional Chinese Medicine Without Making It Mysterious'));
+  assert.ok(html.includes('The Imperial Exam Was More Than an Ancient Test'));
+  assert.ok(html.includes('The Yangtze River Is Not Only a Long River'));
+  assert.ok(html.includes('The Yellow River Is More Than the Mother River'));
+  assert.ok(html.includes('The Dragon Boat Festival Is Not Only Zongzi'));
+  assert.ok(html.includes('Li Bai Was Not Only Romantic'));
+  assert.ok(html.includes('Sanxingdui Feels Strange at First, and That Is the Point'));
+  assert.ok(html.includes('Delivery Riders Show the Speed of a Chinese City'));
+  assert.ok(html.includes('When people talk about traditional Chinese medicine, the conversation can become mysterious too quickly.'));
+  assert.ok(html.includes('If I translate 科举 as ancient exam, the English is not wrong, but the story becomes too small.'));
+  assert.ok(html.includes('The Yangtze River is long, yes, but if we stop there, it becomes a line on a map.'));
+  assert.ok(html.includes('Mother river is a strong phrase, but if I only say that, people may not know what the Yellow River actually did.'));
+  assert.ok(html.includes('If I explain the Dragon Boat Festival only with zongzi, I can make foreigners hungry, but not really understand the festival.'));
+  assert.ok(html.includes('Li Bai is often described as romantic, but that word alone is too clean for him.'));
+  assert.ok(html.includes('Some ancient objects look familiar, but Sanxingdui almost refuses to look familiar.'));
+  assert.ok(html.includes('If you want to understand a Chinese city today, do not only look at tall buildings; watch the delivery riders for five minutes.'));
   assert.ok(html.includes("'文旅'"));
   assert.ok(html.includes("'历史'"));
   assert.ok(html.includes("'人物'"));
@@ -1602,7 +1618,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v127'));
+  assert.ok(worker.includes('home-english-v128'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
