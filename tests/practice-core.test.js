@@ -1424,6 +1424,22 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('Broken is a useful word, but if everything is broken, the landlord still does not know what happened.'));
   assert.ok(html.includes('If I explain Chinese New Year with only red and lucky, I feel like I have missed the real part.'));
   assert.ok(html.includes('Many people is correct English, but it often sounds like you are only counting heads.'));
+  assert.ok(html.includes('Confucius Is More Than an Old Saying'));
+  assert.ok(html.includes('Su Shi Was Talented, But Also Very Human'));
+  assert.ok(html.includes('The Forbidden City Is Not Just a Big Palace'));
+  assert.ok(html.includes('Look at the Faces of the Terracotta Warriors'));
+  assert.ok(html.includes('The Grand Canal Moved More Than Water'));
+  assert.ok(html.includes('Dunhuang Was a Meeting Place, Not Just Beautiful Art'));
+  assert.ok(html.includes('The Spring Festival Travel Rush Is More Than Crowds'));
+  assert.ok(html.includes('A Hutong Is Not Just an Old Wall'));
+  assert.ok(html.includes('If a foreign friend asks who Confucius was, famous philosopher is correct, but it feels too thin.'));
+  assert.ok(html.includes('People often introduce Su Shi by saying he was talented, but that is only the door, not the room.'));
+  assert.ok(html.includes('If I only say the Forbidden City is a big palace, the listener may imagine one large building and miss the feeling of the place.'));
+  assert.ok(html.includes("A useful sentence is: the Terracotta Warriors were made for the tomb of China's first emperor, Qin Shi Huang."));
+  assert.ok(html.includes('If you think the Grand Canal is just a long river, you miss why it mattered.'));
+  assert.ok(html.includes('Dunhuang is beautiful, but if we only say beautiful, we make it too small.'));
+  assert.ok(html.includes('If you only say the Spring Festival travel rush is crowded, you are correct, but you miss the reason people still go.'));
+  assert.ok(html.includes('A hutong can look like an old wall in a photo, but real life there is louder than the photo.'));
   assert.ok(html.includes("'文旅'"));
   assert.ok(html.includes("'历史'"));
   assert.ok(html.includes("'人物'"));
@@ -1586,7 +1602,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v126'));
+  assert.ok(worker.includes('home-english-v127'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
