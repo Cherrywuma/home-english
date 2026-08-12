@@ -1408,6 +1408,22 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('It is a quiet way to make a guest feel less like a stranger.'));
   assert.ok(html.includes('It is better to look careful than to mix everything because I feel shy.'));
   assert.ok(html.includes('I do not need to be funny right away. I just need a small place to stand.'));
+  assert.ok(html.includes('Returning an Item Without Starting a Fight'));
+  assert.ok(html.includes('Buying the Right Bus or Tram Ticket'));
+  assert.ok(html.includes('Asking a Customer to Confirm Without Sounding Cold'));
+  assert.ok(html.includes('When a Customer Says They Will Think About It'));
+  assert.ok(html.includes('When a Child Says They Do Not Want to Go to School'));
+  assert.ok(html.includes('Messaging the Landlord About a Repair'));
+  assert.ok(html.includes('Chinese New Year Is Not Only Red and Lucky'));
+  assert.ok(html.includes('Crowded, Busy, Packed: Different Ways to Say There Are Many People'));
+  assert.ok(html.includes('A lot of people think returning something means you have to argue, but most of the time you just need your facts ready.'));
+  assert.ok(html.includes('The scary part of public transport abroad is not always the price; it is buying the wrong kind of ticket.'));
+  assert.ok(html.includes('Everyone says please confirm, but that sentence alone often sounds cold and easy to ignore.'));
+  assert.ok(html.includes('When a customer says I will think about it, many salespeople hear no, but sometimes it means not yet.'));
+  assert.ok(html.includes('When a child says I do not want to go to school, the fastest answer is you have to go, but it may not be the most useful one.'));
+  assert.ok(html.includes('Broken is a useful word, but if everything is broken, the landlord still does not know what happened.'));
+  assert.ok(html.includes('If I explain Chinese New Year with only red and lucky, I feel like I have missed the real part.'));
+  assert.ok(html.includes('Many people is correct English, but it often sounds like you are only counting heads.'));
   assert.ok(html.includes("'文旅'"));
   assert.ok(html.includes("'历史'"));
   assert.ok(html.includes("'人物'"));
@@ -1570,7 +1586,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v125'));
+  assert.ok(worker.includes('home-english-v126'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
