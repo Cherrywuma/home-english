@@ -1067,10 +1067,12 @@ test('includes hand-written word path library for vocabulary memory', () => {
   assert.ok(html.includes('Materials, Tools, and Hardware'));
   assert.ok(html.includes('Price Negotiation'));
   assert.ok(html.includes('Customs and Trade Documents'));
-  assert.ok(html.includes('Germany Street and Public Signs'));
-  assert.ok(html.includes('Germany Station and Transport Words'));
-  assert.ok(html.includes('Germany Supermarket Words'));
-  assert.ok(html.includes('Germany Hotel and Stay Words'));
+  assert.ok(html.includes('Road and Public Sign Words in Germany'));
+  assert.ok(html.includes('Station and Transport English in Germany'));
+  assert.ok(html.includes('Supermarket English in Germany'));
+  assert.ok(html.includes('Hotel and Apartment Stay English in Germany'));
+  assert.ok(html.includes('Buildings and Shopping Malls in Germany'));
+  assert.ok(html.includes('Exhibition Venue English in Germany'));
   assert.ok(html.includes('boarding pass'));
   assert.ok(html.includes('passport control'));
   assert.ok(html.includes('address registration'));
@@ -1108,23 +1110,29 @@ test('includes hand-written word path library for vocabulary memory', () => {
   assert.ok(html.includes('stainless steel'));
   assert.ok(html.includes('volume discount'));
   assert.ok(html.includes('certificate of origin'));
-  assert.ok(html.includes('Eingang / entrance'));
-  assert.ok(html.includes('Ausgang / exit'));
-  assert.ok(html.includes('Notausgang / emergency exit'));
-  assert.ok(html.includes('Öffnungszeiten / opening hours'));
-  assert.ok(html.includes('Umleitung / detour'));
-  assert.ok(html.includes('Bahnhof / train station'));
-  assert.ok(html.includes('Gleis / platform track'));
-  assert.ok(html.includes('Verspätung / delay'));
-  assert.ok(html.includes('Ersatzverkehr / replacement service'));
-  assert.ok(html.includes('Kasse / checkout'));
-  assert.ok(html.includes('Pfand / bottle deposit'));
-  assert.ok(html.includes('Leergut / empty bottles'));
-  assert.ok(html.includes('MHD / best-before date'));
-  assert.ok(html.includes('Rezeption / reception'));
-  assert.ok(html.includes('Frühstück / breakfast'));
-  assert.ok(html.includes('WLAN / Wi-Fi'));
-  assert.ok(html.includes('Kaution / deposit'));
+  assert.ok(html.includes('emergency exit'));
+  assert.ok(html.includes('staff only'));
+  assert.ok(html.includes('pedestrian zone'));
+  assert.ok(html.includes('departure board'));
+  assert.ok(html.includes('replacement bus'));
+  assert.ok(html.includes('fare zone'));
+  assert.ok(html.includes('bottle deposit'));
+  assert.ok(html.includes('bottle return machine'));
+  assert.ok(html.includes('best-before date'));
+  assert.ok(html.includes('Wi-Fi password'));
+  assert.ok(html.includes('maintenance request'));
+  assert.ok(html.includes('visitor badge'));
+  assert.ok(html.includes('parking garage'));
+  assert.ok(html.includes('visitor registration'));
+  assert.ok(html.includes('booth number'));
+  assert.ok(html.includes('product sample'));
+  assert.equal(html.includes('Eingang / entrance'), false);
+  assert.equal(html.includes('Ausgang / exit'), false);
+  assert.equal(html.includes('Notausgang / emergency exit'), false);
+  assert.equal(html.includes('Kasse / checkout'), false);
+  assert.equal(html.includes('Pfand / bottle deposit'), false);
+  assert.equal(html.includes('WLAN / Wi-Fi'), false);
+  assert.equal(html.includes('Rezeption / reception'), false);
   assert.ok(html.includes('purchase order'));
   assert.ok(html.includes('scope of supply'));
   assert.ok(html.includes('customs clearance'));
@@ -1160,10 +1168,13 @@ test('includes hand-written word path library for vocabulary memory', () => {
   assert.ok(html.includes('Do you need stainless steel or carbon steel?'));
   assert.ok(html.includes('Could you share your target price?'));
   assert.ok(html.includes('Please confirm the HS code with your customs broker.'));
-  assert.ok(html.includes('If you see Ausgang, it means exit.'));
+  assert.ok(html.includes('Where is the main entrance?'));
   assert.ok(html.includes('Do I need to validate this ticket?'));
-  assert.ok(html.includes('Where is the Pfandautomat?'));
-  assert.ok(html.includes('Could I have the WLAN Passwort?'));
+  assert.ok(html.includes('Where can I take the replacement bus?'));
+  assert.ok(html.includes('Where is the bottle return machine?'));
+  assert.ok(html.includes('Could I have the Wi-Fi password?'));
+  assert.ok(html.includes('Do I need a visitor badge?'));
+  assert.ok(html.includes('Our booth is in Hall 3, booth B18.'));
   assert.ok(html.includes('Can I borrow your charger for a minute?'));
   assert.ok(html.includes('Make sure the door is locked before you leave.'));
 });
@@ -1688,10 +1699,10 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(html.includes("btn.classList.add('playing')"));
 });
 
-test('service worker version is bumped after teacher tts changes', () => {
+test('service worker version is bumped after Germany English word path changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v132'));
+  assert.ok(worker.includes('home-english-v133'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
