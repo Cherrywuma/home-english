@@ -1472,6 +1472,22 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('A Chinese garden is not trying to show everything at once, and that is why some visitors miss it at first.'));
   assert.ok(html.includes('West Lake is beautiful, but saying only beautiful feels like taking one photo and leaving too early.'));
   assert.ok(html.includes('A night market looks like noise first, but after a while you start to hear small choices inside it.'));
+  assert.ok(html.includes('City Walk Is Not Just Wandering Around'));
+  assert.ok(html.includes('Museum Merch Is Not Just Cute Stuff'));
+  assert.ok(html.includes('Hanfu Photos Are Not Just Dressing Up'));
+  assert.ok(html.includes('New Chinese-Style Tea Drinks Are More Than Milk Tea'));
+  assert.ok(html.includes('Livestream Shopping Is Not Just Shouting a Low Price'));
+  assert.ok(html.includes('Electric Cars Are Cool Until You Need a Charger'));
+  assert.ok(html.includes('Delivery Robots Are Cute Until They Meet Real Streets'));
+  assert.ok(html.includes('Blind Boxes Are Not Just Toys for Children'));
+  assert.ok(html.includes('Some people hear city walk and think it just means wandering around with nothing to do.'));
+  assert.ok(html.includes('When museum merch becomes popular, it is easy to laugh and say people are just buying cute stuff.'));
+  assert.ok(html.includes('Some people see Hanfu photos and say it is only dressing up, but that answer is too quick.'));
+  assert.ok(html.includes('It is easy to say new Chinese-style tea drinks are just milk tea with nicer packaging.'));
+  assert.ok(html.includes('If you only see livestream shopping as someone shouting cheap, cheap, cheap, you miss why people keep watching.'));
+  assert.ok(html.includes('Electric cars look futuristic in videos, but real life starts when the battery drops below twenty percent.'));
+  assert.ok(html.includes('A delivery robot looks cute online, but a real street is not a clean demo room.'));
+  assert.ok(html.includes('Blind boxes look childish at first, until you notice how many adults are buying them after work.'));
   assert.ok(html.includes("'文旅'"));
   assert.ok(html.includes("'历史'"));
   assert.ok(html.includes("'人物'"));
@@ -1634,7 +1650,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v129'));
+  assert.ok(worker.includes('home-english-v130'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
