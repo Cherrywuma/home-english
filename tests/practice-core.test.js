@@ -1488,6 +1488,22 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('Electric cars look futuristic in videos, but real life starts when the battery drops below twenty percent.'));
   assert.ok(html.includes('A delivery robot looks cute online, but a real street is not a clean demo room.'));
   assert.ok(html.includes('Blind boxes look childish at first, until you notice how many adults are buying them after work.'));
+  assert.ok(html.includes('High-Speed Rail Is Fast, But the Real Story Is Daily Life'));
+  assert.ok(html.includes('Mobile Payment Feels Easy, But It Is Not Magic'));
+  assert.ok(html.includes('A Community Canteen Is More Than a Cheap Meal'));
+  assert.ok(html.includes('Square Dancing Is About Music, Exercise, and Public Space'));
+  assert.ok(html.includes('County-Town Coffee Is Not Just Copying Big Cities'));
+  assert.ok(html.includes('Exam Pressure Is Not Only About Wanting Stability'));
+  assert.ok(html.includes('Short Dramas Are Fast Because Emotions Are Fast'));
+  assert.ok(html.includes('Old Chinese Brands Are Trying to Speak Younger'));
+  assert.ok(html.includes('If I describe Chinese high-speed rail only as fast, I miss why people depend on it so much.'));
+  assert.ok(html.includes('Mobile payment in China can feel so easy that people forget how many small steps are hiding behind it.'));
+  assert.ok(html.includes('A community canteen may look like a place for cheap lunch, but for some people it is also a reason to go downstairs.'));
+  assert.ok(html.includes('If you call square dancing just aunties dancing, you miss the public-space problem behind it.'));
+  assert.ok(html.includes('When a coffee shop opens in a small county town, some people laugh and say the town is copying big cities.'));
+  assert.ok(html.includes('When young people prepare for exams again and again, it is easy to say they only want stability.'));
+  assert.ok(html.includes('Short dramas can look ridiculous if you only watch one dramatic scene out of context.'));
+  assert.ok(html.includes('When an old Chinese brand changes its packaging, some people say it is just trying to look young.'));
   assert.ok(html.includes("'文旅'"));
   assert.ok(html.includes("'历史'"));
   assert.ok(html.includes("'人物'"));
@@ -1650,7 +1666,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after teacher tts changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v130'));
+  assert.ok(worker.includes('home-english-v131'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
