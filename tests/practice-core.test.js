@@ -1191,6 +1191,13 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('data-story-jump'));
   assert.ok(html.includes('data-story-search'));
   assert.ok(html.includes('口播目录'));
+  assert.ok(html.includes('personal-arm-scar-commute'));
+  assert.ok(html.includes('The Scar on My Arm and the Commute I Finally Questioned'));
+  assert.ok(html.includes('Every time I see the scar on my arm, I still pause for a second.'));
+  assert.ok(html.includes('I know my colleague did not mean to hurt me, but the pain was so sharp that I almost fainted.'));
+  assert.ok(html.includes('Maybe accepting it does not mean I like it.'));
+  assert.ok(html.includes('疤痕'));
+  assert.ok(html.includes('电动车'));
   assert.ok(html.includes('找到 ${stories.length} 段口播'));
   assert.ok(html.includes('card.scrollIntoView'));
   assert.ok(html.includes('英文口播'));
@@ -1699,10 +1706,10 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(html.includes("btn.classList.add('playing')"));
 });
 
-test('service worker version is bumped after Germany English word path changes', () => {
+test('service worker version is bumped after personal scar story changes', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v133'));
+  assert.ok(worker.includes('home-english-v134'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

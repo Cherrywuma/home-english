@@ -12175,6 +12175,44 @@ const STORY_LIBRARY = [
     patterns:["... does not mean ...","Silence is not always ...","A boundary is not ...; it is ..."]
   },
   {
+    id:"personal-arm-scar-commute",
+    category:"情感",
+    title:"胳膊上的疤痕和那段通勤",
+    enTitle:"The Scar on My Arm and the Commute I Finally Questioned",
+    scene:"个人故事口播：三十岁那年骑电瓶车摔倒，胳膊留下疤痕。练 scar、commute、accident、disinfect、almost faint、slowly accept。语气克制，不把痛苦写成口号。",
+    words:[
+      ["scar","疤痕"],
+      ["electric bike","电瓶车"],
+      ["commute","通勤"],
+      ["fall off","摔下来"],
+      ["disinfect","消毒"],
+      ["almost faint","差点晕过去"],
+      ["wrong-way rider","逆向骑行的人"],
+      ["push me to leave","推动我离开"],
+      ["accept it slowly","慢慢接受它"]
+    ],
+    lines:[
+      ["Every time I see the scar on my arm, I still pause for a second.","每次看到胳膊上的疤，我还是会停一下。"],
+      ["It happened when I was thirty, during a period when I had to travel a long way for work.","那是在我三十岁时发生的。那段时间，我上班路上很远。"],
+      ["One day, I fell off an electric bike and my arm was badly scraped.","有一天，我从电瓶车上摔了下来，胳膊擦得很严重。"],
+      ["The wound was still fresh when alcohol was poured directly on it to disinfect it.","伤口还很新鲜的时候，酒精直接倒在上面消毒。"],
+      ["I know my colleague did not mean to hurt me, but the pain was so sharp that I almost fainted.","我知道同事不是故意的，但那一下疼得太狠，我差点晕过去。"],
+      ["That moment stayed in my body longer than I expected.","那一刻在身体里留下的时间，比我想象的久。"],
+      ["Not long before that, I had also been hit by someone riding the wrong way.","就在那之前不久，我骑电瓶车时也被逆向行驶的人撞过。"],
+      ["That accident was lighter, so I told myself it was fine.","那次轻一些，所以我还劝自己没事。"],
+      ["But after the scar, I could no longer pretend the long commute was only inconvenient.","但有了这道疤以后，我再也没办法假装那段很长的通勤只是麻烦。"],
+      ["It was danger added to every normal workday.","它是每天上班日子里额外加上的危险。"],
+      ["I do not blame one single person for everything, but I did start walking faster toward leaving that company.","我不是把所有事都怪到某一个人身上，但我的确更快地走向了离开那家公司。"],
+      ["Sometimes I look at the scar and still wish I could wake up and find out it was only a dream.","有时候我看着它，还是会希望醒来发现这只是一场梦。"],
+      ["Then real life pulls me back: the wound healed, the mark stayed, and I am still here.","可是现实又把我拉回来：伤口好了，痕迹留下了，我还在这里。"],
+      ["Maybe accepting it does not mean I like it.","也许接受并不是我喜欢它。"],
+      ["It means I stop fighting the same fact every time I see my arm.","它只是意味着，我不用每次看到胳膊都和同一个事实重新打一架。"],
+      ["Life often makes us accept things before our hearts are ready.","人生常常在心还没准备好时，就让我们先接受一些东西。"],
+      ["I am still learning to be gentle with that part of myself.","我还在学着温柔对待那个部分的自己。"]
+    ],
+    patterns:["Every time I see ..., I still ...","I know ..., but the pain was ...","Accepting it does not mean I like it."]
+  },
+  {
     id:"shortvideo-child-values-small-promises",
     category:"短视频",
     title:"教孩子守信用，从小承诺开始",
@@ -18753,7 +18791,7 @@ function storyMatches(story,query,category){
     .some(value=>String(value||'').toLowerCase().includes(qText));
 }
 function storyQuickKeywords(){
-  return ['短视频','文旅','历史','人物','情感','价值观','文化','博物馆','跟进','谈价','学习方法','德国','酒店','客户','机场','火车','超市','药店','厕所','付款','地址','维修','医生','同事','展会','孩子','迟到','停车','发票','邻居','复盘'];
+  return ['短视频','文旅','历史','人物','情感','疤痕','通勤','电动车','离职','接受','价值观','文化','博物馆','跟进','谈价','学习方法','德国','酒店','客户','机场','火车','超市','药店','厕所','付款','地址','维修','医生','同事','展会','孩子','迟到','停车','发票','邻居','复盘'];
 }
 function storyIndexHtml(stories){
   const quick=storyQuickKeywords().map(text=>`<button type="button" data-story-search="${text}">${text}</button>`).join('');
