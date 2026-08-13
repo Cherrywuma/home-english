@@ -1196,6 +1196,21 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('Every time I see the scar on my arm, I still pause for a second.'));
   assert.ok(html.includes('I know my colleague did not mean to hurt me, but the pain was so sharp that I almost fainted.'));
   assert.ok(html.includes('Maybe accepting it does not mean I like it.'));
+  assert.ok(html.includes('germany-station-platform-change-story'));
+  assert.ok(html.includes('When the Platform Changes at a German Station'));
+  assert.ok(html.includes('The platform had changed from seven to twelve.'));
+  assert.ok(html.includes('exhibition-setup-first-morning'));
+  assert.ok(html.includes('Setting Up the Booth on the First Morning'));
+  assert.ok(html.includes('A booth does not need to look perfect, but it needs to feel ready.'));
+  assert.ok(html.includes('china-breakfast-stall-morning'));
+  assert.ok(html.includes('The Breakfast Stall Outside the Community Gate'));
+  assert.ok(html.includes('Sometimes culture is also a warm plastic bag in someone'));
+  assert.ok(html.includes('airport-gate-change-calmly'));
+  assert.ok(html.includes('When the Gate Changes at the Airport'));
+  assert.ok(html.includes('Travel teaches you one small habit: check the screen even when you think you already know.'));
+  assert.ok(html.includes('child-apologizes-after-breaking-toy'));
+  assert.ok(html.includes('Teaching a Child to Apologize After Breaking a Toy'));
+  assert.ok(html.includes('A good apology does not make the past disappear, but it can make the next step cleaner.'));
   assert.ok(html.includes('疤痕'));
   assert.ok(html.includes('电动车'));
   assert.ok(html.includes('找到 ${stories.length} 段口播'));
@@ -1706,10 +1721,10 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(html.includes("btn.classList.add('playing')"));
 });
 
-test('service worker version is bumped after personal scar story changes', () => {
+test('service worker version is bumped after new speaking story batch', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v134'));
+  assert.ok(worker.includes('home-english-v135'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
