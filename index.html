@@ -567,7 +567,7 @@ if(location.hostname==='cherrywuma.github.io'){
     <div class="kicker">Home English · 中英对照</div>
     <h1>家里每天都在<em>说的话</em></h1>
     <p>厨房、客厅、卧室、盥洗吃喝、和孩子说话——把家里一天用得到的英语整理在一起。点任意一句就能听发音（浏览器免费朗读，不联网 API）。</p>
-    <div class="stat">共 <b id="totalCount">0</b> 句 · 点句子听读 · 点「朗读本节」连续播放</div>
+    <div class="stat">共 <b id="totalCount">0</b> 句 · 点句子反复听 · 点「循环朗读本节」一节一节练</div>
     <button id="practiceLaunch" class="practice-launch" type="button">不会专练 · 只练卡住的句子</button>
     <button id="installBtn" class="installbtn">📲 安装到手机</button>
     <div id="iosTip" class="iostip">想当 App 用：点 Safari 底部的「分享」<b>↑</b>，再选「<b>添加到主屏幕</b>」。</div>
@@ -675,7 +675,7 @@ if(location.hostname==='cherrywuma.github.io'){
   <main id="content"></main>
 
   <footer>
-    <b>怎么用：</b>每天挑一两个场景，点「朗读本节」边听边小声跟读，读熟了用搜索抽查自己。<br>
+    <b>怎么用：</b>每天挑一两个场景，点「循环朗读本节」边听边小声跟读，熟了再按停止，读熟了用搜索抽查自己。<br>
     <b>关于发音：</b>用的是你设备/浏览器自带的语音（iPhone 上 Safari 效果最稳，第一次需先点一下页面任意处才会出声）。换 en-US / en-GB 口音、调语速都在上面那一栏。<br>
     <b>想加内容：</b>所有句子都在本文件底部的 <b>DATA</b> 里。普通句子用 <code>["English","中文"]</code>；需要显示词汇时，先在本场景 <code>sceneWords</code> 写好英文和中文意思，再在第三项加 <code>{key, power, sentence}</code>。
   </footer>
@@ -18350,7 +18350,7 @@ DATA.forEach((cat,ci)=>{
     head.innerHTML=`<h3>${sub.name}<span>${sub.en}</span></h3>`;
     const playBtn=document.createElement('button');
     playBtn.className='playall';
-    playBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>朗读本节';
+    playBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>循环朗读本节';
     head.appendChild(playBtn);
     subEl.appendChild(head);
 
@@ -18873,12 +18873,18 @@ async function playSingleRepeat(text,row,options={}){
 function playSeq(items,rowEls,btn){
   if(teacherEnabled()){playSeqTeacher(items,rowEls,btn);return;}
   if(!('speechSynthesis' in window))return;
+  if(!items.length)return;
   seqActive=true;curBtn=btn;btn.classList.add('playing');
   btn.innerHTML='<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>停止';
   stopbar.classList.add('show');
   let i=0;
   const next=()=>{
-    if(!seqActive||i>=items.length){finishSeq();return;}
+    if(!seqActive){finishSeq();return;}
+    if(i>=items.length){
+      i=0;
+      setTimeout(next,650);
+      return;
+    }
     rowEls.forEach(r=>r.classList.remove('speaking'));
     const row=rowEls[i];row.classList.add('speaking');
     row.scrollIntoView({behavior:'smooth',block:'center'});
@@ -18890,26 +18896,31 @@ function playSeq(items,rowEls,btn){
   next();
 }
 async function playSeqTeacher(items,rowEls,btn){
+  if(!items.length)return;
   seqActive=true;curBtn=btn;btn.classList.add('playing');
   btn.innerHTML='<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>停止';
   stopbar.classList.add('show');
-  for(let i=0;seqActive&&i<items.length;i++){
-    rowEls.forEach(r=>r.classList.remove('speaking'));
-    const row=rowEls[i];row.classList.add('speaking');
-    row.scrollIntoView({behavior:'smooth',block:'center'});
-    try{await speakTeacher(items[i][0],'en',row);}
-    catch(e){
-      if(teacherStatus)teacherStatus.textContent=teacherErrorText(e,'老师级朗读失败，已停止');
-      break;
+  while(seqActive){
+    for(let i=0;seqActive&&i<items.length;i++){
+      rowEls.forEach(r=>r.classList.remove('speaking'));
+      const row=rowEls[i];row.classList.add('speaking');
+      row.scrollIntoView({behavior:'smooth',block:'center'});
+      try{await speakTeacher(items[i][0],'en',row);}
+      catch(e){
+        if(teacherStatus)teacherStatus.textContent=teacherErrorText(e,'老师级朗读失败，已停止');
+        finishSeq();
+        return;
+      }
+      if(seqActive)await sleep(260);
     }
-    await new Promise(resolve=>setTimeout(resolve,260));
+    if(seqActive)await sleep(650);
   }
   finishSeq();
 }
 function finishSeq(){
   seqActive=false;stopbar.classList.remove('show');
   document.querySelectorAll('.row.speaking').forEach(r=>r.classList.remove('speaking'));
-  if(curBtn){curBtn.classList.remove('playing');curBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>朗读本节';curBtn=null;}
+  if(curBtn){curBtn.classList.remove('playing');curBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>循环朗读本节';curBtn=null;}
 }
 function stopAll(){
   stopSingleRepeat();

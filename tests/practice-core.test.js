@@ -1779,13 +1779,17 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(html.includes('row.onclick=()=>playSingleRepeat'));
   assert.ok(html.includes("if(btn&&btn.classList.contains('playing')){stopAll();return;}"));
   assert.ok(html.includes('while(seqActive)'));
+  assert.ok(html.includes('循环朗读本节'));
+  assert.ok(html.includes('if(i>=items.length)'));
+  assert.ok(html.includes('i=0;'));
+  assert.ok(html.includes('setTimeout(next,650)'));
   assert.ok(html.includes("btn.classList.add('playing')"));
 });
 
-test('service worker version is bumped after bedtime story batch', () => {
+test('service worker version is bumped after section repeat reading', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v140'));
+  assert.ok(worker.includes('home-english-v141'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
