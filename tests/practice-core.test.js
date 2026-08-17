@@ -1,4 +1,4 @@
-const assert = require('assert');
+﻿const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const core = require('../practice-core');
@@ -1649,7 +1649,19 @@ test('includes separate bedtime encyclopedia library for children', () => {
   assert.ok(html.includes('a seed is quiet, but quiet does not mean empty.'));
   assert.ok(html.includes('A book is patient enough for all of them.'));
   assert.ok(html.includes('A bowl was no longer just a bowl.'));
-  assert.ok(html.includes("['自然','生活百科','人文','历史','地理','生物','身体','天文','城市','远古生物','阅读','种子','图书馆','瓷碗','长城','地图','蚂蚁','月亮','恐龙']"));
+  assert.ok(html.includes('data-bedtime-search'));
+  assert.ok(html.includes('The Loose Tooth That Was Not So Scary'));
+  assert.ok(html.includes('being brave can mean feeling scared and still taking care of yourself'));
+  assert.ok(html.includes('Why the Compass Needle Wants to Find North'));
+  assert.ok(html.includes('the earth itself can guide a little needle'));
+  assert.ok(html.includes('A Boat of Rice on the Grand Canal'));
+  assert.ok(html.includes('History was not only emperors, battles, and big gates.'));
+  assert.ok(html.includes('How a Thermos Makes Winter Feel Smaller'));
+  assert.ok(html.includes('Care is not always a big speech.'));
+  assert.ok(html.includes('loose-tooth-brave-night-story'));
+  assert.ok(html.includes('compass-needle-finds-north-story'));
+  assert.ok(html.includes('grand-canal-grain-boat-story'));
+  assert.ok(html.includes('thermos-keeps-winter-warm-story'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1758,10 +1770,10 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(html.includes("btn.classList.add('playing')"));
 });
 
-test('service worker version is bumped after bedtime player controls', () => {
+test('service worker version is bumped after bedtime story batch', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v138'));
+  assert.ok(worker.includes('home-english-v139'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
