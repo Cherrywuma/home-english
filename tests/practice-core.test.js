@@ -1662,6 +1662,18 @@ test('includes separate bedtime encyclopedia library for children', () => {
   assert.ok(html.includes('compass-needle-finds-north-story'));
   assert.ok(html.includes('grand-canal-grain-boat-story'));
   assert.ok(html.includes('thermos-keeps-winter-warm-story'));
+  assert.ok(html.includes('The Apartment Garden After Rain'));
+  assert.ok(html.includes('A city has big roads, but it also needs small quiet places that can breathe.'));
+  assert.ok(html.includes('The Short Life of a Soap Bubble'));
+  assert.ok(html.includes('Some beautiful things ask us to look gently, not grab quickly.'));
+  assert.ok(html.includes('What an Old City Wall Sees at Dusk'));
+  assert.ok(html.includes('History was not locked behind glass; it was standing beside the road.'));
+  assert.ok(html.includes('The Bean Inside the Lunchbox'));
+  assert.ok(html.includes('take what you can eat, and try not to waste what others worked for'));
+  assert.ok(html.includes('apartment-garden-after-rain-story'));
+  assert.ok(html.includes('soap-bubble-short-life-story'));
+  assert.ok(html.includes('old-city-wall-evening-story'));
+  assert.ok(html.includes('bean-in-lunchbox-story'));
 });
 
 test('page stays usable without external font cdn links', () => {
@@ -1773,7 +1785,7 @@ test('cloudflare worker keeps the openai key off the static page', () => {
 test('service worker version is bumped after bedtime story batch', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v139'));
+  assert.ok(worker.includes('home-english-v140'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
