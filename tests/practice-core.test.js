@@ -1595,6 +1595,22 @@ test('includes separate bedtime encyclopedia library for children', () => {
   assert.ok(html.includes('showBedtimeLibrary'));
   assert.ok(html.includes('renderBedtimeStories'));
   assert.ok(html.includes('playBedtimeStory'));
+  assert.ok(html.includes('playBedtimePlaylist'));
+  assert.ok(html.includes('playBedtimeStoryOnce'));
+  assert.ok(html.includes('createBedtimeQueue'));
+  assert.ok(html.includes('markBedtimeListened'));
+  assert.ok(html.includes('homeEnglishBedtimeListenedIds'));
+  assert.ok(html.includes('homeEnglishBedtimeSkipListened'));
+  assert.ok(html.includes('homeEnglishBedtimeTimerMinutes'));
+  assert.ok(html.includes('bedtime-player'));
+  assert.ok(html.includes('睡前播放器 1.0'));
+  assert.ok(html.includes('data-bedtime-recommend'));
+  assert.ok(html.includes('data-bedtime-playlist="filtered"'));
+  assert.ok(html.includes('data-bedtime-playlist="unlistened"'));
+  assert.ok(html.includes('data-bedtime-timer'));
+  assert.ok(html.includes('data-bedtime-stop'));
+  assert.ok(html.includes('跳过已听'));
+  assert.ok(html.includes('只听未听过'));
   assert.equal(html.includes('中文讲故事'), false);
   assert.equal(html.includes('中英亲子讲'), false);
   assert.equal(html.includes('英文慢慢听'), false);
@@ -1742,10 +1758,10 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(html.includes("btn.classList.add('playing')"));
 });
 
-test('service worker version is bumped after bedtime story batch', () => {
+test('service worker version is bumped after bedtime player controls', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v137'));
+  assert.ok(worker.includes('home-english-v138'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

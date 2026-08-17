@@ -316,14 +316,30 @@
   .story-index-list button{border-radius:10px;text-align:left;line-height:1.28;max-width:100%;}
   .story-index-list button span{display:block;color:var(--muted);font-size:.68rem;font-weight:700;margin-top:2px;}
   .bedtime-card{border:1px solid var(--line);border-radius:14px;background:#FFFDF8;overflow:hidden;margin-top:14px;}
+  .bedtime-card.listened{opacity:.78;}
   .bedtime-top{padding:15px;border-bottom:1px solid var(--line);background:#FAF6EC;}
   .bedtime-top h3{font-size:1.1rem;line-height:1.25;}
   .bedtime-top h3 span{display:block;color:var(--muted);font-size:.8rem;font-weight:700;margin-top:2px;}
   .bedtime-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;}
   .bedtime-meta span{border:1px solid #E8D29A;border-radius:999px;padding:6px 10px;font-size:.76rem;font-weight:800;color:#6C4A12;background:#fff;}
+  .bedtime-listened-badge{display:inline-flex;align-items:center;border:1px solid #CFE6DC;border-radius:999px;background:#F6FBF8;color:var(--accent);font-size:.76rem;font-weight:850;padding:6px 10px;}
+  .bedtime-card.listened .bedtime-listened-badge{background:#EEF0EA;color:var(--muted);border-color:#DAD0C2;}
   .bedtime-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
   .bedtime-actions button{font-family:var(--body);font-size:.78rem;font-weight:850;border:none;border-radius:999px;padding:8px 12px;cursor:pointer;background:var(--accent-soft);color:var(--accent);}
   .bedtime-actions button.primary{background:var(--accent);color:#fff;}
+  .bedtime-actions button.playing{background:var(--ink);color:#fff;}
+  .bedtime-player{margin-top:13px;border:1px solid #CFE6DC;border-radius:14px;background:#F6FBF8;padding:13px;}
+  .bedtime-player-top{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;}
+  .bedtime-player-top strong{font-size:.98rem;color:var(--ink);}
+  .bedtime-player-status{font-size:.82rem;color:var(--muted);font-weight:750;line-height:1.45;}
+  .bedtime-player-controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center;}
+  .bedtime-player-controls label{display:flex;gap:7px;align-items:center;font-size:.82rem;font-weight:800;color:var(--ink);}
+  .bedtime-player-controls select{font-family:var(--body);font-size:.82rem;border:1px solid var(--line);border-radius:10px;background:#fff;padding:7px 9px;color:var(--ink);}
+  .bedtime-player-controls input{width:17px;height:17px;accent-color:var(--accent);}
+  .bedtime-player-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px;}
+  .bedtime-player-actions button{border:1px solid #BFD9CF;background:#fff;color:var(--ink);border-radius:999px;padding:9px 12px;font-family:var(--body);font-size:.82rem;font-weight:850;cursor:pointer;}
+  .bedtime-player-actions button.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .bedtime-player-actions button.playing{background:var(--ink);border-color:var(--ink);color:#fff;}
   .bedtime-chapter{border-top:1px solid var(--line);}
   .bedtime-chapter h4{padding:11px 14px;background:#FFFCF5;font-size:.92rem;color:var(--ink);}
   .bedtime-line{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 14px;border-top:1px solid var(--line);cursor:pointer;}
@@ -18517,6 +18533,7 @@ function stopAll(){
   if('speechSynthesis' in window)speechSynthesis.cancel();
   stopDictation();
   stopEarLoop();
+  stopBedtimePlayer();
   finishSeq();
 }
 stopbar.onclick=stopAll;
@@ -19410,6 +19427,144 @@ function bedtimeMatches(story,query,category){
     .concat(chapterText)
     .some(value=>String(value||'').toLowerCase().includes(qText));
 }
+const BEDTIME_LISTENED_KEY='homeEnglishBedtimeListenedIds';
+const BEDTIME_SKIP_LISTENED_KEY='homeEnglishBedtimeSkipListened';
+const BEDTIME_TIMER_KEY='homeEnglishBedtimeTimerMinutes';
+let bedtimePlaylistActive=false;
+let bedtimeTimerId=null;
+let bedtimeTimerEndsAt=0;
+let bedtimeActiveButton=null;
+function readBedtimeListened(){
+  try{return JSON.parse(localStorage.getItem(BEDTIME_LISTENED_KEY)||'[]').map(String);}
+  catch(err){return [];}
+}
+function writeBedtimeListened(ids){
+  try{localStorage.setItem(BEDTIME_LISTENED_KEY,JSON.stringify([...new Set((ids||[]).map(String))]));}
+  catch(err){}
+}
+function markBedtimeListened(id){
+  if(!id)return;
+  const ids=new Set(readBedtimeListened());
+  ids.add(String(id));
+  writeBedtimeListened([...ids]);
+  refreshBedtimeListenedState();
+}
+function readBedtimeTimer(){
+  try{return localStorage.getItem(BEDTIME_TIMER_KEY)||'0';}
+  catch(err){return '0';}
+}
+function setBedtimeTimer(value){
+  try{localStorage.setItem(BEDTIME_TIMER_KEY,String(value||'0'));}
+  catch(err){}
+}
+function readBedtimeSkipListened(){
+  try{return localStorage.getItem(BEDTIME_SKIP_LISTENED_KEY)!=='0';}
+  catch(err){return true;}
+}
+function setBedtimeSkipListened(value){
+  try{localStorage.setItem(BEDTIME_SKIP_LISTENED_KEY,value?'1':'0');}
+  catch(err){}
+}
+function clearBedtimeTimer(){
+  if(bedtimeTimerId){
+    clearTimeout(bedtimeTimerId);
+    bedtimeTimerId=null;
+  }
+  bedtimeTimerEndsAt=0;
+}
+function bedtimePlayerStatusText(){
+  const validIds=new Set(BEDTIME_LIBRARY.map(story=>story.id));
+  const listened=readBedtimeListened().filter(id=>validIds.has(id)).length;
+  const timer=bedtimeTimerEndsAt?` · ${Math.max(1,Math.ceil((bedtimeTimerEndsAt-Date.now())/60000))} 分钟后停止`:'';
+  return `已听 ${listened} / ${BEDTIME_LIBRARY.length}${timer}`;
+}
+function updateBedtimePlayerStatus(extra){
+  const el=lookup&&lookup.querySelector?lookup.querySelector('#bedtimePlayerStatus'):null;
+  if(el)el.textContent=extra||bedtimePlayerStatusText();
+}
+function setBedtimeActiveButton(btn,text){
+  clearBedtimeActiveButton();
+  if(!btn)return;
+  bedtimeActiveButton=btn;
+  if(!btn.dataset.oldText)btn.dataset.oldText=btn.textContent;
+  btn.classList.add('playing');
+  btn.textContent=text||'停止';
+}
+function clearBedtimeActiveButton(){
+  if(bedtimeActiveButton){
+    bedtimeActiveButton.classList.remove('playing');
+    if(bedtimeActiveButton.dataset.oldText){
+      bedtimeActiveButton.textContent=bedtimeActiveButton.dataset.oldText;
+      delete bedtimeActiveButton.dataset.oldText;
+    }
+  }
+  bedtimeActiveButton=null;
+}
+function refreshBedtimeListenedState(){
+  if(!lookup||!lookup.querySelectorAll)return;
+  const listened=new Set(readBedtimeListened());
+  lookup.querySelectorAll('[data-bedtime-card]').forEach(card=>{
+    const isDone=listened.has(card.dataset.bedtimeCard);
+    card.classList.toggle('listened',isDone);
+    const badge=card.querySelector('[data-bedtime-badge]');
+    if(badge)badge.textContent=isDone?'已听过':'未听';
+    const mark=card.querySelector('[data-bedtime-mark]');
+    if(mark)mark.textContent=isDone?'取消已听':'标记已听';
+  });
+  updateBedtimePlayerStatus();
+}
+function getVisibleBedtimeStories(){
+  const search=lookup.querySelector('#bedtimeSearch');
+  const category=lookup.querySelector('#bedtimeCategory');
+  const qText=search?search.value:'';
+  const catValue=category?category.value:'全部';
+  return BEDTIME_LIBRARY.filter(story=>bedtimeMatches(story,qText,catValue));
+}
+function createBedtimeQueue(mode){
+  const stories=getVisibleBedtimeStories();
+  const listened=new Set(readBedtimeListened());
+  if(mode==='recommend'){
+    const fresh=stories.filter(story=>!listened.has(story.id));
+    return (fresh.length?fresh:stories).slice(0,3);
+  }
+  if(mode==='unlistened')return stories.filter(story=>!listened.has(story.id));
+  const skip=lookup.querySelector('#bedtimeSkipListened');
+  if(skip&&skip.checked)return stories.filter(story=>!listened.has(story.id));
+  return stories;
+}
+function startBedtimeTimer(){
+  clearBedtimeTimer();
+  const timer=lookup.querySelector('#bedtimeTimer');
+  const minutes=Number(timer&&timer.value||0);
+  setBedtimeTimer(String(minutes));
+  if(minutes>0){
+    bedtimeTimerEndsAt=Date.now()+minutes*60000;
+    bedtimeTimerId=setTimeout(()=>{
+      updateBedtimePlayerStatus('定时结束，已经停止播放。');
+      stopAll();
+    },minutes*60000);
+  }
+  updateBedtimePlayerStatus();
+}
+function stopBedtimePlayer(){
+  bedtimePlaylistActive=false;
+  clearBedtimeTimer();
+  clearBedtimeActiveButton();
+}
+function toggleBedtimeListened(id){
+  if(!id)return;
+  const ids=new Set(readBedtimeListened());
+  if(ids.has(id))ids.delete(id);
+  else ids.add(id);
+  writeBedtimeListened([...ids]);
+  refreshBedtimeListenedState();
+}
+function flattenBedtimeLines(story){
+  return story.chapters.flatMap((chapter,chapterIndex)=>chapter.lines.map((line,lineIndex)=>({
+    line,
+    row:lookup.querySelector(`[data-sentence-id="bedtime-${story.id}-${chapterIndex}-${lineIndex}"]`)
+  })));
+}
 function bedtimeIndexHtml(stories){
   const quick=['自然','生活百科','人文','历史','地理','生物','身体','天文','城市','远古生物','阅读','种子','图书馆','瓷碗','长城','地图','蚂蚁','月亮','恐龙'].map(text=>`<button type="button" data-bedtime-search="${text}">${text}</button>`).join('');
   const items=stories.map((story,index)=>`<button type="button" data-bedtime-jump="${story.id}">
@@ -19453,7 +19608,9 @@ function bedtimeCardHtml(story){
       <div class="story-scene">${story.scene}</div>
       <div class="bedtime-meta"><span>${story.minutes}</span><span>${story.age}</span>${words}</div>
       <div class="bedtime-actions">
+        <span class="bedtime-listened-badge" data-bedtime-badge="${story.id}">未听</span>
         <button class="primary" type="button" data-bedtime-play="en" data-bedtime="${story.id}">英文讲故事</button>
+        <button type="button" data-bedtime-mark="${story.id}">标记已听</button>
       </div>
     </div>
     ${chapters}
@@ -19479,36 +19636,65 @@ async function speakBedtimeEnglish(text,row){
   }
   await speakFreeLang(cleanText,'en',row).catch(()=>{});
 }
+async function playBedtimeStoryOnce(story,options={}){
+  if(!story||!Array.isArray(story.chapters)||!story.chapters.length)return false;
+  const rows=bedtimeRows(story);
+  const lines=flattenBedtimeLines(story);
+  for(const item of lines){
+    if(!seqActive)break;
+    rows.forEach(row=>row.classList.remove('speaking'));
+    const row=item.row;
+    if(row){row.classList.add('speaking');row.scrollIntoView({behavior:'smooth',block:'center'});}
+    await speakBedtimeEnglish(item.line[0],row);
+    if(row)row.classList.remove('speaking');
+    if(seqActive)await sleep(options.pauseMs||320);
+  }
+  rows.forEach(row=>row.classList.remove('speaking'));
+  if(seqActive){
+    markBedtimeListened(story.id);
+    return true;
+  }
+  return false;
+}
 async function playBedtimeStory(story,mode,btn){
   if(!story||!Array.isArray(story.chapters)||!story.chapters.length)return;
   if(btn&&btn.classList.contains('playing')){stopAll();return;}
   stopAll();
   seqActive=true;
-  curBtn=null;
+  bedtimePlaylistActive=false;
   stopbar.classList.add('show');
-  const oldText=btn?btn.textContent:'';
-  if(btn){btn.classList.add('playing');btn.textContent='停止';}
-  const rows=bedtimeRows(story);
-  let rowIndex=0;
-  while(seqActive){
-    rowIndex=0;
-    for(const chapter of story.chapters){
-      for(const line of chapter.lines){
-        if(!seqActive)break;
-        rows.forEach(row=>row.classList.remove('speaking'));
-        const row=rows[rowIndex++];
-        if(row){row.classList.add('speaking');row.scrollIntoView({behavior:'smooth',block:'center'});}
-        await speakBedtimeEnglish(line[0],row);
-        if(row)row.classList.remove('speaking');
-        await new Promise(resolve=>setTimeout(resolve,320));
-      }
-    }
-    if(seqActive)await new Promise(resolve=>setTimeout(resolve,800));
+  setBedtimeActiveButton(btn,'停止');
+  updateBedtimePlayerStatus(`正在听：${story.title}`);
+  await playBedtimeStoryOnce(story,{pauseMs:320});
+  finishSeq();
+  stopBedtimePlayer();
+  refreshBedtimeListenedState();
+}
+async function playBedtimePlaylist(mode,btn){
+  if(btn&&btn.classList.contains('playing')){stopAll();return;}
+  stopAll();
+  const queue=createBedtimeQueue(mode);
+  if(!queue.length){
+    updateBedtimePlayerStatus('当前没有可播放的故事，换个分类或关闭跳过已听。');
+    return;
   }
-  rows.forEach(row=>row.classList.remove('speaking'));
-  stopbar.classList.remove('show');
-  seqActive=false;
-  if(btn){btn.classList.remove('playing');btn.textContent=oldText;}
+  seqActive=true;
+  bedtimePlaylistActive=true;
+  stopbar.classList.add('show');
+  startBedtimeTimer();
+  setBedtimeActiveButton(btn,'停止');
+  for(let index=0;seqActive&&index<queue.length;index++){
+    const story=queue[index];
+    updateBedtimePlayerStatus(`正在听 ${index+1} / ${queue.length}：${story.title}`);
+    const card=lookup.querySelector(`[data-bedtime-card="${story.id}"]`);
+    if(card)card.scrollIntoView({behavior:'smooth',block:'start'});
+    await playBedtimeStoryOnce(story,{pauseMs:360});
+    if(seqActive&&index<queue.length-1)await sleep(900);
+  }
+  if(seqActive)updateBedtimePlayerStatus('这一组已经听完，可以换一组继续。');
+  finishSeq();
+  stopBedtimePlayer();
+  refreshBedtimeListenedState();
 }
 function renderBedtimeStories(){
   const panel=lookup.querySelector('#bedtimePanel');
@@ -19533,6 +19719,9 @@ function renderBedtimeStories(){
   panel.querySelectorAll('[data-bedtime-play]').forEach(btn=>{
     btn.onclick=()=>playBedtimeStory(BEDTIME_LIBRARY.find(story=>story.id===btn.dataset.bedtime),btn.dataset.bedtimePlay,btn);
   });
+  panel.querySelectorAll('[data-bedtime-mark]').forEach(btn=>{
+    btn.onclick=()=>toggleBedtimeListened(btn.dataset.bedtimeMark);
+  });
   panel.querySelectorAll('.bedtime-line[data-sentence-id]').forEach(row=>{
     const item=sentenceLookup.get(row.dataset.sentenceId);
     row.onclick=()=>playSingleRepeat(item.en,row,BEDTIME_TTS_OPTIONS);
@@ -19540,11 +19729,14 @@ function renderBedtimeStories(){
     row.querySelector('[data-status="mastered"]').onclick=e=>{e.stopPropagation();setSentenceStatus(row.dataset.sentenceId,'mastered');};
     refreshSentenceStatus(row);
   });
+  refreshBedtimeListenedState();
 }
 function showBedtimeLibrary(){
   stopAll();
   lookup.style.display='block';
   const categories=bedtimeCategories();
+  const timerValue=readBedtimeTimer();
+  const skipChecked=readBedtimeSkipListened()?'checked':'';
   lookup.innerHTML=`<div class="lk-card">
     <div class="lk-en">睡前百科</div>
     <div class="lk-zh">这是单独给孩子讲的长故事库。不是搬别人的故事，而是把自然、生活、身体、人文讲成孩子愿意听的百科故事。</div>
@@ -19554,11 +19746,42 @@ function showBedtimeLibrary(){
         ${categories.map(item=>`<option value="${item}">${item}</option>`).join('')}
       </select>
     </div>
-    <div class="lk-note">当前 ${BEDTIME_LIBRARY.length} 篇。长故事支持整篇循环讲，也可以点每一句单独反复听。</div>
+    <div class="bedtime-player">
+      <div class="bedtime-player-top">
+        <strong>睡前播放器 1.0</strong>
+        <span class="bedtime-player-status" id="bedtimePlayerStatus">${bedtimePlayerStatusText()}</span>
+      </div>
+      <div class="bedtime-player-controls">
+        <label>定时停止
+          <select id="bedtimeTimer" data-bedtime-timer>
+            <option value="0" ${timerValue==='0'?'selected':''}>不定时</option>
+            <option value="10" ${timerValue==='10'?'selected':''}>10 分钟</option>
+            <option value="20" ${timerValue==='20'?'selected':''}>20 分钟</option>
+            <option value="30" ${timerValue==='30'?'selected':''}>30 分钟</option>
+          </select>
+        </label>
+        <label><input id="bedtimeSkipListened" type="checkbox" ${skipChecked}> 跳过已听</label>
+      </div>
+      <div class="bedtime-player-actions">
+        <button class="primary" type="button" data-bedtime-recommend>今晚推荐</button>
+        <button type="button" data-bedtime-playlist="filtered">连续听当前筛选</button>
+        <button type="button" data-bedtime-playlist="unlistened">只听未听过</button>
+        <button type="button" data-bedtime-clear-listened>清空已听</button>
+        <button type="button" data-bedtime-stop>停止</button>
+      </div>
+    </div>
+    <div class="lk-note">当前 ${BEDTIME_LIBRARY.length} 篇。单篇会读完整故事；连续播放会按当前分类和搜索结果往下读。</div>
     <div id="bedtimePanel"></div>
   </div>`;
   lookup.querySelector('#bedtimeSearch').oninput=renderBedtimeStories;
   lookup.querySelector('#bedtimeCategory').onchange=renderBedtimeStories;
+  lookup.querySelector('#bedtimeTimer').onchange=e=>setBedtimeTimer(e.target.value);
+  lookup.querySelector('#bedtimeSkipListened').onchange=e=>{setBedtimeSkipListened(e.target.checked);renderBedtimeStories();};
+  lookup.querySelector('[data-bedtime-recommend]').onclick=e=>playBedtimePlaylist('recommend',e.currentTarget);
+  lookup.querySelector('[data-bedtime-playlist="filtered"]').onclick=e=>playBedtimePlaylist('filtered',e.currentTarget);
+  lookup.querySelector('[data-bedtime-playlist="unlistened"]').onclick=e=>playBedtimePlaylist('unlistened',e.currentTarget);
+  lookup.querySelector('[data-bedtime-clear-listened]').onclick=()=>{writeBedtimeListened([]);refreshBedtimeListenedState();};
+  lookup.querySelector('[data-bedtime-stop]').onclick=stopAll;
   renderBedtimeStories();
   window.scrollTo({top:lookup.offsetTop-12,behavior:'smooth'});
 }
