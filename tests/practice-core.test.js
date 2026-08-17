@@ -1211,6 +1211,21 @@ test('includes story speaking library for narrative practice', () => {
   assert.ok(html.includes('child-apologizes-after-breaking-toy'));
   assert.ok(html.includes('Teaching a Child to Apologize After Breaking a Toy'));
   assert.ok(html.includes('A good apology does not make the past disappear, but it can make the next step cleaner.'));
+  assert.ok(html.includes('two-kids-delay-bath-bedtime'));
+  assert.ok(html.includes('When Two Kids Keep Delaying Bath and Bedtime'));
+  assert.ok(html.includes('you can choose the order, but bath time still has to happen.'));
+  assert.ok(html.includes('bedtime-small-talk-with-children'));
+  assert.ok(html.includes('When I Do Not Know What to Talk About Before Sleep'));
+  assert.ok(html.includes('Sometimes the best bedtime talk is just listening without fixing anything.'));
+  assert.ok(html.includes('stop-saying-hurry-up-all-night'));
+  assert.ok(html.includes('I Do Not Want to Say Hurry Up All Night'));
+  assert.ok(html.includes('But I want my children to remember more than my tired voice.'));
+  assert.ok(html.includes('two-children-fairness-bedtime'));
+  assert.ok(html.includes('When Two Children Think Bedtime Is Not Fair'));
+  assert.ok(html.includes('Children may still complain, but they can slowly learn that love is not a math problem.'));
+  assert.ok(html.includes('child-worries-before-sleep'));
+  assert.ok(html.includes('When a Child Suddenly Worries About Tomorrow'));
+  assert.ok(html.includes('you are safe with me, and we can handle one step at a time.'));
   assert.ok(html.includes('疤痕'));
   assert.ok(html.includes('电动车'));
   assert.ok(html.includes('找到 ${stories.length} 段口播'));
@@ -1721,10 +1736,10 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(html.includes("btn.classList.add('playing')"));
 });
 
-test('service worker version is bumped after new speaking story batch', () => {
+test('service worker version is bumped after parenting speaking story batch', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v135'));
+  assert.ok(worker.includes('home-english-v136'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {
