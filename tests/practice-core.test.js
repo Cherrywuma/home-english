@@ -1767,6 +1767,14 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(protectedWorker.includes("'Origin': 'https://home-english-private.cherryyijiatec.workers.dev'"));
   assert.ok(html.includes("credentials:'same-origin'"));
   assert.ok(html.includes('playTeacherBlobWithContext'));
+  assert.ok(html.includes('playTeacherBlobWithElement'));
+  assert.ok(html.includes('teacherAudioPlayer'));
+  assert.ok(html.includes('setTeacherMediaSession'));
+  assert.ok(html.includes('navigator.mediaSession.playbackState'));
+  assert.ok(html.includes('primeTeacherAudioEntries'));
+  assert.ok(html.includes('缓存后息屏更稳'));
+  assert.ok(html.includes("await primeTeacherAudioEntries(items.map(item=>({text:item[0],lang:'en'})),'本节音频')"));
+  assert.ok(html.includes("await primeTeacherAudioEntries(firstQueue.flatMap(item=>["));
   assert.ok(html.includes('unlockTeacherAudio'));
   assert.ok(html.includes('teacherErrorText'));
   assert.ok(html.includes('requestTeacherAudio'));
@@ -1786,10 +1794,10 @@ test('cloudflare worker keeps the openai key off the static page', () => {
   assert.ok(html.includes("btn.classList.add('playing')"));
 });
 
-test('service worker version is bumped after section repeat reading', () => {
+test('service worker version is bumped after background cached reading', () => {
   const worker = fs.readFileSync(path.join(__dirname, '..', 'service-worker.js'), 'utf8');
 
-  assert.ok(worker.includes('home-english-v141'));
+  assert.ok(worker.includes('home-english-v142'));
 });
 
 test('service worker asks the network before falling back to old cache', () => {

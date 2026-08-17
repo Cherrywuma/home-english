@@ -18528,6 +18528,8 @@ let currentTeacherUrl='';
 let currentTeacherDone=null;
 let teacherAudioContext=null;
 let currentTeacherSource=null;
+let teacherAudioPlayer=null;
+let teacherWarmRun=0;
 rate.oninput=()=>rateVal.textContent=(+rate.value).toFixed(2)+'×';
 
 function loadVoices(){
@@ -18658,13 +18660,19 @@ function stopTeacherAudio(){
     currentTeacherSource=null;
   }
   if(currentTeacherAudio){
-    currentTeacherAudio.pause();
-    currentTeacherAudio.src='';
+    try{
+      currentTeacherAudio.pause();
+      currentTeacherAudio.removeAttribute('src');
+      currentTeacherAudio.load();
+    }catch(e){}
     currentTeacherAudio=null;
   }
   if(currentTeacherUrl){
     URL.revokeObjectURL(currentTeacherUrl);
     currentTeacherUrl='';
+  }
+  if('mediaSession' in navigator){
+    try{navigator.mediaSession.playbackState='none';}catch(e){}
   }
 }
 async function unlockTeacherAudio(){
@@ -18681,13 +18689,37 @@ async function unlockTeacherAudio(){
 });
 function clearTeacherElementAudio(){
   if(currentTeacherAudio){
-    try{currentTeacherAudio.pause();currentTeacherAudio.src='';}catch(e){}
+    try{currentTeacherAudio.pause();currentTeacherAudio.removeAttribute('src');currentTeacherAudio.load();}catch(e){}
     currentTeacherAudio=null;
   }
   if(currentTeacherUrl){
     URL.revokeObjectURL(currentTeacherUrl);
     currentTeacherUrl='';
   }
+}
+function getTeacherAudioPlayer(){
+  if(!teacherAudioPlayer){
+    teacherAudioPlayer=new Audio();
+    teacherAudioPlayer.preload='auto';
+    teacherAudioPlayer.autoplay=false;
+    teacherAudioPlayer.setAttribute('playsinline','');
+  }
+  currentTeacherAudio=teacherAudioPlayer;
+  return teacherAudioPlayer;
+}
+function setTeacherMediaSession(title,lang){
+  if(!('mediaSession' in navigator))return;
+  try{
+    navigator.mediaSession.metadata=new MediaMetadata({
+      title:String(title||'Home English'),
+      artist:lang==='zh'?'中文提示':'Home English',
+      album:'连续朗读'
+    });
+    navigator.mediaSession.playbackState='playing';
+    navigator.mediaSession.setActionHandler('play',()=>{if(currentTeacherAudio)currentTeacherAudio.play().catch(()=>{});});
+    navigator.mediaSession.setActionHandler('pause',()=>stopAll());
+    navigator.mediaSession.setActionHandler('stop',()=>stopAll());
+  }catch(e){}
 }
 async function playTeacherBlobWithContext(blob){
   const ctx=await unlockTeacherAudio();
@@ -18707,6 +18739,23 @@ async function playTeacherBlobWithContext(blob){
       try{currentTeacherSource.disconnect();}catch(e){}
       currentTeacherSource=null;
     }
+  });
+}
+async function playTeacherBlobWithElement(blob,meta={}){
+  if(currentTeacherUrl){
+    URL.revokeObjectURL(currentTeacherUrl);
+    currentTeacherUrl='';
+  }
+  const audio=getTeacherAudioPlayer();
+  currentTeacherUrl=URL.createObjectURL(blob);
+  audio.src=currentTeacherUrl;
+  audio.preload='auto';
+  setTeacherMediaSession(meta.title,meta.lang);
+  await new Promise((resolve,reject)=>{
+    currentTeacherDone=resolve;
+    audio.onended=resolve;
+    audio.onerror=()=>reject(new Error('audio-playback-error'));
+    audio.play().catch(reject);
   });
 }
 async function requestTeacherAudio(endpoint,payload){
@@ -18749,6 +18798,25 @@ async function getTeacherAudio(text,lang,options={}){
   await cachePutAudio(key,blob);
   return {blob,cached:false};
 }
+async function primeTeacherAudioEntries(entries,label='缓存'){
+  if(!teacherEnabled()||!entries.length)return;
+  const runId=++teacherWarmRun;
+  const firstBatch=entries.slice(0,Math.min(entries.length,10));
+  for(let i=0;i<firstBatch.length;i++){
+    if(runId!==teacherWarmRun)return;
+    const entry=firstBatch[i];
+    if(teacherStatus)teacherStatus.textContent=`正在准备${label} ${i+1}/${firstBatch.length}，缓存后息屏更稳`;
+    await getTeacherAudio(entry.text,entry.lang,entry.options||{}).catch(()=>{});
+  }
+  const rest=entries.slice(firstBatch.length,Math.min(entries.length,80));
+  (async()=>{
+    for(const entry of rest){
+      if(runId!==teacherWarmRun)return;
+      await getTeacherAudio(entry.text,entry.lang,entry.options||{}).catch(()=>{});
+      await sleep(120);
+    }
+  })();
+}
 async function speakTeacher(text,lang,row,options={}){
   const cleanText=String(text||'').trim();
   if(!cleanText)return;
@@ -18757,14 +18825,7 @@ async function speakTeacher(text,lang,row,options={}){
   if(row)row.classList.add('speaking');
   const {blob,cached}=await getTeacherAudio(cleanText,lang,options);
   if(teacherStatus)teacherStatus.textContent=cached?'播放本机缓存音频':'已生成并缓存本句音频';
-  currentTeacherUrl=URL.createObjectURL(blob);
-  currentTeacherAudio=new Audio(currentTeacherUrl);
-  await new Promise((resolve,reject)=>{
-    currentTeacherDone=resolve;
-    currentTeacherAudio.onended=resolve;
-    currentTeacherAudio.onerror=reject;
-    currentTeacherAudio.play().catch(reject);
-  }).catch(async err=>{
+  await playTeacherBlobWithElement(blob,{title:cleanText,lang}).catch(async err=>{
     clearTeacherElementAudio();
     await playTeacherBlobWithContext(blob).catch(()=>{throw err;});
   }).finally(()=>{
@@ -18900,6 +18961,7 @@ async function playSeqTeacher(items,rowEls,btn){
   seqActive=true;curBtn=btn;btn.classList.add('playing');
   btn.innerHTML='<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>停止';
   stopbar.classList.add('show');
+  await primeTeacherAudioEntries(items.map(item=>({text:item[0],lang:'en'})),'本节音频');
   while(seqActive){
     for(let i=0;seqActive&&i<items.length;i++){
       rowEls.forEach(r=>r.classList.remove('speaking'));
@@ -18923,6 +18985,7 @@ function finishSeq(){
   if(curBtn){curBtn.classList.remove('playing');curBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>循环朗读本节';curBtn=null;}
 }
 function stopAll(){
+  teacherWarmRun++;
   stopSingleRepeat();
   stopTeacherAudio();
   if('speechSynthesis' in window)speechSynthesis.cancel();
@@ -19177,6 +19240,11 @@ async function playEarLoop(items){
   if('speechSynthesis' in window)speechSynthesis.cancel();
   earLoopActive=true;
   openEarDrawer();
+  const firstQueue=(earSkipRead&&earSkipRead.checked)?items.filter(item=>!isEarRead(item.id)):items;
+  await primeTeacherAudioEntries(firstQueue.flatMap(item=>[
+    {text:item.zh,lang:'zh'},
+    {text:item.en,lang:'en'}
+  ]),'磨耳朵音频');
   let played=0;
   while(earLoopActive){
     const queue=(earSkipRead&&earSkipRead.checked)?items.filter(item=>!isEarRead(item.id)):items;
